@@ -1,20 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import Header from './Header';
+import Body from './Body';
+import Footer from './Footer';
+/** DEVICE PAGES INFO */
+import UA from './js/Device';
+
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-    <Header />
+    <Header ua={UA()}/>
     , document.getElementById('div_header'));
 
 ReactDOM.render(
-    <App />
+    <Body ua={UA()}/>
     , document.getElementById('div_body'));
 
 ReactDOM.render(
-    <App />
+    <Footer ua={UA()}/>
     , document.getElementById('div_footer'));
 
 // If you want your app to work offline and load faster, you can change

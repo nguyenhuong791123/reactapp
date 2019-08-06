@@ -1,0 +1,19 @@
+div.div-center {
+    width: 25%;
+    margin-top: 15%;
+    margin-left: 35%;
+}
+
+div.div-center div.form-row {
+    margin: 0.5em;
+}
+
+div.div-center div:first-child {
+    text-align: center;
+    font-weight: bold;
+}
+
+div.div-center div.form-row:last-child {
+    display: grid;
+    padding-top: 0.5em;
+}

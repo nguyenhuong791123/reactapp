@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { browserHistory } from '@version/react-router-v3';
 
+import UA from '..//Device';
 import AuthService from './AuthService';
 
 export default function WithAuth(AuthComponent) {
@@ -24,8 +25,7 @@ export default function WithAuth(AuthComponent) {
                     this.setState({ user: profile })
                 }
                 catch(err){
-                    Auth.logout()
-                    //this.props.history.replace('/login')
+                    Auth.logout();
                     browserHistory.push('/');
                 }
             }
@@ -34,10 +34,10 @@ export default function WithAuth(AuthComponent) {
         render() {
             if (this.state.user) {
                 return (
-                    <AuthComponent history={this.props.history} user={this.state.user} />
+                    <AuthComponent ua={UA()} user={this.state.user} />
                 )
             } else {
-                return null
+                return (<AuthComponent ua={UA()} />)
             }
         }
     }

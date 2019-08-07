@@ -12,21 +12,14 @@ export default class Login extends C {
     super(props);
     this.Auth = new AuthService();
     this._onChange = this._onChange.bind(this);
-    this._onSubmit = this._onSubmit.bind(this);
+    this._onLogin = this._onLogin.bind(this);
 
     this.state = { username: '', password: '' }
   }
 
-  _onSubmit(e){
+  _onLogin(e){
     e.preventDefault();
-    this.Auth.login(this.state.username,this.state.password)
-        .then(res =>{
-           //this.props.history.push('/list');
-           browserHistory.push('/list');
-        })
-        .catch(err =>{
-            alert(err);
-        })
+    this.props.route.onLogin(this.state.username, this.state.password);
   }
 
   _onChange(e){
@@ -44,7 +37,7 @@ export default class Login extends C {
         <Alert variant="success" className="div-center">
           <Alert.Heading>System Authorization</Alert.Heading>
           <hr />
-          <Form noValidate validated="true" onSubmit={this._onSubmit}>
+          <Form noValidate validated="true" onSubmit={ this._onLogin.bind(this) }>
             <Form.Row>
               <Form.Control required type="text" name="username" placeholder="First name"/>
             </Form.Row>

@@ -1,25 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import Header from './Header';
-import Body from './Body';
-import Footer from './Footer';
+
+// import Header from './js/Header';
+// import Body from './js/Body';
+// import Footer from './js/Footer';
 /** DEVICE PAGES INFO */
+import App from './App'
+import './index.css';
 import UA from './js/Device';
 
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-    <Header ua={UA()}/>
-    , document.getElementById('div_header'));
+    <App ua={UA()}/>
+    , document.getElementById('app'));
 
-ReactDOM.render(
-    <Body ua={UA()}/>
-    , document.getElementById('div_body'));
+// ReactDOM.render(
+//     <Header ua={UA()}/>
+//     , document.getElementById('div_header'));
 
-ReactDOM.render(
-    <Footer ua={UA()}/>
-    , document.getElementById('div_footer'));
+// ReactDOM.render(
+//     <Body ua={UA()}/>
+//     , document.getElementById('div_body'));
+
+// ReactDOM.render(
+//     <Footer ua={UA()}/>
+//     , document.getElementById('div_footer'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

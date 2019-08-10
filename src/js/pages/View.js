@@ -1,7 +1,7 @@
 
-import React, { Component as C, PropTypes } from 'react';
+import React, { Component as C } from 'react';
 
-export default class List extends C {
+export default class View extends C {
   constructor(props) {
     super(props);
 
@@ -10,7 +10,7 @@ export default class List extends C {
 
   render() {
     return (
-      <div>View</div>
+      <div>View[{ this.props.id }]</div>
     )
   };
 };

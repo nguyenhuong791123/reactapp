@@ -1,5 +1,4 @@
-import React, { Component as C, PropTypes } from 'react';
-import { ButtonToolbar, Button } from 'react-bootstrap';
+import React, { Component as C } from 'react';
 
 import '../css/Footer.css';
 
@@ -7,18 +6,12 @@ class Footer extends C {
   constructor(props) {
     super(props);
 
-    this.state = {
-      auth: {
-        device: props.ua.device
-        ,language: props.ua.language
-        ,isLogin: false
-      }
-    };
+    this.state = { };
 
   }
 
   render() {
-    if(this.state.auth.isLogin) return "";
+    if(this.props.auth) return "";
     return (
       <div>
         <span>

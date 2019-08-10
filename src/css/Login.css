@@ -17,3 +17,13 @@ div.div-center div.form-row:last-child {
     display: grid;
     padding-top: 0.5em;
 }
+
+button svg:first-child {
+    float: left;
+    margin-top: 0.2em;
+}
+
+button svg:last-child {
+    float: right;
+    margin-top: 0.2em;
+}

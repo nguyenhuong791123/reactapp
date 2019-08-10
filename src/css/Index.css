@@ -1,0 +1,15 @@
+body {
+    overflow: hidden;
+}
+
+div.dropdown-menu a svg {
+    margin-right: 0.3em;
+}
+
+button svg:first-child {
+    margin-right: 0.3em;
+}
+
+button svg:last-child {
+    margin-left: 0.3em;
+}

@@ -7,6 +7,7 @@ export default class AuthService {
         this.fetch = this.fetch.bind(this) // React binding stuff
         this.login = this.login.bind(this)
         this.getProfile = this.getProfile.bind(this)
+        this.getUserInfo = this.getUserInfo.bind(this)
     }
 
     login(username, password) {
@@ -17,6 +18,7 @@ export default class AuthService {
             body: JSON.stringify({ username, password })
         }).then(res => {
             this.setToken(res.token) // Setting the token in localStorage
+            this.setUserInfo(res.auth)
             return Promise.resolve(res);
         })
     }
@@ -24,7 +26,9 @@ export default class AuthService {
     loggedIn() {
         // Checks if there is a saved token and it's still valid
         const token = this.getToken() // GEtting token from localstorage
-        return !!token && !this.isTokenExpired(token) // handwaiving here
+        var isChkUser = !!token && !this.isTokenExpired(token)
+        if(!isChkUser) localStorage.removeItem('is_user');
+        return isChkUser // handwaiving here
     }
 
     isTokenExpired(token) {
@@ -43,17 +47,22 @@ export default class AuthService {
 
     setToken(idToken) {
         // Saves user token to localStorage
-        localStorage.setItem('id_token', idToken)
+        localStorage.setItem('is_token', idToken);
     }
 
     getToken() {
         // Retrieves the user token from localStorage
-        return localStorage.getItem('id_token')
+        return localStorage.getItem('is_token');
+    }
+
+    setUserInfo(isAuth) {
+        localStorage.setItem('is_user', JSON.stringify(isAuth));
     }
 
     logout() {
         // Clear user token and profile data from localStorage
-        localStorage.removeItem('id_token');
+        localStorage.removeItem('is_token');
+        localStorage.removeItem('is_user');
     }
 
     getProfile() {
@@ -61,6 +70,9 @@ export default class AuthService {
         return decode(this.getToken());
     }
 
+    getUserInfo() {
+        return JSON.parse(localStorage.getItem('is_user'));
+    }
 
     fetch(url, options) {
         // performs api calls sending the required authentication headers

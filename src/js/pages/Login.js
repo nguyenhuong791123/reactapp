@@ -1,10 +1,11 @@
-
-import React, { Component as C, PropTypes } from 'react';
+import React, { Component as C } from 'react';
 import { browserHistory } from '@version/react-router-v3';
 import { Alert, Form, Button } from 'react-bootstrap';
+import { FaUnlockAlt, FaSignInAlt } from 'react-icons/fa';
 
 import AuthService from '../sevice/AuthService';
 
+import "../../css/Index.css";
 import '../../css/Login.css';
 
 export default class Login extends C {
@@ -28,14 +29,14 @@ export default class Login extends C {
 
   componentWillMount(){
     if(this.Auth.loggedIn())
-        browserHistory.push('/list');
+      browserHistory.push('/list');
   }
 
   render() {
     return (
       <div>
         <Alert variant="success" className="div-center">
-          <Alert.Heading>System Authorization</Alert.Heading>
+          <Alert.Heading>{ <FaUnlockAlt /> }System Authorization{ <FaUnlockAlt /> }</Alert.Heading>
           <hr />
           <Form noValidate validated="true" onSubmit={ this._onLogin.bind(this) }>
             <Form.Row>
@@ -45,7 +46,7 @@ export default class Login extends C {
               <Form.Control required type="password" name="password" placeholder="Password"/>
             </Form.Row>
             <Form.Row>
-              <Button type="submit">Submit form</Button>              
+              <Button type="submit">ログイン{ <FaSignInAlt /> }</Button>              
             </Form.Row>
           </Form>
         </Alert>

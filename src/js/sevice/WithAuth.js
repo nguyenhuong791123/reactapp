@@ -9,22 +9,19 @@ export default function WithAuth(AuthComponent) {
     return class AuthWrapped extends Component {
         constructor() {
             super();
-            this.state = {
-                user: null
-            }
+            this.state = { auth: null }
         }
 
         componentWillMount() {
             if (!Auth.loggedIn()) {
                 //this.props.history.replace('/login')
                 browserHistory.push('/');
-            }
-            else {
+            } else {
                 try {
-                    const profile = Auth.getProfile()
-                    this.setState({ user: profile })
-                }
-                catch(err){
+                    // const profile = Auth.getProfile()
+                    //this.setState({ auth: Auth.getUserInfo() })
+                    this.setState({ user: Auth.getProfile(), auth: Auth.getUserInfo() })
+                } catch(err){
                     Auth.logout();
                     browserHistory.push('/');
                 }
@@ -34,10 +31,10 @@ export default function WithAuth(AuthComponent) {
         render() {
             if (this.state.user) {
                 return (
-                    <AuthComponent ua={UA()} user={this.state.user} />
+                    <AuthComponent ua={UA()} auth={ this.state.auth } />
                 )
             } else {
-                return (<AuthComponent ua={UA()} />)
+                return (<AuthComponent ua={UA()} auth={ null } />)
             }
         }
     }

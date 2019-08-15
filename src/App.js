@@ -29,8 +29,9 @@ class App extends C {
         this._onLogin = this._onLogin.bind(this);
         this._onLogout = this._onLogout.bind(this);
         this._setViewHeader = this._setViewHeader.bind(this);
+        this._onUpdateList = this._onUpdateList.bind(this)
 
-        this.state = { ua: props.ua, isViewHeader: (props.auth!=null), isuser: props.auth }
+        this.state = { ua: props.ua, isViewHeader: (props.auth!=null), isViewFooter: (props.auth===null), isuser: props.auth }
     }
 
     _onLogin(username, password){
@@ -55,7 +56,12 @@ class App extends C {
 
     _setViewHeader(isView) {
         this.state.isViewHeader = isView;
+        this.state.isViewFooter = !isView;
         this.forceUpdate();
+    }
+
+    _onUpdateList(obj) {
+        console.log(obj);
     }
 
     render() {
@@ -68,7 +74,7 @@ class App extends C {
                 <div id="div_doby">
                     <Router history={ browserHistory }>
                         <Route path="/" component={ Login } onLogin={ this._onLogin.bind(this) } />
-                        <Route path="/list" component={ List } ua={ this.state.ua } isUser={ this.state.isUser }/>
+                        <Route path="/list" component={ List } ua={ this.state.ua } isUser={ this.state.isUser } onUpdateList={ this._onUpdateList.bind(this) }/>
                         <Route path="/new" component={ New } ua={ this.state.ua } isUser={ this.state.isUser }/>
                         <Route path="/edit" component={ Edit } ua={ this.state.ua } isUser={ this.state.isUser }/>
                         <Route path="/view" component={ View } ua={ this.state.ua } isUser={ this.state.isUser }/>
@@ -78,7 +84,7 @@ class App extends C {
                 </div>
                 {/* </Provider> */}
                 <div id="div_footer" className="bg-light div-footer">
-                    <Footer ua={ this.state.ua } auth={ Auth.loggedIn() } />
+                    <Footer ua={ this.state.ua } viewFooter={ this.state.isViewFooter } />
                 </div>
             </div>
         );

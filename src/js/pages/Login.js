@@ -36,7 +36,8 @@ export default class Login extends C {
     return (
       <div>
         <Alert variant="success" className="div-center">
-          <Alert.Heading>{ <FaUnlockAlt /> }System Authorization{ <FaUnlockAlt /> }</Alert.Heading>
+          {/* <Alert.Heading>{ <FaUnlockAlt /> }System Authorization{ <FaUnlockAlt /> }</Alert.Heading> */}
+          <Alert.Heading>System Authorization</Alert.Heading>
           <hr />
           <Form noValidate validated="true" onSubmit={ this._onLogin.bind(this) }>
             <Form.Row>

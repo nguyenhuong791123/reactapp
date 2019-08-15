@@ -11,7 +11,7 @@ class Footer extends C {
   }
 
   render() {
-    if(this.props.auth) return "";
+    if(!this.props.viewFooter) return "";
     return (
       <div>
         <span>

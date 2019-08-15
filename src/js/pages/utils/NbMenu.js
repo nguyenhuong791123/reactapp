@@ -6,7 +6,16 @@ class NbMenu extends C {
   constructor(props) {
     super(props);
 
+    this._onClick = this._onClick.bind(this);
     this._onLogout = this._onLogout.bind(this);
+  }
+
+  _onClick(e) {
+    // e.preventDefault();
+    // e.stopPropagation();
+    // e.nativeEvent.stopPropagation();
+    // e.nativeEvent.stopImmediatePropagation();
+    this.props.onClick(e);
   }
 
   _onLogout(){
@@ -21,14 +30,14 @@ class NbMenu extends C {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link href="#home">Home</Nav.Link>
-              <Nav.Link href="#link">Link</Nav.Link>
+              <Nav.Link onClick={ this._onClick.bind(this) }>Home</Nav.Link>
+              <Nav.Link onClick={ this._onClick.bind(this) }>Link</Nav.Link>
               <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+                <NavDropdown.Item onClick={ this._onClick.bind(this) }>Action</NavDropdown.Item>
+                <NavDropdown.Item onClick={ this._onClick.bind(this) }>Another action</NavDropdown.Item>
+                <NavDropdown.Item onClick={ this._onClick.bind(this) }>Something</NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+                <NavDropdown.Item onClick={ this._onClick.bind(this) }>Separated link</NavDropdown.Item>
               </NavDropdown>
             </Nav>
             <Form inline>
@@ -36,15 +45,15 @@ class NbMenu extends C {
               <Nav.Link href="#search" className="global-search"><FaSearch /></Nav.Link>
             </Form>
     
-            <Nav.Link href="#link">{ <FaPhone /> }</Nav.Link>
-            <Nav.Link href="#link">{ <FaMailBulk /> }</Nav.Link>
-            <Nav.Link href="#link">{ <FaRocketchat /> }</Nav.Link>
+            <Nav.Link onClick={ this._onClick.bind(this) }>{ <FaPhone /> }</Nav.Link>
+            <Nav.Link onClick={ this._onClick.bind(this) }>{ <FaMailBulk /> }</Nav.Link>
+            <Nav.Link onClick={ this._onClick.bind(this) }></Nav.Link>
             <NavDropdown title={<FaUser />} id="basic-nav-dropdown-right" alignRight>
-                <NavDropdown.Item href="#action/3.1">{ <FaUserCog /> }<span>プロフィール</span></NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">{ <FaSitemap /> }<span>ページ設定</span></NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">{ <FaLink /> }<span>システム設定</span></NavDropdown.Item>
+                <NavDropdown.Item onClick={ this._onClick.bind(this) } para="user">{ <FaUserCog /> }<span>プロフィール</span></NavDropdown.Item>
+                <NavDropdown.Item onClick={ this._onClick.bind(this) } para="pagesetting">{ <FaSitemap /> }<span>ページ設定</span></NavDropdown.Item>
+                <NavDropdown.Item onClick={ this._onClick.bind(this) } para="system">{ <FaLink /> }<span>システム設定</span></NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="#logout" onClick={ this._onLogout.bind(this) }>{ <FaKey /> }<span>ログアウト</span></NavDropdown.Item>
+                <NavDropdown.Item onClick={ this._onLogout.bind(this) }>{ <FaKey /> }<span>ログアウト</span></NavDropdown.Item>
               </NavDropdown>
             </Navbar.Collapse>
           </Navbar>

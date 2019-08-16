@@ -33,7 +33,7 @@ class Header extends C {
   }
 
   _onClick(e) {
-    e.preventDefault();
+    // e.preventDefault();
     // e.stopPropagation();
     // e.nativeEvent.stopImmediatePropagation();
     // e.nativeEvent.composedPath();

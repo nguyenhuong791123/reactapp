@@ -4,7 +4,7 @@ div.div-center {
     margin-left: 35%;
 }
 
-div.div-center div.form-row {
+div.div-center div.form-group {
     margin: 0.5em;
 }
 
@@ -13,7 +13,7 @@ div.div-center div:first-child {
     font-weight: bold;
 }
 
-div.div-center div.form-row:last-child {
+div.div-center div.form-group:last-child {
     display: grid;
     padding-top: 0.5em;
 }

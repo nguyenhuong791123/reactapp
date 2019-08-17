@@ -64,6 +64,11 @@ class App extends C {
         console.log(obj);
     }
 
+    // _onUpdateUA(loc) {
+    //     const ua = { local: this.state.ua.lange };
+    //     this.setState({ ua: ua });
+    // }
+
     render() {
         return (
             <div>
@@ -73,13 +78,39 @@ class App extends C {
                 {/* <Provider store={store}> */}
                 <div id="div_doby">
                     <Router history={ browserHistory }>
-                        <Route path="/" component={ Login } onLogin={ this._onLogin.bind(this) } />
-                        <Route path="/list" component={ List } ua={ this.state.ua } isUser={ this.state.isUser } onUpdateList={ this._onUpdateList.bind(this) }/>
-                        <Route path="/new" component={ New } ua={ this.state.ua } isUser={ this.state.isUser }/>
-                        <Route path="/edit" component={ Edit } ua={ this.state.ua } isUser={ this.state.isUser }/>
-                        <Route path="/view" component={ View } ua={ this.state.ua } isUser={ this.state.isUser }/>
+                        <Route
+                            path="/"
+                            component={ Login }
+                            ua={ this.state.ua }
+                            onLogin={ this._onLogin.bind(this) } />
+                        <Route
+                            path="/list"
+                            component={ List }
+                            ua={ this.state.ua }
+                            isUser={ this.state.isUser }
+                            onUpdateList={ this._onUpdateList.bind(this) }/>
+                        <Route
+                            path="/new"
+                            component={ New }
+                            ua={ this.state.ua }
+                            isUser={ this.state.isUser }/>
+                        <Route
+                            path="/edit"
+                            component={ Edit }
+                            ua={ this.state.ua }
+                            isUser={ this.state.isUser }/>
+                        <Route
+                            path="/view"
+                            component={ View }
+                            ua={ this.state.ua }
+                            isUser={ this.state.isUser }/>
 
-                        <Route path='*' component={ P404 } ua={ this.state.ua } auth={ Auth } viewHeader={ this._setViewHeader.bind(this) } />
+                        <Route
+                            path='*'
+                            component={ P404 }
+                            ua={ this.state.ua }
+                            auth={ Auth }
+                            viewHeader={ this._setViewHeader.bind(this) } />
                     </Router>
                 </div>
                 {/* </Provider> */}

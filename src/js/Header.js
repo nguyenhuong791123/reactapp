@@ -7,6 +7,7 @@ import LMenu from "./pages/utils/LMenu";
 import RMenu from "./pages/utils/RMenu";
 import NbMenu from "./pages/utils/NbMenu";
 
+import { LINK, NOT_LINK } from './pages/utils/Types';
 import "../css/Index.css";
 import "../css/SMenu.css";
 import '../css/Header.css';
@@ -28,7 +29,35 @@ class Header extends C {
     // });
 
     this.state = {
-      chats: { room: {}, data: [] }
+      menus: {
+        menu1: [
+          { view: LINK, target: 'target_00', label: 'label_00', level: 0, items: [] }
+          ,{ view: NOT_LINK, target: 'target_01', label: 'label_01', level: 0, items: [
+            { view: 0, target: 'target_001', level: 1, label: 'label_001' }
+            ,{ view: 1, target: 'target_000', level: 1, label: 'label_000', items: [
+              { view: 0, target: 'target_0000', level: 2, label: 'label_0000' }
+            ] }
+          ] }
+          ,{ view: NOT_LINK, target: 'target_03', label: 'label_03', level: 0, items: [
+            { view: 0, target: 'target_003', level: 1, label: 'label_003' }
+            ,{ view: 1, target: 'target_0003', level: 1, label: 'label_0003', items: [
+              { view: 0, target: 'target_00003', level: 2, label: 'label_00003' }
+            ] }
+          ] }
+        ]
+        ,menu2: [
+          { view: LINK, target: 'target_01_00', label: 'label_01_00', level: 0, items: [] }
+          ,{ view: NOT_LINK, target: 'target_01_01', label: 'label_01_01', level: 0, items: [
+            { view: 0, target: 'target_01_001', level: 1, label: 'label_01_001' }
+            ,{ view: 1, target: 'target_01_000', level: 1, label: 'label_01_000', items: [
+              { view: 0, target: 'target_01_0000', level: 2, label: 'label_01_0000' }
+            ] }
+          ] }
+          ,{ view: NOT_LINK, target: 'target_01_03', label: 'label_01_03', level: 0, items: [] }
+        ]
+
+      }
+      ,chats: { room: {}, data: [] }
     };
   }
 
@@ -65,7 +94,7 @@ class Header extends C {
     if(this.props.isUser != null && this.props.isUser.menu===1) {
       return ( 
         <div className="Headder">
-          <LMenu isUser={ this.props.isUser }/>
+          <LMenu isUser={ this.props.isUser } menus={ this.state.menus }/>
           <RMenu isUser={ this.props.isUser }/>
           <Navbar bg="dark" expand="lg" variant="dark">
             {/* <Navbar.Brand href="#home" className="a-homepage"><img src="favicon.ico" /></Navbar.Brand> */}
@@ -96,7 +125,7 @@ class Header extends C {
       return (
         <div>
           <RMenu isUser={ this.props.isUser } />
-          <NbMenu isUser={ this.props.isUser } onLogout={ this.props.onLogout } onClick={ this._onClick.bind(this) }/>
+          <NbMenu isUser={ this.props.isUser } onLogout={ this.props.onLogout } onClick={ this._onClick.bind(this) } menus={ this.state.menus } />
         </div>
       );
     }

@@ -7,6 +7,7 @@ import paginationFactory, { PaginationProvider, SizePerPageDropdownStandalone, P
 // import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
 
+import * as Types from './utils/Types';
 import View from './View';
 import ContextMenu from './utils/ContextMenu';
 
@@ -22,7 +23,14 @@ export default class List extends C {
     // console.log(this.Auth.getProfile());
 
     this.state = {
-      objs: { show: false, top: 100, left: 100, types: ['edit', 'delete', 'download'], value: 1 }
+      objs: {
+        show: false
+        ,items: [
+          { type: Types.EDIT, label: '編集'}
+          ,{ type: Types.DELETE, label: '削除'}
+          ,{ type: Types.DOWNLOAD, label: 'ダウロード'}
+        ]
+      }
       ,columns: this.getDatas().columns
       ,datas: this.getDatas().datas
       ,options: this.getOptions()
@@ -56,6 +64,7 @@ export default class List extends C {
           e.preventDefault();
           e.stopPropagation();
           this.state.objs.show = true;
+          this.state.objs.id = row.id;
           this.state.objs.top = e.pageY;
           this.state.objs.left = e.pageX;
           console.log(e.pageX);

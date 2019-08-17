@@ -2,12 +2,18 @@ import React, { Component as C } from 'react';
 import { Navbar, Nav, NavDropdown, Form, FormControl } from 'react-bootstrap';
 import { FaUser, FaSearch, FaPhone, FaMailBulk, FaRocketchat, FaUserCog, FaSitemap, FaLink, FaKey } from 'react-icons/fa';
 
+import NavDropdownMenu from './NavDropdownMenu';
+
 class NbMenu extends C {
   constructor(props) {
     super(props);
 
     this._onClick = this._onClick.bind(this);
     this._onLogout = this._onLogout.bind(this);
+
+    this.state = {
+      menus: this.props.menus
+    }
   }
 
   _onClick(e) {
@@ -32,13 +38,8 @@ class NbMenu extends C {
             <Nav className="mr-auto">
               <Nav.Link onClick={ this._onClick.bind(this) }>Home</Nav.Link>
               <Nav.Link onClick={ this._onClick.bind(this) }>Link</Nav.Link>
-              <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                <NavDropdown.Item onClick={ this._onClick.bind(this) }>Action</NavDropdown.Item>
-                <NavDropdown.Item onClick={ this._onClick.bind(this) }>Another action</NavDropdown.Item>
-                <NavDropdown.Item onClick={ this._onClick.bind(this) }>Something</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item onClick={ this._onClick.bind(this) }>Separated link</NavDropdown.Item>
-              </NavDropdown>
+              { <NavDropdownMenu id="menu_01" title="Dropdown_01" objs={ this.state.menus.menu1 }/> }
+              { <NavDropdownMenu id="menu_02" title="Dropdown_02" objs={ this.state.menus.menu2 }/> }
             </Nav>
             <Form inline>
               <FormControl type="text" placeholder="Search" className="mr-sm-2" />

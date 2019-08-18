@@ -31,7 +31,6 @@ class NavDropdownMenu extends C {
       e.preventDefault();
       e.stopPropagation();
       // console.log(e);
-      var add = false;
       var isExistObj = document.getElementById(divId);
       if(!Utils.isEmpty(isExistObj)) isExistObj.remove();
       const pObj = obj.parentElement.parentElement;
@@ -40,20 +39,19 @@ class NavDropdownMenu extends C {
       isExistObj.innerHTML = "";
       const idx = obj.getAttribute("idx");
       var items = [];
-      if(level == 0) {
-        items = this.state.objs[idx].items;
-      } else {
-        var idxs = idx.split('-');
-        console.log(idxs);
-        if(!Utils.isEmpty(idxs) && idxs.length == 2) {
-          items = this.state.objs[idxs[0]].items[idxs[1]].items;
-        }
-        if(!Utils.isEmpty(idxs) && idxs.length == 3) {
-          items = this.state.objs[idxs[0]].items[idxs[1]].items[idxs[2]].items;
-        }
-        if(!Utils.isEmpty(idxs) && idxs.length == 4) {
-          items = this.state.objs[idxs[0]].items[idxs[1]].items[idxs[2]].items[idxs[3]].items;
-        }
+      var idxs = idx.split('-');
+      console.log(idxs);
+      if(!Utils.isEmpty(idxs) && idxs.length == 1) {
+        items = this.state.objs[idxs[0]].items;
+      }
+      if(!Utils.isEmpty(idxs) && idxs.length == 2) {
+        items = this.state.objs[idxs[0]].items[idxs[1]].items;
+      }
+      if(!Utils.isEmpty(idxs) && idxs.length == 3) {
+        items = this.state.objs[idxs[0]].items[idxs[1]].items[idxs[2]].items;
+      }
+      if(!Utils.isEmpty(idxs) && idxs.length == 4) {
+        items = this.state.objs[idxs[0]].items[idxs[1]].items[idxs[2]].items[idxs[3]].items;
       }
 
       if(!Utils.isEmpty(items) && items.length > 0) {
@@ -86,6 +84,19 @@ class NavDropdownMenu extends C {
 
   _onShow(e) {
     this.setState({ show: !this.state.show });
+    // const leftMenu = document.getElementById('div-menu-left');
+    // const divLeftMenu = ReactDOM.findDOMNode(leftMenu).getBoundingClientRect();
+    // const obj = ReactDOM.findDOMNode(e.target).getBoundingClientRect();
+    // var objParents = e.target.parentElement.childNodes;
+    // e.target.parentElement.childNodes[1].style.position = 'fixed !important';
+    // console.log(e.target);
+    // console.log(objParents);
+    // console.log(objParents[1]);
+    // console.log(obj);
+    // console.log(divLeftMenu);
+    // objParent.style.position = "fixed !important";
+    // objParent.style = "position: fixed !important;top: " + (obj.y - obj.height) + "px;left:" + divLeftMenu.width + "px;";
+    // objParent.style = "position: fixed !important;top: " + (obj.y - obj.height) + "px;left:" + divLeftMenu.width + "px;";
   }
 
   _getMenuLinkBoxHTML(pDiv, idx, items) {
@@ -183,6 +194,44 @@ class NavDropdownMenu extends C {
       }
     });
   }
+
+  // _getMenu(menus) {
+  //   if(Utils.isEmpty(menus) || menus.length === 0) return "";
+  //   return menus.map((o, index) => {
+  //     if(o.view === LINK) {
+  //       return (
+  //         <Nav.Link
+  //           key={ o.target }
+  //           idx={ index }
+  //           onClick={ this._onClick.bind(this) }
+  //           level={ o.level }
+  //           view={ o.view }>{ o.label }</Nav.Link>);
+  //     } else {
+  //       if(!Utils.isEmpty(o.items) && o.items.length > 0) {
+  //         this._getMenu(o.items);
+  //         var dIdx = "dm_" + index;
+  //         return (
+  //           <NavDropdown title={ this.state.title } show={ this.state.show } onClick={ this._onShow.bind(this) }>
+  //             { this._getMenuLinkBox(this.state.objs) }
+  //           </NavDropdown>
+  
+  //           <NavDropdownMenu id={ dIdx } title={ o.label } objs={ o.items }/>
+  //         );
+  //       } else {
+  //         return (
+  //           <div className="dropright" key={ o.target }>
+  //             <Nav.Link
+  //               idx={ index }
+  //               onClick={ this._onClick.bind(this) }
+  //               className="dropdown-toggle"
+  //               level={ o.level }
+  //               view={ o.view }>{ o.label }</Nav.Link>
+  //           </div>
+  //         );  
+  //       }
+  //     }
+  //   });
+  // }
 
   render() {
     return (

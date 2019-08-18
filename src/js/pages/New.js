@@ -2,8 +2,10 @@
 import React, { Component as C } from 'react';
 import { browserHistory } from '@version/react-router-v3';
 import Form from "react-jsonschema-form-bs4";
-import { Button } from 'react-bootstrap';
-import { FaReply, FaCheck } from 'react-icons/fa';
+// import { Button } from 'react-bootstrap';
+// import { FaReply, FaCheck } from 'react-icons/fa';
+
+import Actions from './utils/Actions';
 
 export default class New extends C {
   constructor(props) {
@@ -252,11 +254,12 @@ export default class New extends C {
         onSubmit={ this._onClickSubmit.bind(this) }
         validate={ this._onValidate.bind(this) }
         onError={ this._onError.bind(this) }>
-        <div className="div-actions-box">
+        { <Actions onClickReturn={ this._onClickReturn.bind(this) } onClickSubmit={ this._onClickSubmit.bind(this) } /> }
+        {/* <div id="div-button-action" className="div-actions-box">
           <Button onClick={ this._onClickReturn.bind(this) } variant="info"><FaReply />戻る</Button>
           <br />
           <Button type="submit" variant="warning"><FaCheck />保存</Button>
-        </div>
+        </div> */}
       </Form>
     )
   };

@@ -76,7 +76,7 @@ class App extends C {
                     <Header ua={ this.state.ua } viewHeader={ this.state.isViewHeader } isUser={ this.state.isuser } onLogout={ this._onLogout.bind(this) } />
                 </div>
                 {/* <Provider store={store}> */}
-                <div id="div_doby">
+                <div id="div_body">
                     <Router history={ browserHistory }>
                         <Route
                             path="/"

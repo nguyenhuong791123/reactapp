@@ -3,8 +3,8 @@ import onClickOutside from 'react-onclickoutside'
 import { Navbar, Nav, NavDropdown, Form, FormControl } from 'react-bootstrap';
 import { FaUser, FaSearch, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaLink, FaKey } from 'react-icons/fa';
 
-import NavDropdownMenu from './NavDropdownMenu';
-
+import { LINK } from './Types';
+import Utils from './Utils';
 import NavDropdownMenu from './NavDropdownMenu';
 
 class NbMenu extends C {
@@ -39,6 +39,39 @@ class NbMenu extends C {
     this.props.onLogout();
   }
 
+  _getMenu(menus) {
+    if(Utils.isEmpty(menus) || menus.length === 0) return "";
+    return menus.map((o, index) => {
+      if(o.view === LINK) {
+        return (
+          <Nav.Link
+            key={ o.target }
+            idx={ index }
+            onClick={ this._onClick.bind(this) }
+            level={ o.level }
+            view={ o.view }>{ o.label }</Nav.Link>);
+      } else {
+        if(!Utils.isEmpty(o.items) && o.items.length > 0) {
+          var dIdx = "dm_" + index;
+          return (
+            <NavDropdownMenu key={ o.target } id={ dIdx } title={ o.label } objs={ o.items }/>
+          );
+        } else {
+          return (
+            <div className="dropright" key={ o.target }>
+              <Nav.Link
+                idx={ index }
+                onClick={ this._onClick.bind(this) }
+                className="dropdown-toggle"
+                level={ o.level }
+                view={ o.view }>{ o.label }</Nav.Link>
+            </div>
+          );  
+        }
+      }
+    });
+  }
+
   render() {
       return ( 
         <div className="Headder">
@@ -47,10 +80,11 @@ class NbMenu extends C {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link onClick={ this._onClick.bind(this) }>Home</Nav.Link>
+              { this._getMenu(this.state.menus) }
+              {/* <Nav.Link onClick={ this._onClick.bind(this) }>Home</Nav.Link>
               <Nav.Link onClick={ this._onClick.bind(this) }>Link</Nav.Link>
               { <NavDropdownMenu id="menu_01" title="Dropdown_01" objs={ this.state.menus.menu1 }/> }
-              { <NavDropdownMenu id="menu_02" title="Dropdown_02" objs={ this.state.menus.menu2 }/> }
+              { <NavDropdownMenu id="menu_02" title="Dropdown_02" objs={ this.state.menus.menu2 }/> } */}
             </Nav>
             <Form inline>
               <FormControl type="text" placeholder="Search" className="mr-sm-2" />

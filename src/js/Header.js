@@ -29,34 +29,29 @@ class Header extends C {
     // });
 
     this.state = {
-      menus: {
-        menu1: [
-          { view: LINK, target: 'target_00', label: 'label_00', level: 0, items: [] }
-          ,{ view: NOT_LINK, target: 'target_01', label: 'label_01', level: 0, items: [
-            { view: 0, target: 'target_001', level: 1, label: 'label_001' }
-            ,{ view: 1, target: 'target_000', level: 1, label: 'label_000', items: [
-              { view: 0, target: 'target_0000', level: 2, label: 'label_0000' }
-            ] }
-          ] }
-          ,{ view: NOT_LINK, target: 'target_03', label: 'label_03', level: 0, items: [
-            { view: 0, target: 'target_003', level: 1, label: 'label_003' }
-            ,{ view: 1, target: 'target_0003', level: 1, label: 'label_0003', items: [
-              { view: 0, target: 'target_00003', level: 2, label: 'label_00003' }
-            ] }
-          ] }
-        ]
-        ,menu2: [
-          { view: LINK, target: 'target_01_00', label: 'label_01_00', level: 0, items: [] }
-          ,{ view: NOT_LINK, target: 'target_01_01', label: 'label_01_01', level: 0, items: [
-            { view: 0, target: 'target_01_001', level: 1, label: 'label_01_001' }
-            ,{ view: 1, target: 'target_01_000', level: 1, label: 'label_01_000', items: [
-              { view: 0, target: 'target_01_0000', level: 2, label: 'label_01_0000' }
-            ] }
-          ] }
-          ,{ view: NOT_LINK, target: 'target_01_03', label: 'label_01_03', level: 0, items: [] }
-        ]
-
-      }
+      menus: [
+        { view: LINK, target: 'target_00', label: 'label_00', level: 0, items: [] }
+        ,{ view: NOT_LINK, target: 'target_01', label: 'label_01', level: 0, items: 
+          [
+            { view: LINK, target: 'target_001', level: 1, label: 'label_001' }
+            ,{ view: NOT_LINK, target: 'target_000', level: 1, label: 'label_000', items: 
+              [
+                { view: 0, target: 'target_0000', level: 2, label: 'label_0000' }
+              ]
+            }
+          ]
+        }
+        ,{ view: NOT_LINK, target: 'target_03', label: 'label_03', level: 0, items: 
+          [
+            { view: LINK, target: 'target_003', level: 1, label: 'label_003' }
+            ,{ view: NOT_LINK, target: 'target_0003', level: 1, label: 'label_0003', items: 
+              [
+                { view: LINK, target: 'target_00003', level: 2, label: 'label_00003' }
+              ]
+            }
+          ]
+        }
+      ]
       ,chats: { room: {}, data: [] }
     };
   }

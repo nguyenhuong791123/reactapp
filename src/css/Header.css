@@ -5,3 +5,30 @@ a.global-search {
 .a-homepage {
     margin-left: 1.5em;
 }
+
+div.div-left-menu a {
+    width: 100%;
+}
+
+div.div-left-menu a:hover {
+    background-color: #cce5ff;
+}
+
+div.div-left-menu div.bm-item {
+    display: block !important;
+}
+
+div.div-left-menu-child {
+    padding-left: 0.5em;
+}
+
+div.div-left-menu-child-hide {
+    display: none;
+    opacity: 0;
+    transition: opacity 1s linear 0s;
+}
+
+div.div-left-menu-child-show {
+    display: block;
+    opacity: 1;
+}

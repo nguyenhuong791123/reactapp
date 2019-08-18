@@ -143,7 +143,7 @@ button svg:last-child {
 
 div.div-actions-box {
     padding: 0.2em;
-    top: 15%;
+    bottom: 20%;
     float: right;
     right: -5em;
     position: absolute;

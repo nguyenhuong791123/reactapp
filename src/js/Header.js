@@ -8,6 +8,7 @@ import RMenu from "./pages/utils/RMenu";
 import NbMenu from "./pages/utils/NbMenu";
 
 import { LINK, NOT_LINK } from './pages/utils/Types';
+import Utils from './pages/utils/Utils';
 import "../css/Index.css";
 import "../css/SMenu.css";
 import '../css/Header.css';
@@ -61,6 +62,7 @@ class Header extends C {
     // e.stopPropagation();
     // e.nativeEvent.stopImmediatePropagation();
     // e.nativeEvent.composedPath();
+
     var obj = e.target;
     if(obj.tagName != 'A') {
       if(obj.tagName === 'path') {
@@ -70,9 +72,16 @@ class Header extends C {
       }
       if(obj.tagName != 'A') return;
     }
-    const className = e.target.parentElement.parentElement.className;
-    console.log(className);
-    console.log(e.target.parentElement.parentElement);
+
+    if(!Utils.isEmpty(obj.id) && obj.id == "a-chat-icon") {
+      var svg = document.getElementById('div-right-chat-icon');
+      if(!Utils.isEmpty(svg.parentElement.childNodes) && svg.parentElement.childNodes.length > 1) {
+        svg.parentElement.childNodes[1].click();
+      }
+      return;  
+    }
+
+    console.log(obj);
     browserHistory.push({ pathname: '/list', params: { "para": obj.para } });
   }
 
@@ -104,7 +113,7 @@ class Header extends C {
     
             <Nav.Link onClick={ this._onClick.bind(this) }>{ <FaPhone /> }</Nav.Link>
             <Nav.Link onClick={ this._onClick.bind(this) }>{ <FaMailBulk /> }</Nav.Link>
-            <Nav.Link onClick={ this._onClick.bind(this) }></Nav.Link>
+            <Nav.Link onClick={ this._onClick.bind(this) } id="a-chat-icon">{ <FaRocketchat /> }</Nav.Link>
             <NavDropdown title={<FaUser />} id="basic-nav-dropdown-right" alignRight>
                 <NavDropdown.Item onClick={ this._onClick.bind(this) } para="user">{ <FaUserCog /> }<span>プロフィール</span></NavDropdown.Item>
                 <NavDropdown.Item onClick={ this._onClick.bind(this) } para="pagesetting">{ <FaSitemap /> }<span>ページ設定</span></NavDropdown.Item>

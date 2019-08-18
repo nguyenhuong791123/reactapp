@@ -1,7 +1,7 @@
 import React, { Component as C } from 'react';
 import onClickOutside from 'react-onclickoutside'
 import { Navbar, Nav, NavDropdown, Form, FormControl } from 'react-bootstrap';
-import { FaUser, FaSearch, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaLink, FaKey } from 'react-icons/fa';
+import { FaUser, FaSearch, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaLink, FaKey, FaRocketchat } from 'react-icons/fa';
 
 import { LINK } from './Types';
 import Utils from './Utils';
@@ -81,10 +81,6 @@ class NbMenu extends C {
             <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
               { this._getMenu(this.state.menus) }
-              {/* <Nav.Link onClick={ this._onClick.bind(this) }>Home</Nav.Link>
-              <Nav.Link onClick={ this._onClick.bind(this) }>Link</Nav.Link>
-              { <NavDropdownMenu id="menu_01" title="Dropdown_01" objs={ this.state.menus.menu1 }/> }
-              { <NavDropdownMenu id="menu_02" title="Dropdown_02" objs={ this.state.menus.menu2 }/> } */}
             </Nav>
             <Form inline>
               <FormControl type="text" placeholder="Search" className="mr-sm-2" />
@@ -93,7 +89,7 @@ class NbMenu extends C {
     
             <Nav.Link onClick={ this._onClick.bind(this) }>{ <FaPhone /> }</Nav.Link>
             <Nav.Link onClick={ this._onClick.bind(this) }>{ <FaMailBulk /> }</Nav.Link>
-            <Nav.Link onClick={ this._onClick.bind(this) }></Nav.Link>
+            <Nav.Link onClick={ this._onClick.bind(this) }>{ <FaRocketchat /> }</Nav.Link>
             <NavDropdown title={<FaUser />} id="basic-nav-dropdown-right" alignRight>
                 <NavDropdown.Item onClick={ this._onClick.bind(this) } para="user">{ <FaUserCog /> }<span>プロフィール</span></NavDropdown.Item>
                 <NavDropdown.Item onClick={ this._onClick.bind(this) } para="pagesetting">{ <FaSitemap /> }<span>ページ設定</span></NavDropdown.Item>

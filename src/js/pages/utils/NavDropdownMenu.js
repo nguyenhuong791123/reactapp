@@ -84,19 +84,6 @@ class NavDropdownMenu extends C {
 
   _onShow(e) {
     this.setState({ show: !this.state.show });
-    // const leftMenu = document.getElementById('div-menu-left');
-    // const divLeftMenu = ReactDOM.findDOMNode(leftMenu).getBoundingClientRect();
-    // const obj = ReactDOM.findDOMNode(e.target).getBoundingClientRect();
-    // var objParents = e.target.parentElement.childNodes;
-    // e.target.parentElement.childNodes[1].style.position = 'fixed !important';
-    // console.log(e.target);
-    // console.log(objParents);
-    // console.log(objParents[1]);
-    // console.log(obj);
-    // console.log(divLeftMenu);
-    // objParent.style.position = "fixed !important";
-    // objParent.style = "position: fixed !important;top: " + (obj.y - obj.height) + "px;left:" + divLeftMenu.width + "px;";
-    // objParent.style = "position: fixed !important;top: " + (obj.y - obj.height) + "px;left:" + divLeftMenu.width + "px;";
   }
 
   _getMenuLinkBoxHTML(pDiv, idx, items) {
@@ -194,44 +181,6 @@ class NavDropdownMenu extends C {
       }
     });
   }
-
-  // _getMenu(menus) {
-  //   if(Utils.isEmpty(menus) || menus.length === 0) return "";
-  //   return menus.map((o, index) => {
-  //     if(o.view === LINK) {
-  //       return (
-  //         <Nav.Link
-  //           key={ o.target }
-  //           idx={ index }
-  //           onClick={ this._onClick.bind(this) }
-  //           level={ o.level }
-  //           view={ o.view }>{ o.label }</Nav.Link>);
-  //     } else {
-  //       if(!Utils.isEmpty(o.items) && o.items.length > 0) {
-  //         this._getMenu(o.items);
-  //         var dIdx = "dm_" + index;
-  //         return (
-  //           <NavDropdown title={ this.state.title } show={ this.state.show } onClick={ this._onShow.bind(this) }>
-  //             { this._getMenuLinkBox(this.state.objs) }
-  //           </NavDropdown>
-  
-  //           <NavDropdownMenu id={ dIdx } title={ o.label } objs={ o.items }/>
-  //         );
-  //       } else {
-  //         return (
-  //           <div className="dropright" key={ o.target }>
-  //             <Nav.Link
-  //               idx={ index }
-  //               onClick={ this._onClick.bind(this) }
-  //               className="dropdown-toggle"
-  //               level={ o.level }
-  //               view={ o.view }>{ o.label }</Nav.Link>
-  //           </div>
-  //         );  
-  //       }
-  //     }
-  //   });
-  // }
 
   render() {
     return (

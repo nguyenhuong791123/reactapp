@@ -49,7 +49,7 @@ class ContextMenu extends C {
     render() {
         var styles = { top: this.state.objs.top, left: this.state.objs.left };
         return (
-            <div className="div-conenxt-menu" style={ styles }>
+            <div className="div-context-menu" style={ styles }>
                 <Alert show={this.state.objs.show}>
                     { this.getLinkByType() }
                 </Alert>

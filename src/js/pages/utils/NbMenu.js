@@ -1,6 +1,9 @@
 import React, { Component as C } from 'react';
+import onClickOutside from 'react-onclickoutside'
 import { Navbar, Nav, NavDropdown, Form, FormControl } from 'react-bootstrap';
-import { FaUser, FaSearch, FaPhone, FaMailBulk, FaRocketchat, FaUserCog, FaSitemap, FaLink, FaKey } from 'react-icons/fa';
+import { FaUser, FaSearch, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaLink, FaKey } from 'react-icons/fa';
+
+import NavDropdownMenu from './NavDropdownMenu';
 
 import NavDropdownMenu from './NavDropdownMenu';
 
@@ -8,20 +11,28 @@ class NbMenu extends C {
   constructor(props) {
     super(props);
 
+    this._onNavDropdown = this._onNavDropdown.bind(this);
     this._onClick = this._onClick.bind(this);
     this._onLogout = this._onLogout.bind(this);
 
     this.state = {
       menus: this.props.menus
+      ,isShow: false
     }
   }
 
   _onClick(e) {
-    // e.preventDefault();
-    // e.stopPropagation();
-    // e.nativeEvent.stopPropagation();
-    // e.nativeEvent.stopImmediatePropagation();
-    this.props.onClick(e);
+    const a = e.target;
+    // console.log(a);
+    // this.props.onClick(e);
+  }
+
+  _onNavDropdown(e) {
+    this.setState({ isShow: !this.state.isShow });
+  }
+
+  handleClickOutside = () => {
+    this.setState({ isShow: false });
   }
 
   _onLogout(){
@@ -63,4 +74,4 @@ class NbMenu extends C {
   };
 }
 
-export default NbMenu;
+export default onClickOutside(NbMenu);

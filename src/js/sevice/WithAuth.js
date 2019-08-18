@@ -5,7 +5,7 @@ import UA from '..//Device';
 import AuthService from './AuthService';
 
 export default function WithAuth(AuthComponent) {
-    const Auth = new AuthService('http://192.168.56.63:8085');
+    const Auth = new AuthService('http://192.168.10.6:8085');
     return class AuthWrapped extends Component {
         constructor() {
             super();

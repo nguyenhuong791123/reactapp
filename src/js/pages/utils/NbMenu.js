@@ -22,9 +22,9 @@ class NbMenu extends C {
   }
 
   _onClick(e) {
-    const a = e.target;
+    // const a = e.target;
     // console.log(a);
-    // this.props.onClick(e);
+    this.props.onClick(e);
   }
 
   _onNavDropdown(e) {
@@ -89,7 +89,7 @@ class NbMenu extends C {
     
             <Nav.Link onClick={ this._onClick.bind(this) }>{ <FaPhone /> }</Nav.Link>
             <Nav.Link onClick={ this._onClick.bind(this) }>{ <FaMailBulk /> }</Nav.Link>
-            <Nav.Link onClick={ this._onClick.bind(this) }>{ <FaRocketchat /> }</Nav.Link>
+            <Nav.Link onClick={ this._onClick.bind(this) } id="a-chat-icon">{ <FaRocketchat /> }</Nav.Link>
             <NavDropdown title={<FaUser />} id="basic-nav-dropdown-right" alignRight>
                 <NavDropdown.Item onClick={ this._onClick.bind(this) } para="user">{ <FaUserCog /> }<span>プロフィール</span></NavDropdown.Item>
                 <NavDropdown.Item onClick={ this._onClick.bind(this) } para="pagesetting">{ <FaSitemap /> }<span>ページ設定</span></NavDropdown.Item>

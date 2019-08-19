@@ -125,7 +125,7 @@ class NavDropdownMenu extends C {
     }
     this.setState({ show: false });
     var level = 0;
-    if(obj != undefined && obj != null) level = obj.getAttribute("level");
+    if(!Utils.isEmpty(obj)) level = obj.getAttribute("level");
     this._hideAllChildMenu(level);
   }
 
@@ -149,7 +149,7 @@ class NavDropdownMenu extends C {
       } else {
         obj = e.target.parentElement;
       }
-      if(obj.tagName != 'A') return;
+      if(Utils.isEmpty(obj) || obj.tagName != 'A') return;
     }
     return obj;
   }

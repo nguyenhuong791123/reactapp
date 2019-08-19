@@ -1,6 +1,6 @@
 import React, { Component as C } from 'react';
 import onClickOutside from 'react-onclickoutside'
-import { Navbar, Nav, NavDropdown, Form, FormControl } from 'react-bootstrap';
+import { Navbar, Nav, NavDropdown, Form, FormControl, Image } from 'react-bootstrap';
 import { FaUser, FaSearch, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaLink, FaKey, FaRocketchat } from 'react-icons/fa';
 
 import Messages from '../../msg/Msg';
@@ -24,8 +24,6 @@ class NbMenu extends C {
   }
 
   _onClick(e) {
-    // const a = e.target;
-    // console.log(a);
     this.props.onClick(e);
   }
 
@@ -81,7 +79,10 @@ class NbMenu extends C {
     return ( 
       <div className="Headder">
         <Navbar bg="dark" expand="lg" variant="dark">
-          <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+          <a target="_blank" href="https://vnext.co.jp/company-info.html" className="header-image-icon">
+            <Image src="favicon.ico" rounded />
+            <span>SmartCRM</span>
+          </a>
           <Navbar.Toggle aria-controls="basic-navbar-nav" id="basic-navbar-nav-toggle" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">{ this._getMenu(this.state.menus) }</Nav>

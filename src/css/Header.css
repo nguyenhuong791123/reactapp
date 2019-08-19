@@ -1,3 +1,18 @@
+nav.navbar a.header-image-icon {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+nav.navbar a.header-image-icon img {
+    width: 2em;
+    margin-left: -0.5em;
+}
+
+nav.navbar a.header-image-icon span {
+    margin-left: 0.5em;
+}
+
 nav.navbar {
     height: 45px;
     min-height: 45px;

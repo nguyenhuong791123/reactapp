@@ -101,10 +101,17 @@ class Header extends C {
     console.log(e);
   }
 
+  componentDidUpdate() {
+    this._loadButtonToggle();
+  }
+
   componentDidMount() {
+    this._loadButtonToggle();
+  }
+
+  _loadButtonToggle() {
     var btn = document.getElementById("basic-navbar-nav-toggle");
-    // console.log(btn);
-    if(!Utils.isEmpty(btn) && !Utils.isEmpty(this.state.isUser)) {
+    if(!Utils.isEmpty(btn) && !Utils.isEmpty(this.props.isUser)) {
       if(this.state.isUser.menu === 1) {
         btn.style.left = "1.5em";
       } else {
@@ -115,8 +122,9 @@ class Header extends C {
 
   render() {
     if(!this.props.viewHeader) return "";
+    this._loadButtonToggle();
     // console.log(this.state.isUser);
-    const Msg = Messages[ this.state.isUser.language ];
+    const Msg = Messages[ this.props.isUser.language ];
     // console.log(Msg);
 
     if(this.props.isUser != null && this.props.isUser.menu===1) {

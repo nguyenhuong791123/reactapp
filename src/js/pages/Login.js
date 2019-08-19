@@ -5,6 +5,7 @@ import { FaSignInAlt } from 'react-icons/fa';
 
 import AuthService from '../sevice/AuthService';
 
+import { isEmpty } from './utils/Utils';
 import Messages from '../msg/Msg';
 
 import "../../css/Index.css";
@@ -45,8 +46,19 @@ export default class Login extends C {
       browserHistory.push('/list');
   }
 
+  componentDidMount() {
+    this._reLoadBody();
+  }
+
+  _reLoadBody() {
+    var body = document.getElementById('div_body');
+    if(!isEmpty(body) && !isEmpty(body.className)) {
+      body.className = body.className.replace("div-margin-right-22", "");
+    }
+  }
+
   render() {
-    console.log(this.state);
+    // console.log(this.state);
     const Msg = Messages[ this.state.ua.language ]
     const MsgLogin = Messages[ 'login/' + this.state.ua.language ]
 

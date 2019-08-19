@@ -24,9 +24,9 @@ export default class New extends C {
 
   _setLayoutActions(){
     var body = document.getElementById('div_body');
-    console.log(body);
+    // console.log(body);
     var bts = document.getElementById('div_button_action');
-    console.log(bts);
+    // console.log(bts);
     if(!isEmpty(bts) && !isEmpty(body.className)) {
       var btClass = bts.className;
       if(body.className.indexOf("div-margin-right-22") !== -1) {

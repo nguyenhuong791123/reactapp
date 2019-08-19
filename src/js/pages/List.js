@@ -206,8 +206,6 @@ export default class List extends C {
   }
 
   render() {
-    console.log(this.props);
-    console.log(this.state.isUser);
     const styles = { 'height': (window.innerHeight - 100 ) + 'px' };
     return (
       <div>

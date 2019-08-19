@@ -29,21 +29,19 @@ class App extends C {
         this._onLogin = this._onLogin.bind(this);
         this._onLogout = this._onLogout.bind(this);
         this._setViewHeader = this._setViewHeader.bind(this);
-        // this._onUpdateList = this._onUpdateList.bind(this);
 
         this.state = {
             ua: this.props.ua
             ,isViewHeader: (props.auth!=null)
             ,isViewFooter: (props.auth===null)
-            ,isuser: props.auth
+            ,isUser: this.props.auth
         }
     }
 
     _onLogin(username, password){
-        // e.preventDefault();
         Auth.login(username, password, this.state.ua).then(res => {
             browserHistory.push({ pathname: '/list' });
-            this.setState({ isuser: res.auth });
+            this.state.isUser = res.auth;
             this._setViewHeader(true);
         }).catch(err => {
             alert(err);
@@ -63,10 +61,6 @@ class App extends C {
         this.forceUpdate();
     }
 
-    // _onUpdateList(obj) {
-    //     console.log(obj);
-    // }
-
     _onUpdateUA(inUa) {
         this.state.ua = inUa;
         this.forceUpdate();
@@ -78,7 +72,7 @@ class App extends C {
                 <div id="div_header">
                     <Header
                         ua={ this.state.ua }
-                        isUser={ this.state.isuser }
+                        isUser={ this.state.isUser }
                         viewHeader={ this.state.isViewHeader }
                         onLogout={ this._onLogout.bind(this) } />
                 </div>
@@ -94,28 +88,23 @@ class App extends C {
                         <Route
                             path="/list"
                             component={ List }
-                            // ua={ this.state.ua }
                             isUser={ this.state.isUser } />
                         <Route
                             path="/new"
                             component={ New }
-                            // ua={ this.state.ua }
                             isUser={ this.state.isUser } />
                         <Route
                             path="/edit"
                             component={ Edit }
-                            // ua={ this.state.ua }
                             isUser={ this.state.isUser } />
                         <Route
                             path="/view"
                             component={ View }
-                            // ua={ this.state.ua }
                             isUser={ this.state.isUser } />
 
                         <Route
                             path='*'
                             component={ P404 }
-                            // ua={ this.state.ua }
                             auth={ Auth }
                             viewHeader={ this._setViewHeader.bind(this) } />
                     </Router>
@@ -129,9 +118,4 @@ class App extends C {
     };
 }
 
-// App.propTypes = {
-//     onLogout: PropTypes.func
-// };
-
-//export default App;
 export default WithAuth(App);

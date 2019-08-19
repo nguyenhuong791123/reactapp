@@ -29,19 +29,22 @@ class App extends C {
         this._onLogin = this._onLogin.bind(this);
         this._onLogout = this._onLogout.bind(this);
         this._setViewHeader = this._setViewHeader.bind(this);
-        this._onUpdateList = this._onUpdateList.bind(this)
+        // this._onUpdateList = this._onUpdateList.bind(this);
 
-        this.state = { ua: props.ua, isViewHeader: (props.auth!=null), isViewFooter: (props.auth===null), isuser: props.auth }
+        this.state = {
+            ua: this.props.ua
+            ,isViewHeader: (props.auth!=null)
+            ,isViewFooter: (props.auth===null)
+            ,isuser: props.auth
+        }
     }
 
     _onLogin(username, password){
         // e.preventDefault();
-        Auth.login(username, password).then(res => {
+        Auth.login(username, password, this.state.ua).then(res => {
             browserHistory.push({ pathname: '/list' });
-            this.state.isuser = res.auth;
+            this.setState({ isuser: res.auth });
             this._setViewHeader(true);
-            // console.log(res);
-            // this.forceUpdate();
         }).catch(err => {
             alert(err);
         })
@@ -60,20 +63,24 @@ class App extends C {
         this.forceUpdate();
     }
 
-    _onUpdateList(obj) {
-        console.log(obj);
-    }
-
-    // _onUpdateUA(loc) {
-    //     const ua = { local: this.state.ua.lange };
-    //     this.setState({ ua: ua });
+    // _onUpdateList(obj) {
+    //     console.log(obj);
     // }
+
+    _onUpdateUA(inUa) {
+        this.state.ua = inUa;
+        this.forceUpdate();
+    }
 
     render() {
         return (
             <div>
                 <div id="div_header">
-                    <Header ua={ this.state.ua } viewHeader={ this.state.isViewHeader } isUser={ this.state.isuser } onLogout={ this._onLogout.bind(this) } />
+                    <Header
+                        ua={ this.state.ua }
+                        isUser={ this.state.isuser }
+                        viewHeader={ this.state.isViewHeader }
+                        onLogout={ this._onLogout.bind(this) } />
                 </div>
                 {/* <Provider store={store}> */}
                 <div id="div_body">
@@ -82,33 +89,33 @@ class App extends C {
                             path="/"
                             component={ Login }
                             ua={ this.state.ua }
+                            onUpdateUA={ this._onUpdateUA.bind(this) }
                             onLogin={ this._onLogin.bind(this) } />
                         <Route
                             path="/list"
                             component={ List }
-                            ua={ this.state.ua }
-                            isUser={ this.state.isUser }
-                            onUpdateList={ this._onUpdateList.bind(this) }/>
+                            // ua={ this.state.ua }
+                            isUser={ this.state.isUser } />
                         <Route
                             path="/new"
                             component={ New }
-                            ua={ this.state.ua }
-                            isUser={ this.state.isUser }/>
+                            // ua={ this.state.ua }
+                            isUser={ this.state.isUser } />
                         <Route
                             path="/edit"
                             component={ Edit }
-                            ua={ this.state.ua }
-                            isUser={ this.state.isUser }/>
+                            // ua={ this.state.ua }
+                            isUser={ this.state.isUser } />
                         <Route
                             path="/view"
                             component={ View }
-                            ua={ this.state.ua }
-                            isUser={ this.state.isUser }/>
+                            // ua={ this.state.ua }
+                            isUser={ this.state.isUser } />
 
                         <Route
                             path='*'
                             component={ P404 }
-                            ua={ this.state.ua }
+                            // ua={ this.state.ua }
                             auth={ Auth }
                             viewHeader={ this._setViewHeader.bind(this) } />
                     </Router>

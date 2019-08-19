@@ -7,6 +7,7 @@ import LMenu from "./pages/utils/LMenu";
 import RMenu from "./pages/utils/RMenu";
 import NbMenu from "./pages/utils/NbMenu";
 
+import Messages from './msg/Msg';
 import { LINK, NOT_LINK } from './pages/utils/Types';
 import Utils from './pages/utils/Utils';
 import "../css/Index.css";
@@ -30,8 +31,7 @@ class Header extends C {
     // });
 
     this.state = {
-      ua: this.props.ua
-      ,isUser: this.props.isUser
+      isUser: this.props.isUser
       ,menus: [
         { view: LINK, target: 'target_00', label: 'label_00', level: 0, items: [] }
         ,{ view: NOT_LINK, target: 'target_01', label: 'label_01', level: 0, items: 
@@ -61,10 +61,10 @@ class Header extends C {
 
   _onClick(e) {
     var hBts = document.getElementById("basic-navbar-nav");
-    console.log(window.innerWidth);
+    // console.log(window.innerWidth);
     if(!Utils.isEmpty(hBts) && window.innerWidth <= 991) {
       var btn = hBts.parentElement.childNodes[0];
-      if(!Utils.isEmpty(btn) && btn.tagName == "BUTTON") btn.click();
+      if(!Utils.isEmpty(btn) && btn.tagName === "BUTTON") btn.click();
     }
     // e.preventDefault();
     // e.stopPropagation();
@@ -72,16 +72,16 @@ class Header extends C {
     // e.nativeEvent.composedPath();
 
     var obj = e.target;
-    if(obj.tagName != 'A') {
+    if(obj.tagName !== 'A') {
       if(obj.tagName === 'path') {
         obj = e.target.parentElement.parentElement;
       } else {
         obj = e.target.parentElement;
       }
-      if(obj.tagName != 'A') return;
+      if(obj.tagName !== 'A') return;
     }
 
-    if(!Utils.isEmpty(obj.id) && obj.id == "a-chat-icon") {
+    if(!Utils.isEmpty(obj.id) && obj.id === "a-chat-icon") {
       var svg = document.getElementById('div-right-chat-icon');
       if(!Utils.isEmpty(svg.parentElement.childNodes) && svg.parentElement.childNodes.length > 1) {
         svg.parentElement.childNodes[1].click();
@@ -89,7 +89,7 @@ class Header extends C {
       return;  
     }
 
-    console.log(obj);
+    // console.log(obj);
     browserHistory.push({ pathname: '/list', params: { "para": obj.para } });
   }
 
@@ -103,40 +103,59 @@ class Header extends C {
 
   componentDidMount() {
     var btn = document.getElementById("basic-navbar-nav-toggle");
-    if(!Utils.isEmpty(btn) && this.state.isUser.menu == 1) {
-      btn.style.left = "1.5em";
-    } else {
-      btn.style.left = "0";
+    // console.log(btn);
+    if(!Utils.isEmpty(btn) && !Utils.isEmpty(this.state.isUser)) {
+      if(this.state.isUser.menu === 1) {
+        btn.style.left = "1.5em";
+      } else {
+        btn.style.left = "0";  
+      }
     }
   }
 
   render() {
     if(!this.props.viewHeader) return "";
+    // console.log(this.state.isUser);
+    const Msg = Messages[ this.state.isUser.language ];
+    // console.log(Msg);
+
     if(this.props.isUser != null && this.props.isUser.menu===1) {
       return ( 
         <div className="Headder">
-          <LMenu isUser={ this.props.isUser } menus={ this.state.menus }/>
-          <RMenu isUser={ this.props.isUser }/>
+          <LMenu ua={ this.state.ua } isUser={ this.props.isUser } menus={ this.state.menus }/>
+          <RMenu ua={ this.state.ua } isUser={ this.props.isUser }/>
           <Navbar bg="dark" expand="lg" variant="dark">
             {/* <Navbar.Brand href="#home" className="a-homepage"><img src="favicon.ico" /></Navbar.Brand> */}
             <Navbar.Toggle aria-controls="basic-navbar-nav" id="basic-navbar-nav-toggle"/>
             <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto"></Nav>
+              <Nav className="mr-auto"></Nav>
 
-            <Form inline>
-              <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-              <Nav.Link href="#search" className="global-search"><FaSearch /></Nav.Link>
-            </Form>
-    
-            <Nav.Link onClick={ this._onClick.bind(this) }>{ <FaPhone /> }</Nav.Link>
-            <Nav.Link onClick={ this._onClick.bind(this) }>{ <FaMailBulk /> }</Nav.Link>
-            <Nav.Link onClick={ this._onClick.bind(this) } id="a-chat-icon">{ <FaRocketchat /> }</Nav.Link>
-            <NavDropdown title={<FaUser />} id="basic-nav-dropdown-right" alignRight>
-                <NavDropdown.Item onClick={ this._onClick.bind(this) } para="user">{ <FaUserCog /> }<span>プロフィール</span></NavDropdown.Item>
-                <NavDropdown.Item onClick={ this._onClick.bind(this) } para="pagesetting">{ <FaSitemap /> }<span>ページ設定</span></NavDropdown.Item>
-                <NavDropdown.Item onClick={ this._onClick.bind(this) } para="system">{ <FaLink /> }<span>システム設定</span></NavDropdown.Item>
+              <Form inline>
+                <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+                <Nav.Link href="#search" className="global-search"><FaSearch /></Nav.Link>
+              </Form>
+      
+              <Nav.Link onClick={ this._onClick.bind(this) }>{ <FaPhone /> }</Nav.Link>
+              <Nav.Link onClick={ this._onClick.bind(this) }>{ <FaMailBulk /> }</Nav.Link>
+              <Nav.Link onClick={ this._onClick.bind(this) } id="a-chat-icon">{ <FaRocketchat /> }</Nav.Link>
+              <NavDropdown title={<FaUser />} id="basic-nav-dropdown-right" alignRight>
+                <NavDropdown.Item onClick={ this._onClick.bind(this) } para="user">
+                  { <FaUserCog /> }
+                  <span>{ Utils.getJsonValue(Msg, 'bt_profile') }</span>
+                </NavDropdown.Item>
+                <NavDropdown.Item onClick={ this._onClick.bind(this) } para="pagesetting">
+                  { <FaSitemap /> }
+                  <span>{ Utils.getJsonValue(Msg, 'page_setting') }</span>
+                </NavDropdown.Item>
+                <NavDropdown.Item onClick={ this._onClick.bind(this) } para="system">
+                  { <FaLink /> }
+                  <span>{ Utils.getJsonValue(Msg, 'system_setting') }</span>
+                </NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item onClick={ this._onLogout.bind(this) }>{ <FaKey /> }<span>ログアウト</span></NavDropdown.Item>
+                <NavDropdown.Item onClick={ this._onLogout.bind(this) }>
+                  { <FaKey /> }
+                  <span>{ Utils.getJsonValue(Msg, 'bt_logout') }</span>
+                </NavDropdown.Item>
               </NavDropdown>
             </Navbar.Collapse>
           </Navbar>
@@ -146,7 +165,12 @@ class Header extends C {
       return (
         <div>
           <RMenu isUser={ this.props.isUser } />
-          <NbMenu isUser={ this.props.isUser } onLogout={ this.props.onLogout } onClick={ this._onClick.bind(this) } menus={ this.state.menus } />
+          <NbMenu
+            ua={ this.state.ua }
+            isUser={ this.props.isUser }
+            onLogout={ this.props.onLogout }
+            onClick={ this._onClick.bind(this) }
+            menus={ this.state.menus } />
         </div>
       );
     }

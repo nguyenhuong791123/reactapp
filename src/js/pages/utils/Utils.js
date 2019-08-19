@@ -23,9 +23,10 @@ function isEmpty(val) {
     return false;
 }
   
-function getJsonValue(obj) {
-    if(isEmpty(obj)) return '';
-    return obj;
+function getJsonValue(json, key) {
+    if(isEmpty(json) || isEmpty(key)) return '';
+    if(key in json) return json[key];
+    return key;
 }
   
 var getLocale = function(props, language) {

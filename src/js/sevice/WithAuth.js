@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { browserHistory } from '@version/react-router-v3';
 
-import UA from '..//Device';
+// import UA from '..//Device';
 import AuthService from './AuthService';
 
 export default function WithAuth(AuthComponent) {
-    const Auth = new AuthService('http://192.168.10.6:8085');
+    const Auth = new AuthService('http://192.168.56.53:8085');
     return class AuthWrapped extends Component {
         constructor() {
             super();
@@ -31,10 +31,10 @@ export default function WithAuth(AuthComponent) {
         render() {
             if (this.state.user) {
                 return (
-                    <AuthComponent ua={UA()} auth={ this.state.auth } />
+                    <AuthComponent ua={ this.props.ua } auth={ this.state.auth } />
                 )
             } else {
-                return (<AuthComponent ua={UA()} auth={ null } />)
+                return (<AuthComponent ua={ this.props.ua } auth={ null } />)
             }
         }
     }

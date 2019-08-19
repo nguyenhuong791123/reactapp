@@ -29,7 +29,7 @@ export default class New extends C {
     console.log(bts);
     if(!isEmpty(bts) && !isEmpty(body.className)) {
       var btClass = bts.className;
-      if(body.className.indexOf("div-margin-right-22") != -1) {
+      if(body.className.indexOf("div-margin-right-22") !== -1) {
         bts.className = btClass + " " + body.className;
       } else {
         bts.className = btClass.replace(" div-margin-right-22", "");

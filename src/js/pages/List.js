@@ -23,7 +23,8 @@ export default class List extends C {
     // console.log(this.Auth.getProfile());
 
     this.state = {
-      objs: {
+      isUser: this.props.route.isUser
+      ,objs: {
         show: false
         ,items: [
           { type: Types.EDIT, label: '編集'}
@@ -106,7 +107,8 @@ export default class List extends C {
   getDatas() {
     return {
       columns: [
-        { dataField: 'id', text: '', sort: true, onSort: (field, order) => { console.log(field) }, filter: textFilter(), headerStyle: { minWidth: '50px', maxWidth: '50px' } }
+        // { dataField: 'id', text: '', sort: true, onSort: (field, order) => { console.log(field) }, filter: textFilter(), headerStyle: { minWidth: '50px', maxWidth: '50px' } }
+        { dataField: 'id', text: '', sort: true, filter: textFilter(), headerStyle: { minWidth: '50px', maxWidth: '50px' } }
         ,{ dataField: 'name', text: '', sort: true, filter: textFilter(), headerStyle: { minWidth: '100px', maxWidth: '100px' } }
         ,{ dataField: 'price3', text: '', sort: true, filter: textFilter(), headerStyle: { minWidth: '100px', maxWidth: '100px' } }
         ,{ dataField: 'price4', text: '', sort: true, filter: textFilter(), headerStyle: { minWidth: '100px' } }
@@ -200,10 +202,12 @@ export default class List extends C {
   }
 
   componentWillMount(){
-    console.log(window.innerHeight);
+    // console.log(window.innerHeight);
   }
 
   render() {
+    console.log(this.props);
+    console.log(this.state.isUser);
     const styles = { 'height': (window.innerHeight - 100 ) + 'px' };
     return (
       <div>

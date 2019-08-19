@@ -41,16 +41,16 @@ class NavDropdownMenu extends C {
       var items = [];
       var idxs = idx.split('-');
       // console.log(idxs);
-      if(!Utils.isEmpty(idxs) && idxs.length == 1) {
+      if(!Utils.isEmpty(idxs) && idxs.length === 1) {
         items = this.state.objs[idxs[0]].items;
       }
-      if(!Utils.isEmpty(idxs) && idxs.length == 2) {
+      if(!Utils.isEmpty(idxs) && idxs.length === 2) {
         items = this.state.objs[idxs[0]].items[idxs[1]].items;
       }
-      if(!Utils.isEmpty(idxs) && idxs.length == 3) {
+      if(!Utils.isEmpty(idxs) && idxs.length === 3) {
         items = this.state.objs[idxs[0]].items[idxs[1]].items[idxs[2]].items;
       }
-      if(!Utils.isEmpty(idxs) && idxs.length == 4) {
+      if(!Utils.isEmpty(idxs) && idxs.length === 4) {
         items = this.state.objs[idxs[0]].items[idxs[1]].items[idxs[2]].items[idxs[3]].items;
       }
 
@@ -122,7 +122,7 @@ class NavDropdownMenu extends C {
     var obj = this.getLinkObj(e);
     if(!Utils.isEmpty(obj)) {
       const view = obj.getAttribute("view");
-      if(view == NOT_LINK) return;
+      if(view === NOT_LINK) return;
     }
     this.setState({ show: false });
     var level = 0;
@@ -144,13 +144,13 @@ class NavDropdownMenu extends C {
 
   getLinkObj(e) {
     var obj = e.target;
-    if(obj.tagName != 'A') {
+    if(obj.tagName !== 'A') {
       if(obj.tagName === 'path') {
         obj = e.target.parentElement.parentElement;
       } else {
         obj = e.target.parentElement;
       }
-      if(Utils.isEmpty(obj) || obj.tagName != 'A') return;
+      if(Utils.isEmpty(obj) || obj.tagName !== 'A') return;
     }
     return obj;
   }

@@ -24,6 +24,8 @@
     ,"bt_next": "次へ"
     ,"bt_previous": "前へ"
   
+    ,"system_setting": "システム設定"
+    ,"page_setting": "ページ設定"
     ,"company_auth": "会社管理"
     ,"group_auth": "グルーブ管理"
     ,"user_auth": "ユーザー管理"

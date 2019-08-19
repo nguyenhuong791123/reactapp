@@ -24,6 +24,8 @@
     ,"bt_next": "Next"
     ,"bt_previous": "Previous"
   
+    ,"system_setting": "System Setting"
+    ,"page_setting": "Page Setting"
     ,"company_auth": "Company Management"
     ,"group_auth": "Group Management"
     ,"user_auth": "User Management"

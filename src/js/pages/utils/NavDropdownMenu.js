@@ -30,7 +30,7 @@ class NavDropdownMenu extends C {
     if(view === NOT_LINK) {
       e.preventDefault();
       e.stopPropagation();
-      // console.log(e);
+      console.log(e);
       var isExistObj = document.getElementById(divId);
       if(!Utils.isEmpty(isExistObj)) isExistObj.remove();
       const pObj = obj.parentElement.parentElement;
@@ -40,7 +40,7 @@ class NavDropdownMenu extends C {
       const idx = obj.getAttribute("idx");
       var items = [];
       var idxs = idx.split('-');
-      console.log(idxs);
+      // console.log(idxs);
       if(!Utils.isEmpty(idxs) && idxs.length == 1) {
         items = this.state.objs[idxs[0]].items;
       }
@@ -72,6 +72,7 @@ class NavDropdownMenu extends C {
       this.setState({ show: true });
       this.forceUpdate();
     } else {
+      console.log(e);
       var div = document.getElementById(this.state.id);
       const className = div.childNodes[0].className;
       if(className.indexOf('show ') === -1) {

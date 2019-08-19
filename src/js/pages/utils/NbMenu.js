@@ -77,7 +77,7 @@ class NbMenu extends C {
         <div className="Headder">
           <Navbar bg="dark" expand="lg" variant="dark">
             <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Toggle aria-controls="basic-navbar-nav" id="basic-navbar-nav-toggle" />
             <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
               { this._getMenu(this.state.menus) }

@@ -30,7 +30,9 @@ class Header extends C {
     // });
 
     this.state = {
-      menus: [
+      ua: this.props.ua
+      ,isUser: this.props.isUser
+      ,menus: [
         { view: LINK, target: 'target_00', label: 'label_00', level: 0, items: [] }
         ,{ view: NOT_LINK, target: 'target_01', label: 'label_01', level: 0, items: 
           [
@@ -58,6 +60,12 @@ class Header extends C {
   }
 
   _onClick(e) {
+    var hBts = document.getElementById("basic-navbar-nav");
+    console.log(window.innerWidth);
+    if(!Utils.isEmpty(hBts) && window.innerWidth <= 991) {
+      var btn = hBts.parentElement.childNodes[0];
+      if(!Utils.isEmpty(btn) && btn.tagName == "BUTTON") btn.click();
+    }
     // e.preventDefault();
     // e.stopPropagation();
     // e.nativeEvent.stopImmediatePropagation();
@@ -93,6 +101,15 @@ class Header extends C {
     console.log(e);
   }
 
+  componentDidMount() {
+    var btn = document.getElementById("basic-navbar-nav-toggle");
+    if(!Utils.isEmpty(btn) && this.state.isUser.menu == 1) {
+      btn.style.left = "1.5em";
+    } else {
+      btn.style.left = "0";
+    }
+  }
+
   render() {
     if(!this.props.viewHeader) return "";
     if(this.props.isUser != null && this.props.isUser.menu===1) {
@@ -102,7 +119,7 @@ class Header extends C {
           <RMenu isUser={ this.props.isUser }/>
           <Navbar bg="dark" expand="lg" variant="dark">
             {/* <Navbar.Brand href="#home" className="a-homepage"><img src="favicon.ico" /></Navbar.Brand> */}
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Toggle aria-controls="basic-navbar-nav" id="basic-navbar-nav-toggle"/>
             <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto"></Nav>
 

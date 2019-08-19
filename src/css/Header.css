@@ -15,7 +15,7 @@ nav.navbar button.navbar-toggler {
     padding: 0;
     border: none;
     position: inherit;
-    left: 85%;
+    /* left: 85%; */
     top: -0.1em;
     font-size: x-large;
 }

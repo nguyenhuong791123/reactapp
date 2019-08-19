@@ -129,6 +129,18 @@ div.form-group fieldset div.div-box-file > div  {
     margin-bottom: -7px;
 }
 
+div.dropdown-menu {
+    max-width: 23%;
+}
+
+div.dropdown-menu a {
+    cursor: pointer;
+}
+
+div.dropdown-menu a:hover {
+    background-color: #cce5ff;
+}
+
 div.dropdown-menu a svg {
     margin-right: 0.3em;
 }

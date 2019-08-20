@@ -201,8 +201,12 @@ export default class List extends C {
     this.forceUpdate();
   }
 
+  componentDidMount(){
+    console.log('componentDidMount' + window.innerHeight);
+  }
+
   componentWillMount(){
-    // console.log(window.innerHeight);
+    console.log('componentWillMount' + window.innerHeight);
   }
 
   render() {

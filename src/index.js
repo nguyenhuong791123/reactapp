@@ -1,3 +1,4 @@
+//create-react-app frontend --use-npm
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App'

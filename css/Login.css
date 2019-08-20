@@ -1,0 +1,29 @@
+div.div-center {
+    width: 25%;
+    margin-top: 15%;
+    margin-left: 35%;
+}
+
+div.div-center div.form-group {
+    margin: 0.5em;
+}
+
+div.div-center div:first-child {
+    text-align: center;
+    font-weight: bold;
+}
+
+div.div-center div.form-group:last-child {
+    display: grid;
+    padding-top: 0.5em;
+}
+
+button svg:first-child {
+    float: left;
+    margin-top: 0.2em;
+}
+
+button svg:last-child {
+    float: right;
+    margin-top: 0.2em;
+}

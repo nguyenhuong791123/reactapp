@@ -1,9 +1,0 @@
-export const LINK = 0;
-export const NOT_LINK = 1;
-export const VIEW = 'VIEW';
-export const CREATE = 'CREATE';
-export const EDIT = 'EDIT';
-export const UPDATE = 'UPDATE';
-export const DELETE = 'DELETE';
-export const UPLOAD = 'UPLOAD';
-export const DOWNLOAD = 'DOWNLOAD';

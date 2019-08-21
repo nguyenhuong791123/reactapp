@@ -87,16 +87,69 @@ class List extends C {
   };
 
   getOptions() {
+    const pageButtonRenderer = ({
+      page,
+      active,
+      disabled,
+      title,
+      onPageChange
+    }) => {
+      const handleClick = (e) => {
+        e.preventDefault();
+        console.log(e.target);
+        const ul = e.target.parentElement.parentElement;
+        const l = ul.childNodes.length;
+        for(var i = 0; i < l; i++) {
+          var li = ul.childNodes[i];
+          li.className = li.className.replace('active ', '');
+        }
+        const liN = e.target.parentElement;
+        liN.className = 'active ' + li.className;
+        console.log(page);
+        // this.state.datas = []
+        // this.forceUpdate();
+        onPageChange(page);
+      };
+      return (
+        <li className="page-item" key={ page }>
+          <a href="#" className="page-link" onClick={ handleClick } >{ page }</a>
+        </li>
+      );
+    };
+  
+    const sizePerPageOptionRenderer = ({
+      text,
+      page,
+      onSizePerPageChange
+    }) => (
+      <li key={ text } role="presentation" className="dropdown-item" >
+        <a href="#" tabIndex="-1" role="menuitem" data-page={ page }
+          onMouseDown={ (e) => {
+            e.preventDefault();
+            console.log(e);
+            console.log(page);
+            onSizePerPageChange(page);
+          } }
+          // style={ { color: 'red' } }
+        >
+          { text }
+        </a>
+      </li>
+    );
+    
+    
     return {
       custom: true
       ,showTotal: true
       ,totalSize: 30
+      ,pageButtonRenderer
+      ,sizePerPageOptionRenderer
       // ,paginationSize: 4
       // ,pageStartIndex: 1
-      // ,firstPageText: 'First'
-      // ,prePageText: 'Back'
-      // ,nextPageText: 'Next'
-      // ,lastPageText: 'Last'
+      ,firstPageText: '最初'
+      ,prePageText: '前'
+      ,nextPageText: '次'
+      ,lastPageText: '最後'
       ,sizePerPageList: [
         { text: '1', value: 1 }
         ,{ text: '5', value: 5 }
@@ -113,7 +166,8 @@ class List extends C {
     return {
       columns: [
         // { dataField: 'id', text: '', sort: true, onSort: (field, order) => { console.log(field) }, filter: textFilter(), headerStyle: { minWidth: '50px', maxWidth: '50px' } }
-        { dataField: 'id', text: '', sort: true, filter: textFilter(), headerStyle: { minWidth: '50px', maxWidth: '50px' } }
+        // { dataField: 'id', text: '', sort: true, filter: textFilter(), filterRenderer: (onFilter, column) => { console.log(column); }, headerStyle: { minWidth: '50px', maxWidth: '50px' } }
+        { dataField: 'id', text: '', sort: true, filter: textFilter({ placeholder: '#ID', onFilter:(filter) => { this._onFilter(filter) } }), headerStyle: { minWidth: '50px', maxWidth: '50px' } }
         ,{ dataField: 'name', text: '', sort: true, filter: textFilter(), headerStyle: { minWidth: '100px', maxWidth: '100px' } }
         ,{ dataField: 'price3', text: '', sort: true, filter: textFilter(), headerStyle: { minWidth: '100px', maxWidth: '100px' } }
         ,{ dataField: 'price4', text: '', sort: true, filter: textFilter(), headerStyle: { minWidth: '100px' } }
@@ -213,6 +267,11 @@ class List extends C {
     });
   }
 
+  _onFilter(filter) {
+    console.log(filter);
+    return filter;
+  }
+
   onClickCreate() {
     this.props.history.push('/' + Types.CREATE_EDIT);
     this.forceUpdate();
@@ -261,6 +320,19 @@ class List extends C {
     // });
   }
 
+  _onPageChange(e) {
+    console.log(e);
+  }
+
+  componentDidMount() {
+    var tbl = document.getElementById('div-react-bootstrap-table');
+    const th = tbl.childNodes[0].childNodes[0].childNodes[0];
+    // th.removeAttribute('data-row-selection');
+    th.innerText = '';
+    console.log(tbl);
+    console.log(tbl.childNodes[0].childNodes[0].childNodes);
+  }
+
   render() {
     // if(Utils.isEmpty(this.props.isUser) || Utils.isEmpty(this.props.list)) return("");
     const styles = { 'height': (window.innerHeight - 100 ) + 'px' };
@@ -286,6 +358,7 @@ class List extends C {
 
                 <div className="div-react-bootstrap-table" style={ styles }>
                   <BootstrapTable
+                    id="div-react-bootstrap-table"
                     ref={ this.divTableListRef }
                     keyField='id'
                     { ...paginationTableProps }

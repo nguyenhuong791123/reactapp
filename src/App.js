@@ -9,7 +9,7 @@ import thunkMiddleware from 'redux-thunk';
 import { SLASH, LIST, CREATE_EDIT, VIEW } from './js/utils/Types';
 
 /* eslint-disable import/first */
-// import P404 from './js/error/P404';
+import P404 from './js/error/P404';
 import Header from './js/Header';
 import Footer from './js/Footer';
 import Login from './js/pages/Login';
@@ -82,6 +82,12 @@ class App extends C {
                                 <Route
                                     path={ SLASH + VIEW }
                                     render={ ({ props }) => <View isUser={ this.state.isUser } {...this.props} />} />
+                                <Route
+                                    exact
+                                    render={ ({ props }) => <P404 isUser={ this.state.isUser }
+                                                                viewHeader={ this._setViewHeader.bind(this) }
+                                                                onLogout={ this._onLogout.bind(this) }
+                                                                {...this.props} />} />
                             </Switch>
                         </div>
                     </Router>

@@ -1,8 +1,9 @@
 
 import React, { Component as C } from 'react';
-import { browserHistory } from '@version/react-router-v3';
+import { Link } from 'react-router-dom';
 import { Alert, Button } from 'react-bootstrap';
 
+import { SLASH } from '../utils/Types';
 import '../../css/Alert.css';
 
 export default class List extends C {
@@ -14,12 +15,11 @@ export default class List extends C {
     };
 
     _onClick() {
-        this.props.route.auth.logout();
-        browserHistory.push('/');
+        this.props.onLogout();
     }
 
     componentWillMount() {
-        this.props.route.viewHeader(false);
+        this.props.viewHeader(false);
     }
 
     render() {
@@ -27,9 +27,12 @@ export default class List extends C {
             <div>
                 <Alert show={this.state.show} variant="danger" className="div-alert">
                     <div className="d-flex justify-content-end">
-                        <Button onClick={ this._onClick.bind(this) } variant="primary" size="sm">
+                        <Link to={ SLASH } onClick={ this._onClick.bind(this) }>
                             ログイン画面へ
-                        </Button>
+                        </Link>
+                        {/* <Button onClick={ this._onClick.bind(this) } variant="primary" size="sm">
+                            ログイン画面へ
+                        </Button> */}
                     </div>
                     <Alert.Heading>☆ ページを見つかりませんでした</Alert.Heading>
                     <p>

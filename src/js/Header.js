@@ -1,15 +1,15 @@
 import React, { Component as C } from 'react';
-import { browserHistory } from '@version/react-router-v3';
+import { Link } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown, Form, FormControl } from 'react-bootstrap';
 import { FaUser, FaSearch, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaLink, FaKey, FaRocketchat } from 'react-icons/fa';
 
-import LMenu from "./pages/utils/LMenu";
-import RMenu from "./pages/utils/RMenu";
-import NbMenu from "./pages/utils/NbMenu";
+import { SLASH, LINK, NOT_LINK, LIST } from './utils/Types';
+import Utils from './utils/Utils';
+import LMenu from "./utils/LMenu";
+import RMenu from "./utils/RMenu";
+import NbMenu from "./utils/NbMenu";
 
-import Messages from './msg/Msg';
-import { LINK, NOT_LINK } from './pages/utils/Types';
-import Utils from './pages/utils/Utils';
+import Messages from '../msg/Msg';
 import "../css/Index.css";
 import "../css/SMenu.css";
 import '../css/Header.css';
@@ -90,7 +90,7 @@ class Header extends C {
     }
 
     // console.log(obj);
-    browserHistory.push({ pathname: '/list', params: { "para": obj.para } });
+    this.props.history.push({ pathname: SLASH + LIST, params: { "para": obj.para } });
   }
 
   _onLogout(){
@@ -160,10 +160,15 @@ class Header extends C {
                   <span>{ Utils.getJsonValue(Msg, 'system_setting') }</span>
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item onClick={ this._onLogout.bind(this) }>
+                <Link to={ SLASH } onClick={ this._onLogout.bind(this) }>
                   { <FaKey /> }
                   <span>{ Utils.getJsonValue(Msg, 'bt_logout') }</span>
-                </NavDropdown.Item>
+                </Link>
+
+                {/* <NavDropdown.Item onClick={ this._onLogout.bind(this) }>
+                  { <FaKey /> }
+                  <span>{ Utils.getJsonValue(Msg, 'bt_logout') }</span>
+                </NavDropdown.Item> */}
               </NavDropdown>
             </Navbar.Collapse>
           </Navbar>
@@ -176,7 +181,7 @@ class Header extends C {
           <NbMenu
             ua={ this.state.ua }
             isUser={ this.props.isUser }
-            onLogout={ this.props.onLogout }
+            onLogout={ this._onLogout.bind(this) }
             onClick={ this._onClick.bind(this) }
             menus={ this.state.menus } />
         </div>

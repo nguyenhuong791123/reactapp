@@ -1,50 +1,50 @@
 import React, { Component as C } from 'react';
-import { browserHistory } from '@version/react-router-v3';
+import { withRouter } from "react-router-dom";
+import { connect } from 'react-redux';
 import { Alert, Form, Button } from 'react-bootstrap';
 import { FaSignInAlt } from 'react-icons/fa';
 
-import AuthService from '../sevice/AuthService';
+import { SLASH, LIST } from '../utils/Types';
+import { isEmpty } from '../utils/Utils';
 
-import { isEmpty } from './utils/Utils';
-import Messages from '../msg/Msg';
-
+import Messages from '../../msg/Msg';
 import "../../css/Index.css";
 import '../../css/Login.css';
 
-export default class Login extends C {
+class Login extends C {
   constructor(props){
     super(props);
 
-    this.Auth = new AuthService();
-    this._onChangeSelect = this._onChangeSelect.bind(this);
     this._onLogin = this._onLogin.bind(this);
+    this._onChange = this._onChange.bind(this);
+    this._onChangeSelect = this._onChangeSelect.bind(this);
 
     this.state = {
-      ua: this.props.route.ua
-      ,username: ''
-      ,password: ''
+      isUser: this.props.isUser
+      ,uLid: ''
+      ,pw: ''
     }
   }
 
   _onLogin(e){
     e.preventDefault();
-    this.props.route.onLogin(this.state.username, this.state.password, this.state.ua);
+    this.state.isUser['uLid'] = this.state.uLid;
+    this.props.onLogin(this.state.isUser);
+    this.props.history.push(SLASH +LIST);
   }
 
-  // _onChange(e){
-  //   this.setState({ [e.target.name]: e.target.value });
-  // }
+  _onChange(e){
+    this.setState({ [e.target.name]: e.target.value });
+  }
 
   _onChangeSelect(e) {
-    this.state.ua = { device: this.state.ua.device, language: e.target.value };
-    this.props.route.onUpdateUA(this.state.ua);
+    this.state.isUser.language = e.target.value;
     this.forceUpdate();
   }
 
-  componentWillMount(){
-    if(this.Auth.loggedIn())
-      browserHistory.push('/list');
-  }
+  // componentWillMount(){
+  //   this.props.history.push(SLASH +LIST);
+  // }
 
   componentDidMount() {
     this._reLoadBody();
@@ -58,9 +58,9 @@ export default class Login extends C {
   }
 
   render() {
-    // console.log(this.state);
-    const Msg = Messages[ this.state.ua.language ]
-    const MsgLogin = Messages[ 'login/' + this.state.ua.language ]
+    console.log(this.state);
+    const Msg = Messages[ this.state.isUser.language ]
+    const MsgLogin = Messages[ 'login/' + this.state.isUser.language ]
 
     return (
       <div>
@@ -70,13 +70,13 @@ export default class Login extends C {
           <hr />
           <Form noValidate validated="true" onSubmit={ this._onLogin.bind(this) }>
             <Form.Group>
-              <Form.Control required type="text" name={ this.state.username } placeholder={ MsgLogin['login_id'] } />
+              <Form.Control required type="text" name={ this.state.uLid } onChange={ this._onChange.bind(this) } placeholder={ MsgLogin['login_id'] } />
             </Form.Group>
             <Form.Group>
-              <Form.Control required type="password" name={ this.state.password } placeholder={ MsgLogin['password'] } />
+              <Form.Control required type="password" name={ this.state.pw } onChange={ this._onChange.bind(this) } placeholder={ MsgLogin['password'] } />
             </Form.Group>
             <Form.Group>
-              <Form.Control as="select" onChange={ this._onChangeSelect.bind(this) }>
+              <Form.Control as="select" onChange={ this._onChangeSelect.bind(this) } value={ this.state.isUser.language }>
                 <option value="ja">{ Msg['ja'] }</option>
                 <option value="en">{ Msg['en'] }</option>
                 <option value="vn">{ Msg['vn'] }</option>
@@ -92,3 +92,5 @@ export default class Login extends C {
     )
   };
 };
+
+export default connect()(withRouter(Login));

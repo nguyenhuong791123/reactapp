@@ -1,19 +1,22 @@
 import React, { Component as C } from 'react';
-import { browserHistory } from '@version/react-router-v3';
+import { withRouter } from "react-router-dom";
+import { connect } from 'react-redux';
+// import { browserHistory } from '@version/react-router-v3';
 import { Button } from 'react-bootstrap';
 import { FaPlus } from 'react-icons/fa';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory, { PaginationProvider, SizePerPageDropdownStandalone, PaginationListStandalone }  from 'react-bootstrap-table2-paginator';
 // import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
-import filterFactory, { textFilter } from 'react-bootstrap-table2-filter';
+import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 
-import * as Types from './utils/Types';
+import * as Types from '../utils/Types';
+import Utils from '../utils/Utils';
 import View from './View';
-import ContextMenu from './utils/ContextMenu';
+import ContextMenu from '../utils/ContextMenu';
 
 import "../../css/List.css";
 
-export default class List extends C {
+class List extends C {
   constructor(props) {
     super(props);
 
@@ -23,15 +26,17 @@ export default class List extends C {
     // console.log(this.Auth.getProfile());
 
     this.state = {
-      isUser: this.props.route.isUser
+      isUser: this.props.isUser
       ,objs: {
         show: false
         ,items: [
-          { type: Types.EDIT, label: '編集'}
+          { type: Types.CREATE_EDIT, label: '編集'}
           ,{ type: Types.DELETE, label: '削除'}
           ,{ type: Types.DOWNLOAD, label: 'ダウロード'}
         ]
       }
+      // ,columns: this._setTextFileter(this.props.route.list.columns)
+      // ,datas: this.props.route.list.datas
       ,columns: this.getDatas().columns
       ,datas: this.getDatas().datas
       ,options: this.getOptions()
@@ -183,7 +188,7 @@ export default class List extends C {
   //   this.forceUpdate();
   // }
 
-  rowStyle = (row, rowIndex) => {
+  _rowStyle = (row, rowIndex) => {
     row.index = rowIndex;
     const style = {};
     if (rowIndex % 2 === 0) {
@@ -196,20 +201,68 @@ export default class List extends C {
     return style;
   }
 
+  _setTextFileter(objs) {
+    if(Utils.isEmpty(objs)) return;
+    return objs.map((o) => {
+      if(!Utils.isEmpty(o.filter) && o.filter === "textFilter()") {
+        o.filter = textFilter();
+      } else if(!Utils.isEmpty(o.filter) && o.filter === "selectFilter()") {
+        o.filter = selectFilter({ options: {} });
+      }
+      return o;
+    });
+  }
+
   onClickCreate() {
-    browserHistory.push('/new');
+    this.props.history.push('/' + Types.CREATE_EDIT);
     this.forceUpdate();
   }
 
   componentDidMount(){
     console.log('componentDidMount' + window.innerHeight);
+    // this.forceUpdate();
   }
 
   componentWillMount(){
     console.log('componentWillMount' + window.innerHeight);
+    // const headers = {
+    //   'Accept': 'application/json',
+    //   'Content-Type': 'application/json'
+    // }
+
+    // if ( this.state.isUser.token !== undefined &&  this.state.isUser.token !== null) {
+    //     headers['Authorization'] = 'Bearer ' + this.state.isUser.token
+    // }
+
+    // var datas = fetch('http://192.168.10.6:8085/list', {
+    //     method: "POST"
+    //     ,mode: "cors"
+    //     ,cache: "no-cache"
+    //     ,credentials: "same-origin"
+    //     ,headers: headers
+    //     ,redirect: "follow"
+    //     ,referrer: "no-referrer"
+    //     ,body: JSON.stringify({ path: this.state.isUser.path })
+    // }//).then(status
+    // ).then(res => {
+    //     if (res.ok) {
+    //       return res.json(); 
+    //     }
+    // }).then(json => {
+    //     return json;
+    // });
+
+    // datas.then(data => {
+    //   var jd = JSON.parse(data);
+    //   this.state.list.columns = jd.columns;
+    //   this.state.list.datas = jd.datas;
+    //   console.log(this.state);
+    //   this.forceUpdate();
+    // });
   }
 
   render() {
+    // if(Utils.isEmpty(this.props.isUser) || Utils.isEmpty(this.props.list)) return("");
     const styles = { 'height': (window.innerHeight - 100 ) + 'px' };
     return (
       <div>
@@ -245,7 +298,7 @@ export default class List extends C {
                     rowEvents={ this.state.rowEvents }
                     noDataIndication="Table is Empty"
                     classes="table-list"
-                    rowStyle={ this.rowStyle }
+                    rowStyle={ this._rowStyle }
                   />
                 </div>
               </div>
@@ -263,3 +316,5 @@ export default class List extends C {
     )
   };
 };
+
+export default connect()(withRouter(List));

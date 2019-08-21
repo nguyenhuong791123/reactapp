@@ -5,7 +5,7 @@ import { Nav, Alert } from 'react-bootstrap';
 import { FaEdit, FaTrash, FaCloudDownloadAlt } from 'react-icons/fa';
 
 import * as Types from './Types';
-import '../../../css/ContextMenu.css';
+import '../../css/ContextMenu.css';
 
 class ContextMenu extends C {
     constructor(props) {

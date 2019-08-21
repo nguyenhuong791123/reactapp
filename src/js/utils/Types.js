@@ -1,7 +1,9 @@
 export const LINK = 0;
 export const NOT_LINK = 1;
+export const SLASH = '/';
+export const LIST = 'LIST';
 export const VIEW = 'VIEW';
-export const CREATE = 'CREATE';
+export const CREATE_EDIT = 'CREATE_EDIT';
 export const EDIT = 'EDIT';
 export const UPDATE = 'UPDATE';
 export const DELETE = 'DELETE';

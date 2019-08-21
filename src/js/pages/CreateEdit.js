@@ -1,13 +1,15 @@
 
 import React, { Component as C } from 'react';
-import { browserHistory } from '@version/react-router-v3';
+import { withRouter } from "react-router-dom";
+import { connect } from 'react-redux';
 import Form from "react-jsonschema-form-bs4";
 // import { Button } from 'react-bootstrap';
 // import { FaReply, FaCheck } from 'react-icons/fa';
 
-import Actions from './utils/Actions';
+import Actions from '../utils/Actions';
+import { SLASH, LIST } from '../utils/Types';
 
-export default class New extends C {
+class CreateEdit extends C {
   constructor(props) {
     super(props);
 
@@ -205,7 +207,7 @@ export default class New extends C {
   }
 
   _onClickReturn() {
-    browserHistory.push('/list');
+    this.props.history.push(SLASH + LIST);
     this.forceUpdate();
   }
 
@@ -264,3 +266,5 @@ export default class New extends C {
     )
   };
 };
+
+export default connect()(withRouter(CreateEdit));

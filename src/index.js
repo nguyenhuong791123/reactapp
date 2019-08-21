@@ -1,9 +1,8 @@
-//create-react-app frontend --use-npm
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App'
 import './index.css';
-import UA from './js/Device';
+import UA from './js/device/Device';
 
 import * as serviceWorker from './serviceWorker';
 

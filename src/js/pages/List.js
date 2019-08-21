@@ -44,13 +44,15 @@ class List extends C {
       ,expandRow: {
         onlyOneExpanding: true
         ,showExpandColumn: true
-        ,renderer: row => ( <View id={ row.id } /> )
+        ,renderer: row => ( <View id={ row.id } isUser={ this.state.isUser } /> )
         ,onExpandAll: (isExpandAll, rows, e) => {
+          e.preventDefault();
+          e.stopPropagation();
           console.log(isExpandAll);
           console.log(rows);
           console.log(e);
-          e.preventDefault();
-          e.stopPropagation();
+          // e.preventDefault();
+          // e.stopPropagation();
         }
       }
       ,selectRow: {
@@ -96,17 +98,23 @@ class List extends C {
     }) => {
       const handleClick = (e) => {
         e.preventDefault();
-        console.log(e.target);
-        const ul = e.target.parentElement.parentElement;
-        const l = ul.childNodes.length;
-        for(var i = 0; i < l; i++) {
-          var li = ul.childNodes[i];
-          li.className = li.className.replace('active ', '');
-        }
-        const liN = e.target.parentElement;
-        liN.className = 'active ' + li.className;
         console.log(page);
-        // this.state.datas = []
+        console.log(e.target);
+        // const ul = e.target.parentElement.parentElement;
+        // const l = ul.childNodes.length;
+        // console.log(sizePerPageList);
+        // for(var i = 0; i < l; i++) {
+        //   var li = ul.childNodes[i];
+        //   var a = ul.childNodes[0];
+        //   li.className = li.className.replace('active ', '');
+        //   console.log(a.innerText);
+        //   if(a.innerText == page) {
+        //     li.className = 'active ' + li.className;
+        //   }
+        // }
+        // const liN = e.target.parentElement;
+        // liN.className = 'active ' + li.className;
+        // this.state.datas = this.state.datas[page];
         // this.forceUpdate();
         onPageChange(page);
       };
@@ -146,10 +154,10 @@ class List extends C {
       ,sizePerPageOptionRenderer
       // ,paginationSize: 4
       // ,pageStartIndex: 1
-      ,firstPageText: '最初'
-      ,prePageText: '前'
-      ,nextPageText: '次'
-      ,lastPageText: '最後'
+      // ,firstPageText: '最初'
+      // ,prePageText: '前'
+      // ,nextPageText: '次'
+      // ,lastPageText: '最後'
       ,sizePerPageList: [
         { text: '1', value: 1 }
         ,{ text: '5', value: 5 }
@@ -277,7 +285,12 @@ class List extends C {
     this.forceUpdate();
   }
 
+  componentDidUpdate() {
+    // this._removeExpandRowAll();
+  }
+
   componentDidMount(){
+    // this._removeExpandRowAll();
     console.log('componentDidMount' + window.innerHeight);
     // this.forceUpdate();
   }
@@ -324,14 +337,27 @@ class List extends C {
     console.log(e);
   }
 
-  componentDidMount() {
-    var tbl = document.getElementById('div-react-bootstrap-table');
-    const th = tbl.childNodes[0].childNodes[0].childNodes[0];
-    // th.removeAttribute('data-row-selection');
-    th.innerText = '';
-    console.log(tbl);
-    console.log(tbl.childNodes[0].childNodes[0].childNodes);
-  }
+  // _removeExpandRowAll() {
+  //   var tbl = document.getElementById('div-react-bootstrap-table');
+  //   var tr = tbl.childNodes[0].childNodes[0];
+  //   console.log(tr);
+  //   if(!Utils.isEmpty(tr)) {
+  //     const th = tbl.childNodes[0].childNodes[0].childNodes;
+  //     for(var i=0; i<th.length; i++) {
+  //       const attr = th[i].getAttribute('data-row-selection');
+  //       if(attr === 'true') {
+  //         th[i].className = 'th-expand-row-all';
+  //         th[i].style.display = 'none';
+  //         break;
+  //       }
+  //     }
+  //     console.log(th);
+  //     const th0 = tbl.childNodes[0].childNodes[0].childNodes[0];
+  //     if(!Utils.isEmpty(th0) && th0.innerText !== '') {
+  //       tr.insertCell(0).outerHTML = '<th></th>';
+  //     }
+  //   }
+  // }
 
   render() {
     // if(Utils.isEmpty(this.props.isUser) || Utils.isEmpty(this.props.list)) return("");
@@ -346,7 +372,6 @@ class List extends C {
                   <tbody>
                   <tr>
                     <td></td>
-                    {/* <td><PaginationTotalStandalone { ...paginationProps }/></td> */}
                     <td>
                       <SizePerPageDropdownStandalone { ...paginationProps }/>
                       <Button onClick={ this.onClickCreate.bind(this) } variant="primary"><FaPlus />新規</Button>
@@ -369,7 +394,7 @@ class List extends C {
                     expandRow={ this.state.expandRow }
                     filter={ filterFactory() }
                     rowEvents={ this.state.rowEvents }
-                    noDataIndication="Table is Empty"
+                    noDataIndication="検索結果ありません。"
                     classes="table-list"
                     rowStyle={ this._rowStyle }
                   />
@@ -378,13 +403,6 @@ class List extends C {
             )
           }
         </PaginationProvider>
-        {/* <BootstrapTable
-          keyField='id'
-          columns={ this.state.columns }
-          data={ this.state.datas }
-          selectRow={ this.state.selectRow }
-          expandRow={ this.state.expandRow }
-          pagination={ paginationFactory(this.state.options) } /> */}
       </div>
     )
   };

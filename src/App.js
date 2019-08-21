@@ -18,6 +18,9 @@ import CreateEdit from './js/pages/CreateEdit';
 // import Edit from './js/pages/Edit';
 import View from './js/pages/View';
 
+/** SESSION */
+import AuthAction from './AuthAction';
+
 let reducer = combineReducers({ session: sessionReducer });
 let store = createStore(reducer, compose(applyMiddleware(thunkMiddleware)));
 sessionService.initSessionService(store, { driver: 'COOKIES' });
@@ -33,13 +36,23 @@ class App extends C {
         this.state = {
             isViewHeader: false
             ,isViewFooter: true
-            ,isUser: this.props.ua
             ,copyright: "Copyright ©2018 VNEXT All Rights Reserved."
+            ,isUser: {
+                device: this.props.ua.device
+                ,language: this.props.ua.language
+                ,loginId: ''
+                ,isViewHeader: false
+                ,isViewFooter: true
+                ,register: false
+                ,path: '/'
+                ,logo: ''
+            }        
         }
     }
 
     _onLogin(isUser){
         this.state.isUser = isUser;
+        AuthAction.doLogin(isUser);
         this._setViewHeader(true);
         console.log(this.state);
     }
@@ -55,6 +68,20 @@ class App extends C {
         this.state.isViewHeader = isView;
         this.state.isViewFooter = !isView;
         this.forceUpdate();
+    }
+
+    _getAuth(isUser) {
+        if(!Utils.isEmpty(isUser) && !Utils.isEmpty(isUser['loginId']) && isUser['isViewHeader'] === true) {
+          this.setState({ isUser: isUser });
+          history.push({ pathname: this.state.isUser.path });
+        } else {
+          AuthAction.clearAuthSession();
+          history.push(SLASH);
+        }
+    }
+
+    componentWillMount() {
+        AuthAction.loadAuthCookies(this._getAuth);
     }
 
     render() {

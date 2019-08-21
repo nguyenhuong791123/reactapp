@@ -109,7 +109,7 @@ class NbMenu extends C {
                 <span>{ Utils.getJsonValue(Msg, 'system_setting') }</span>
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <Link to={ SLASH } onClick={ this._onLogout.bind(this) }>
+              <Link to={ SLASH } className="dropdown-item" onClick={ this._onLogout.bind(this) }>
                 { <FaKey /> }
                 <span>{ Utils.getJsonValue(Msg, 'bt_logout') }</span>
               </Link>

@@ -12,6 +12,7 @@ const doLogin = (auth, token) => {
           ,uName: auth.uName
           ,viewHeader: auth.viewHeader
           ,path: auth.path
+          ,action: auth.action
           ,logo: auth.logo
         }
         ,options: {

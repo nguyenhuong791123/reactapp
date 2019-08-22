@@ -5,7 +5,7 @@ import { Navbar, Nav, NavDropdown, Form, FormControl, Image } from 'react-bootst
 import { FaUser, FaSearch, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaLink, FaKey, FaRocketchat } from 'react-icons/fa';
 
 import Messages from '../../msg/Msg';
-import { LINK, ACTION } from './Types';
+import { LINK, ACTION, PAGE } from './Types';
 import Utils from './Utils';
 import NavDropdownMenu from './NavDropdownMenu';
 
@@ -93,30 +93,30 @@ class NbMenu extends C {
             </Form>
       
             <Nav.Link onClick={ this._onClick.bind(this) }>{ <FaPhone /> }</Nav.Link>
-            <Nav.Link onClick={ this._onClick.bind(this) }>{ <FaMailBulk /> }</Nav.Link>
+            <Nav.Link action={ PAGE.MAIL } path={ ACTION.SLASH + ACTION.LIST } onClick={ this._onClick.bind(this) }>{ <FaMailBulk /> }</Nav.Link>
             <Nav.Link onClick={ this._onClick.bind(this) } id="a-chat-icon">{ <FaRocketchat /> }</Nav.Link>
             <NavDropdown title={<FaUser />} id="basic-nav-dropdown-right" alignRight>
-              <NavDropdown.Item onClick={ this._onClick.bind(this) } para="user">
+              <NavDropdown.Item action={ PAGE.USER } path={ ACTION.SLASH + ACTION.LIST } onClick={ this._onClick.bind(this) }>
                 { <FaUserCog /> }
                 <span>{ Utils.getJsonValue(Msg, 'bt_profile') }</span>
               </NavDropdown.Item>
-              <NavDropdown.Item onClick={ this._onClick.bind(this) } para="pagesetting">
+              <NavDropdown.Item action={ PAGE.SETTING } path={ ACTION.SLASH + ACTION.LIST } onClick={ this._onClick.bind(this) }>
                 { <FaSitemap /> }
                 <span>{ Utils.getJsonValue(Msg, 'page_setting') }</span>
               </NavDropdown.Item>
-              <NavDropdown.Item onClick={ this._onClick.bind(this) } para="system">
+              <NavDropdown.Item action={ PAGE.SYSTEM } path={ ACTION.SLASH + ACTION.LIST } onClick={ this._onClick.bind(this) }>
                 { <FaLink /> }
                 <span>{ Utils.getJsonValue(Msg, 'system_setting') }</span>
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <Link to={ ACTION.SLASH } className="dropdown-item" onClick={ this._onLogout.bind(this) }>
+              {/* <Link to={ ACTION.SLASH } className="dropdown-item" onClick={ this._onLogout.bind(this) }>
                 { <FaKey /> }
                 <span>{ Utils.getJsonValue(Msg, 'bt_logout') }</span>
-              </Link>
-              {/* <NavDropdown.Item onClick={ this._onLogout.bind(this) }>
+              </Link> */}
+              <NavDropdown.Item href={ ACTION.SLASH } onClick={ this._onLogout.bind(this) }>
               { <FaKey /> }
                 <span>{ Utils.getJsonValue(Msg, 'bt_logout') }</span>
-                </NavDropdown.Item> */}
+                </NavDropdown.Item>
             </NavDropdown>
           </Navbar.Collapse>
         </Navbar>

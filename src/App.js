@@ -7,6 +7,7 @@ import { sessionService, sessionReducer } from 'redux-react-session';
 import thunkMiddleware from 'redux-thunk';
 
 import { ACTION } from './js/utils/Types';
+import { isEmpty } from './js/utils/Utils';
 
 /* eslint-disable import/first */
 import P404 from './js/error/P404';
@@ -18,6 +19,7 @@ import Create from './js/pages/Create';
 import View from './js/pages/View';
 
 import AuthSession from './js/auth/AuthSession';
+import { USER_DATA } from 'redux-react-session/dist/constants';
 let reducer = combineReducers({ session: sessionReducer });
 let store = createStore(reducer, compose(applyMiddleware(thunkMiddleware)));
 sessionService.initSessionService(store, { driver: 'COOKIES' });
@@ -57,10 +59,14 @@ class App extends C {
     }
     
     _onLogout(){
-        console.log(this.state);
-        console.log(this);
+        AuthSession.doLogout().then(() => {
+            sessionService.deleteSession();
+            sessionService.deleteUser();
+            this._setViewHeader(false);
+            console.log(sessionService.loadUser('COOKIES'));
+            console.log(this.state);
+        }).catch(err => { throw (err); });
         // history.push(SLASH);
-        this._setViewHeader(false);
     }
 
     _setViewHeader(isView) {
@@ -68,7 +74,37 @@ class App extends C {
         this.forceUpdate();
     }
 
+    _onUpdateUser(objs) {
+        const isUser = sessionService.loadUser('COOKIES');
+        console.log(isUser);
+        isUser.then(function(data) {
+            var keys = Object.keys(objs);
+            if(!isEmpty(keys) && keys.length > 0) {
+                for(var i=0; i<keys.length; i++) {
+                    data[keys[i]] = objs[keys[i]];
+                }
+            }
+        }).catch(function(error) {
+            console.log(error);
+        });
+    }
+
+    _setIsUser(isUser) {
+        this.state.isUser = isUser;
+    }
+
     componentWillMount() {
+        const isUser = sessionService.loadUser('COOKIES');
+        console.log(isUser);
+        if(!isEmpty(isUser)) {
+            isUser.then((data) => {
+                console.log(data);
+                this.state.isUser = data;
+                this.forceUpdate();
+            });    
+        } else {
+            history.replace(ACTION.SLASH);
+        }
     }
 
     render() {
@@ -80,6 +116,7 @@ class App extends C {
                             <Header
                                 isUser={ this.state.isUser }
                                 viewHeader={ this.state.isUser.viewHeader }
+                                onUpdateUser={ this._onUpdateUser.bind(this) }
                                 onLogout={ this._onLogout.bind(this) } />
                         </div>
                         <div id="div_body">

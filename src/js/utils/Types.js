@@ -16,3 +16,10 @@ export const MSG_TYPE = {
     ERROR: 'error'
     ,LOGIN: 'login'
 };
+
+export const PAGE = {
+    USER: 'user'
+    ,SETTING: 'setting'
+    ,SYSTEM: 'system'
+    ,MAIL: 'mail'
+};

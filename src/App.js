@@ -6,19 +6,18 @@ import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import { sessionService, sessionReducer } from 'redux-react-session';
 import thunkMiddleware from 'redux-thunk';
 
-import { SLASH, LIST, CREATE, EDIT, VIEW } from './js/utils/Types';
+import { ACTION } from './js/utils/Types';
 
 /* eslint-disable import/first */
 import P404 from './js/error/P404';
 import Header from './js/Header';
 import Footer from './js/Footer';
-import Login from './js/pages/Login';
+import Login from './js/Login';
 import List from './js/pages/List';
 import Create from './js/pages/Create';
 import View from './js/pages/View';
 
 import AuthSession from './js/auth/AuthSession';
-import AuthAction from './js/auth/AuthAction';
 let reducer = combineReducers({ session: sessionReducer });
 let store = createStore(reducer, compose(applyMiddleware(thunkMiddleware)));
 sessionService.initSessionService(store, { driver: 'COOKIES' });
@@ -31,38 +30,30 @@ class App extends C {
         this._onLogout = this._onLogout.bind(this);
         this._setViewHeader = this._setViewHeader.bind(this);
 
-
-        AuthSession.doLogin(this.props.ua, 'SmartCRM v0.1').then(response => {
-            const { token } = response;
-            sessionService.saveSession({ token }).then(() => {
-              sessionService.saveUser(this.props.ua).then(() => {
-                // callBack(auth);
-            });
-          });
-        });
-        AuthAction.loadAuthCookies(this._onLogin)
-        // console.log();
         this.state = {
-            isViewHeader: false
-            ,isViewFooter: true
-            ,copyright: "Copyright ©2018 VNEXT All Rights Reserved."
+            copyright: "Copyright ©2018 VNEXT All Rights Reserved."
             ,isUser: {
                 device: this.props.ua.device
                 ,language: this.props.ua.language
-                ,loginId: ''
-                ,isViewHeader: false
-                ,isViewFooter: true
-                ,register: false
-                ,path: '/'
-                ,logo: ''
+                ,viewHeader: false
+                ,path: ACTION.SLASH
             }        
         }
     }
 
-    _onLogin(isUser){
+    _onLogin(isUser, token){
         this.state.isUser = isUser;
         this._setViewHeader(true);
-        console.log(this.state);
+        AuthSession.doLogin(isUser, token).then(response => {
+            console.log(this.state);
+            const { token } = response;
+            sessionService.saveSession({ token }).then(() => {
+              sessionService.saveUser(isUser).then(() => {
+                console.log(sessionService.loadUser('COOKIES'));
+                // callBack(auth);
+            });
+          });
+        });
     }
     
     _onLogout(){
@@ -73,8 +64,7 @@ class App extends C {
     }
 
     _setViewHeader(isView) {
-        this.state.isViewHeader = isView;
-        this.state.isViewFooter = !isView;
+        this.state.isUser.viewHeader = isView;
         this.forceUpdate();
     }
 
@@ -89,25 +79,25 @@ class App extends C {
                         <div id="div_header">
                             <Header
                                 isUser={ this.state.isUser }
-                                viewHeader={ this.state.isViewHeader }
+                                viewHeader={ this.state.isUser.viewHeader }
                                 onLogout={ this._onLogout.bind(this) } />
                         </div>
                         <div id="div_body">
                             <Switch>
                                 <Route
-                                    exact path={ SLASH }
+                                    exact path={ ACTION.SLASH }
                                     render={ ({ props }) => <Login isUser={ this.state.isUser } onLogin={ this._onLogin.bind(this) } {...this.props} />} />
                                 <Route
-                                    path={ SLASH + LIST }
+                                    path={ ACTION.SLASH + ACTION.LIST }
                                     render={ ({ props }) => <List isUser={ this.state.isUser } {...this.props} />} />
                                 <Route
-                                    path={ SLASH + CREATE }
+                                    path={ ACTION.SLASH + ACTION.CREATE }
                                     render={ ({ props }) => <Create isUser={ this.state.isUser } {...this.props} />} />
                                 <Route
-                                    path={ SLASH + EDIT }
+                                    path={ ACTION.SLASH + ACTION.EDIT }
                                     render={ ({ props }) => <Create isUser={ this.state.isUser } {...this.props} />} />
                                 <Route
-                                    path={ SLASH + VIEW }
+                                    path={ ACTION.SLASH + ACTION.VIEW }
                                     render={ ({ props }) => <View isUser={ this.state.isUser } {...this.props} />} />
                                 <Route
                                     exact
@@ -120,7 +110,7 @@ class App extends C {
                     </Router>
                 </Provider>
                 <div id="div_footer" className="bg-light div-footer">
-                    <Footer copyright={ this.state.copyright } viewFooter={ this.state.isViewFooter } />
+                    <Footer copyright={ this.state.copyright } viewFooter={ !this.state.isUser.viewHeader } />
                 </div>
             </div>
         );

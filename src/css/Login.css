@@ -8,7 +8,13 @@ div.div-center div.form-group {
     margin: 0.5em;
 }
 
-div.div-center div:first-child {
+div.div-center div.form-group div.invalid-feedback {
+    width: 100%;
+    text-align: left;
+    font-size: x-small;
+}
+
+div.div-center div.alert-heading {
     text-align: center;
     font-weight: bold;
 }

@@ -9,7 +9,7 @@ import paginationFactory, { PaginationProvider, SizePerPageDropdownStandalone, P
 // import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 
-import * as Types from '../utils/Types';
+import { ACTION } from '../utils/Types';
 import Utils from '../utils/Utils';
 import View from './View';
 import ContextMenu from '../utils/ContextMenu';
@@ -30,9 +30,9 @@ class List extends C {
       ,objs: {
         show: false
         ,items: [
-          { type: Types.EDIT, label: '編集'}
-          ,{ type: Types.DELETE, label: '削除'}
-          ,{ type: Types.DOWNLOAD, label: 'ダウロード'}
+          { type: ACTION.EDIT, label: '編集'}
+          ,{ type: ACTION.DELETE, label: '削除'}
+          ,{ type: ACTION.DOWNLOAD, label: 'ダウロード'}
         ]
       }
       // ,columns: this._setTextFileter(this.props.route.list.columns)
@@ -120,7 +120,7 @@ class List extends C {
       };
       return (
         <li className="page-item" key={ page }>
-          <a href="javascript:void(0)" className="page-link" onClick={() => handleClick } >{ page }</a>
+          <a className="page-link" onClick={() => handleClick } >{ page }</a>
         </li>
       );
     };
@@ -131,7 +131,7 @@ class List extends C {
       onSizePerPageChange
     }) => (
       <li key={ text } role="presentation" className="dropdown-item" >
-        <a href="javascript:void(0)" tabIndex="-1" role="menuitem" data-page={ page }
+        <a tabIndex="-1" role="menuitem" data-page={ page }
           onMouseDown={ (e) => {
             e.preventDefault();
             console.log(e);
@@ -281,7 +281,7 @@ class List extends C {
   }
 
   onClickCreate() {
-    this.props.history.push('/' + Types.CREATE);
+    this.props.history.push(ACTION.SLASH + ACTION.CREATE);
     this.forceUpdate();
   }
 
@@ -296,7 +296,7 @@ class List extends C {
   }
 
   componentWillMount(){
-    console.log(this);
+    // console.log(this);
     console.log('componentWillMount' + window.innerHeight);
     // const headers = {
     //   'Accept': 'application/json',

@@ -7,9 +7,9 @@ import Form from "react-jsonschema-form-bs4";
 // import { FaReply, FaCheck } from 'react-icons/fa';
 
 import Actions from '../utils/Actions';
-import { SLASH, LIST } from '../utils/Types';
+import { ACTION } from '../utils/Types';
 
-class CreateEdit extends C {
+class Create extends C {
   constructor(props) {
     super(props);
 
@@ -207,7 +207,7 @@ class CreateEdit extends C {
   }
 
   _onClickReturn() {
-    this.props.history.push(SLASH + LIST);
+    this.props.history.push(ACTION.SLASH + ACTION.LIST);
     this.forceUpdate();
   }
 
@@ -267,4 +267,4 @@ class CreateEdit extends C {
   };
 };
 
-export default connect()(withRouter(CreateEdit));
+export default connect()(withRouter(Create));

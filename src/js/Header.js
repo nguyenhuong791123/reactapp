@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown, Form, FormControl } from 'react-bootstrap';
 import { FaUser, FaSearch, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaLink, FaKey, FaRocketchat } from 'react-icons/fa';
 
-import { SLASH, LINK, NOT_LINK, LIST } from './utils/Types';
+import { ACTION , LINK, NOT_LINK } from './utils/Types';
 import Utils from './utils/Utils';
 import LMenu from "./utils/LMenu";
 import RMenu from "./utils/RMenu";
@@ -90,7 +90,7 @@ class Header extends C {
     }
 
     // console.log(obj);
-    this.props.history.push({ pathname: SLASH + LIST, params: { "para": obj.para } });
+    this.props.history.push({ pathname: ACTION.SLASH + ACTION.LIST, params: { "para": obj.para } });
   }
 
   _onLogout(){
@@ -160,7 +160,7 @@ class Header extends C {
                   <span>{ Utils.getJsonValue(Msg, 'system_setting') }</span>
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
-                <Link to={ SLASH } className="dropdown-item" onClick={ this._onLogout.bind(this) }>
+                <Link to={ ACTION.SLASH } className="dropdown-item" onClick={ this._onLogout.bind(this) }>
                   { <FaKey /> }
                   <span>{ Utils.getJsonValue(Msg, 'bt_logout') }</span>
                 </Link>

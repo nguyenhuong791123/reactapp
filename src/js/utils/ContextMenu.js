@@ -4,7 +4,7 @@ import onClickOutside from 'react-onclickoutside'
 import { Nav, Alert } from 'react-bootstrap';
 import { FaEdit, FaTrash, FaCloudDownloadAlt } from 'react-icons/fa';
 
-import * as Types from './Types';
+import { ACTION } from './Types';
 import '../../css/ContextMenu.css';
 
 class ContextMenu extends C {
@@ -31,11 +31,11 @@ class ContextMenu extends C {
         if(this.state.objs === undefined || this.state.objs.items === undefined || this.state.objs.items.length === 0) return "";
         return this.state.objs.items.map( o => {
             var icon = '';
-            if(o.type === Types.EDIT) {
+            if(o.type === ACTION.EDIT) {
                 icon = <FaEdit />;
-            } else if(o.type === Types.DELETE) {
+            } else if(o.type === ACTION.DELETE) {
                 icon = <FaTrash />;
-            } else if(o.type === Types.DOWNLOAD) {
+            } else if(o.type === ACTION.DOWNLOAD) {
                 icon = <FaCloudDownloadAlt />;
             }
             return (<Nav.Link key={ o.type } href="#" action={ o.type } onClick={ this._onClick.bind(this) }>{ icon }{ o.label }</Nav.Link>);

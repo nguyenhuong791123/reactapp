@@ -1,10 +1,18 @@
 export const LINK = 0;
 export const NOT_LINK = 1;
-export const SLASH = '/';
-export const LIST = 'LIST';
-export const VIEW = 'VIEW';
-export const CREATE = 'CREATE';
-export const EDIT = 'EDIT';
-export const DELETE = 'DELETE';
-export const UPLOAD = 'UPLOAD';
-export const DOWNLOAD = 'DOWNLOAD';
+
+export const ACTION = {
+    SLASH: '/'
+    ,LIST: 'list'
+    ,VIEW: 'view'
+    ,CREATE: 'create'
+    ,EDIT: 'edit'
+    ,DELETE: 'delete'
+    ,UPLOAD: 'upload'
+    ,DOWNLOAD: 'download'
+};
+
+export const MSG_TYPE = {
+    ERROR: 'error'
+    ,LOGIN: 'login'
+};

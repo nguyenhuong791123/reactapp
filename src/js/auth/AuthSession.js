@@ -2,20 +2,23 @@ const doLogin = (auth, token) => {
     const response = {
       token: token,
       data: {
-        device: auth.device
-        ,language: auth.language
-        ,uLid: auth.uLid
-        ,cId: auth.cId
-        ,gId: auth.gId
-        ,uId: auth.uId
-        ,uName: auth.uName
-        ,viewHeader: auth.viewHeader
-        ,register: auth.register
-        ,chat: auth.chat
-        ,astId: auth.astId
-        ,astPass: auth.astPass
-        ,path: auth.path
-        ,logo: auth.logo
+        info: {
+          device: auth.device
+          ,language: auth.language
+          ,uLid: auth.uLid
+          ,cId: auth.cId
+          ,gId: auth.gId
+          ,uId: auth.uId
+          ,uName: auth.uName
+          ,viewHeader: auth.viewHeader
+          ,path: auth.path
+          ,logo: auth.logo
+        }
+        ,options: {
+          mail: auth.mail
+          ,chat: auth.chat
+          ,cti: auth.cti
+        }
       }
     };
     return new Promise(resolve => setTimeout(resolve(response), 1000));

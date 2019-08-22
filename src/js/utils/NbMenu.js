@@ -5,7 +5,7 @@ import { Navbar, Nav, NavDropdown, Form, FormControl, Image } from 'react-bootst
 import { FaUser, FaSearch, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaLink, FaKey, FaRocketchat } from 'react-icons/fa';
 
 import Messages from '../../msg/Msg';
-import { LINK, SLASH } from './Types';
+import { LINK, ACTION } from './Types';
 import Utils from './Utils';
 import NavDropdownMenu from './NavDropdownMenu';
 
@@ -109,7 +109,7 @@ class NbMenu extends C {
                 <span>{ Utils.getJsonValue(Msg, 'system_setting') }</span>
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <Link to={ SLASH } className="dropdown-item" onClick={ this._onLogout.bind(this) }>
+              <Link to={ ACTION.SLASH } className="dropdown-item" onClick={ this._onLogout.bind(this) }>
                 { <FaKey /> }
                 <span>{ Utils.getJsonValue(Msg, 'bt_logout') }</span>
               </Link>

@@ -3,7 +3,7 @@ import React, { Component as C } from 'react';
 import { Link } from 'react-router-dom';
 import { Alert, Button } from 'react-bootstrap';
 
-import { SLASH } from '../utils/Types';
+import { ACTION } from '../utils/Types';
 import '../../css/Alert.css';
 
 export default class List extends C {
@@ -27,7 +27,7 @@ export default class List extends C {
             <div>
                 <Alert show={this.state.show} variant="danger" className="div-alert">
                     <div className="d-flex justify-content-end">
-                        <Link to={ SLASH } onClick={ this._onClick.bind(this) }>
+                        <Link to={ ACTION.SLASH } onClick={ this._onClick.bind(this) }>
                             ログイン画面へ
                         </Link>
                         {/* <Button onClick={ this._onClick.bind(this) } variant="primary" size="sm">

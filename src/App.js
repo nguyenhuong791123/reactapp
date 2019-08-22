@@ -6,7 +6,7 @@ import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import { sessionService, sessionReducer } from 'redux-react-session';
 import thunkMiddleware from 'redux-thunk';
 
-import { SLASH, LIST, CREATE_EDIT, VIEW } from './js/utils/Types';
+import { SLASH, LIST, CREATE, EDIT, VIEW } from './js/utils/Types';
 
 /* eslint-disable import/first */
 import P404 from './js/error/P404';
@@ -14,13 +14,11 @@ import Header from './js/Header';
 import Footer from './js/Footer';
 import Login from './js/pages/Login';
 import List from './js/pages/List';
-import CreateEdit from './js/pages/CreateEdit';
-// import Edit from './js/pages/Edit';
+import Create from './js/pages/Create';
 import View from './js/pages/View';
 
-/** SESSION */
-import AuthAction from './AuthAction';
-
+import AuthSession from './js/auth/AuthSession';
+import AuthAction from './js/auth/AuthAction';
 let reducer = combineReducers({ session: sessionReducer });
 let store = createStore(reducer, compose(applyMiddleware(thunkMiddleware)));
 sessionService.initSessionService(store, { driver: 'COOKIES' });
@@ -33,6 +31,17 @@ class App extends C {
         this._onLogout = this._onLogout.bind(this);
         this._setViewHeader = this._setViewHeader.bind(this);
 
+
+        AuthSession.doLogin(this.props.ua, 'SmartCRM v0.1').then(response => {
+            const { token } = response;
+            sessionService.saveSession({ token }).then(() => {
+              sessionService.saveUser(this.props.ua).then(() => {
+                // callBack(auth);
+            });
+          });
+        });
+        AuthAction.loadAuthCookies(this._onLogin)
+        // console.log();
         this.state = {
             isViewHeader: false
             ,isViewFooter: true
@@ -52,7 +61,6 @@ class App extends C {
 
     _onLogin(isUser){
         this.state.isUser = isUser;
-        AuthAction.doLogin(isUser);
         this._setViewHeader(true);
         console.log(this.state);
     }
@@ -70,18 +78,7 @@ class App extends C {
         this.forceUpdate();
     }
 
-    _getAuth(isUser) {
-        if(!Utils.isEmpty(isUser) && !Utils.isEmpty(isUser['loginId']) && isUser['isViewHeader'] === true) {
-          this.setState({ isUser: isUser });
-          history.push({ pathname: this.state.isUser.path });
-        } else {
-          AuthAction.clearAuthSession();
-          history.push(SLASH);
-        }
-    }
-
     componentWillMount() {
-        AuthAction.loadAuthCookies(this._getAuth);
     }
 
     render() {
@@ -104,8 +101,11 @@ class App extends C {
                                     path={ SLASH + LIST }
                                     render={ ({ props }) => <List isUser={ this.state.isUser } {...this.props} />} />
                                 <Route
-                                    path={ SLASH + CREATE_EDIT }
-                                    render={ ({ props }) => <CreateEdit isUser={ this.state.isUser } {...this.props} />} />
+                                    path={ SLASH + CREATE }
+                                    render={ ({ props }) => <Create isUser={ this.state.isUser } {...this.props} />} />
+                                <Route
+                                    path={ SLASH + EDIT }
+                                    render={ ({ props }) => <Create isUser={ this.state.isUser } {...this.props} />} />
                                 <Route
                                     path={ SLASH + VIEW }
                                     render={ ({ props }) => <View isUser={ this.state.isUser } {...this.props} />} />

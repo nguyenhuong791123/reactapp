@@ -1,10 +1,10 @@
-export const doLogin = (auth) => {
+const doLogin = (auth, token) => {
     const response = {
-      token: 'SmartCRM v0.1',
+      token: token,
       data: {
         device: auth.device
-        ,locale: auth.locale
-        ,loginId: auth.loginId
+        ,language: auth.language
+        ,uLid: auth.uLid
         ,cId: auth.cId
         ,gId: auth.gId
         ,uId: auth.uId
@@ -21,7 +21,9 @@ export const doLogin = (auth) => {
     return new Promise(resolve => setTimeout(resolve(response), 1000));
 };
   
-export const doLogout = () => {
+const doLogout = () => {
     return new Promise(resolve => setTimeout(resolve, 1000));
 };
-  
+
+module.exports.doLogin = doLogin;
+module.exports.doLogout = doLogout;

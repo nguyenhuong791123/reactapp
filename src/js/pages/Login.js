@@ -10,11 +10,6 @@ import Messages from '../../msg/Msg';
 import "../../css/Index.css";
 import '../../css/Login.css';
 
-/** String To SHA2 */
-import Sha256 from 'sha256';
-/** SESSION */
-import AuthAction from './AuthAction';
-
 class Login extends C {
   constructor(props){
     super(props);
@@ -33,33 +28,8 @@ class Login extends C {
   _onLogin(e){
     e.preventDefault();
     this.state.isUser['uLid'] = this.state.uLid;
-    const auth = AuthAction.authObjectLogin(this.state.auth, '/customer');
-    if(!Utils.isEmpty(auth)) {
-      let data = {
-        uLid: this.state.uLid
-        ,pw: Sha256(this.state.pw)
-      };
-      let global = FETCH.postFetch('/auth', data, this.basicAuth);
-      global.then(data => {
-        if(Utils.isEmpty(data) === null || data.length <= 0) {
-          AuthAction.clearAuthSession();
-          browserHistory.push('/');
-        } else {
-          const isUser = auth;
-          isUser['cId'] = data[0]['company_id'];
-          isUser['gId'] = data[0]['group_id'];
-          isUser['uId'] = data[0]['member_id'];
-          isUser['uName'] = data[0]['member_name'];
-          this.setState({ isUser: isUser });
-
-          this.props.onLogin(this.state.isUser);
-          this.props.history.push(SLASH +LIST);
-        }
-      });
-    } else {
-      AuthAction.clearAuthSession();
-      this.props.history.push(SLASH);
-    }
+    this.props.onLogin(this.state.isUser);
+    this.props.history.push(SLASH +LIST);
   }
 
   _onChange(e){

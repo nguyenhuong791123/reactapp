@@ -30,7 +30,7 @@ class List extends C {
       ,objs: {
         show: false
         ,items: [
-          { type: Types.CREATE_EDIT, label: '編集'}
+          { type: Types.EDIT, label: '編集'}
           ,{ type: Types.DELETE, label: '削除'}
           ,{ type: Types.DOWNLOAD, label: 'ダウロード'}
         ]
@@ -120,7 +120,7 @@ class List extends C {
       };
       return (
         <li className="page-item" key={ page }>
-          <a href="#" className="page-link" onClick={ handleClick } >{ page }</a>
+          <a href="javascript:void(0)" className="page-link" onClick={() => handleClick } >{ page }</a>
         </li>
       );
     };
@@ -131,7 +131,7 @@ class List extends C {
       onSizePerPageChange
     }) => (
       <li key={ text } role="presentation" className="dropdown-item" >
-        <a href="#" tabIndex="-1" role="menuitem" data-page={ page }
+        <a href="javascript:void(0)" tabIndex="-1" role="menuitem" data-page={ page }
           onMouseDown={ (e) => {
             e.preventDefault();
             console.log(e);
@@ -281,7 +281,7 @@ class List extends C {
   }
 
   onClickCreate() {
-    this.props.history.push('/' + Types.CREATE_EDIT);
+    this.props.history.push('/' + Types.CREATE);
     this.forceUpdate();
   }
 
@@ -296,6 +296,7 @@ class List extends C {
   }
 
   componentWillMount(){
+    console.log(this);
     console.log('componentWillMount' + window.innerHeight);
     // const headers = {
     //   'Accept': 'application/json',

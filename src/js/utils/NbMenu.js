@@ -104,19 +104,23 @@ class NbMenu extends C {
                 { <FaSitemap /> }
                 <span>{ Utils.getJsonValue(Msg, 'page_setting') }</span>
               </NavDropdown.Item>
-              <NavDropdown.Item action={ PAGE.SYSTEM } path={ ACTION.SLASH + ACTION.LIST } onClick={ this._onClick.bind(this) }>
+              {/* <NavDropdown.Item action={ PAGE.SYSTEM } path={ ACTION.SLASH + ACTION.LIST } onClick={ this._onClick.bind(this) }>
                 { <FaLink /> }
                 <span>{ Utils.getJsonValue(Msg, 'system_setting') }</span>
-              </NavDropdown.Item>
+              </NavDropdown.Item> */}
+                <Link action={ PAGE.SYSTEM } to={ ACTION.SLASH + ACTION.LIST } className="dropdown-item" onClick={ this._onClick.bind(this) }>
+                  { <FaKey /> }
+                  <span>{ Utils.getJsonValue(Msg, 'system_setting') }</span>
+                </Link>
               <NavDropdown.Divider />
-              {/* <Link to={ ACTION.SLASH } className="dropdown-item" onClick={ this._onLogout.bind(this) }>
+              <Link to={ ACTION.SLASH } className="dropdown-item" onClick={ this._onLogout.bind(this) }>
                 { <FaKey /> }
                 <span>{ Utils.getJsonValue(Msg, 'bt_logout') }</span>
-              </Link> */}
-              <NavDropdown.Item href={ ACTION.SLASH } onClick={ this._onLogout.bind(this) }>
+              </Link>
+              {/* <NavDropdown.Item href={ ACTION.SLASH } onClick={ this._onLogout.bind(this) }>
               { <FaKey /> }
                 <span>{ Utils.getJsonValue(Msg, 'bt_logout') }</span>
-                </NavDropdown.Item>
+                </NavDropdown.Item> */}
             </NavDropdown>
           </Navbar.Collapse>
         </Navbar>

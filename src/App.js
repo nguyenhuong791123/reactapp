@@ -62,9 +62,11 @@ class App extends C {
         AuthSession.doLogout().then(() => {
             sessionService.deleteSession();
             sessionService.deleteUser();
-            this._setViewHeader(false);
-            console.log(sessionService.loadUser('COOKIES'));
-            console.log(this.state);
+            this.state.isUser = AuthSession.isUserInit(this.state.isUser);
+            this.forceUpdate();
+            // this._setViewHeader(false);
+            // console.log(sessionService.loadUser('COOKIES'));
+            // console.log(this.state);
         }).catch(err => { throw (err); });
         // history.push(SLASH);
     }
@@ -75,6 +77,28 @@ class App extends C {
     }
 
     _onUpdateUser(objs) {
+        this._onUpdatePromise(objs, this.state.isUser, this._setIsUser);
+        // const isUser = sessionService.loadUser('COOKIES');
+        // console.log(isUser);
+        // isUser.then(function(data) {
+        //     var keys = Object.keys(objs);
+        //     if(!isEmpty(keys) && keys.length > 0) {
+        //         for(var i=0; i<keys.length; i++) {
+        //             data[keys[i]] = objs[keys[i]];
+        //         }
+        //     }
+        //     console.log(data);
+        //     this.forceUpdate();
+        //     // this.state.isUser =data;
+        // }).catch(function(error) {
+        //     // this.state.isUser = AuthSession.isUserInit(this.state.isUser);
+        //     history.push(ACTION.SLASH);
+        //     this.forceUpdate();
+        //     // console.log(error);
+        // });
+    }
+
+    _onUpdatePromise(objs, stateIsUser, callBack) {
         const isUser = sessionService.loadUser('COOKIES');
         console.log(isUser);
         isUser.then(function(data) {
@@ -84,9 +108,16 @@ class App extends C {
                     data[keys[i]] = objs[keys[i]];
                 }
             }
+            console.log(data);
+            // callBack(data);
         }).catch(function(error) {
-            console.log(error);
+            console.log(stateIsUser);
+            const isUserInit = AuthSession.isUserInit(stateIsUser);
+            console.log(isUserInit);
+            // callBack(isUserInit);
+            history.push(ACTION.SLASH);
         });
+        this.forceUpdate();
     }
 
     _setIsUser(isUser) {
@@ -96,15 +127,20 @@ class App extends C {
     componentWillMount() {
         const isUser = sessionService.loadUser('COOKIES');
         console.log(isUser);
-        if(!isEmpty(isUser)) {
-            isUser.then((data) => {
-                console.log(data);
-                this.state.isUser = data;
-                this.forceUpdate();
-            });    
-        } else {
-            history.replace(ACTION.SLASH);
-        }
+        isUser.then((data) => {
+            console.log(data);
+            this.state.isUser = data;
+            this.forceUpdate();
+        }).catch((error) => {
+            console.log(error);
+            this.state.isUser = AuthSession.isUserInit(this.state.isUser);
+            console.log(this.state.isUser);
+            history.push(ACTION.SLASH);
+        });
+    // if(!isEmpty(isUser)) {
+    //     } else {
+    //         history.replace(ACTION.SLASH);
+    //     }
     }
 
     render() {

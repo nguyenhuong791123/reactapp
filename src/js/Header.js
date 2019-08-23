@@ -90,13 +90,20 @@ class Header extends C {
     }
 
     const action = obj.getAttribute('action');
-    const path = obj.getAttribute('path');
+    console.log(window.location.protocol);
+    console.log(window.location.host);
+    // const path = obj.getAttribute('path');
     if(!Utils.isEmpty(action)) {
-      this.state.isUser.path = path;
+      // this.state.isUser.path = path;
       this.state.isUser.action = action;
+      console.log(this.state.isUser);
+      const url = window.location.protocol + '//' + window.location.host;
+      console.log(url);
+      var path = obj.href.replace(url, '');
+      console.log(path);
       this.props.onUpdateUser({ path: path, action: action });
-      obj.href = path;
-      obj.click();
+      // obj.href = path;
+      // obj.click();
     }
 
     // console.log(obj);
@@ -165,20 +172,24 @@ class Header extends C {
                   { <FaSitemap /> }
                   <span>{ Utils.getJsonValue(Msg, 'page_setting') }</span>
                 </NavDropdown.Item>
-                <NavDropdown.Item action={ PAGE.SYSTEM } path={ ACTION.SLASH + ACTION.LIST } onClick={ this._onClick.bind(this) }>
+                {/* <NavDropdown.Item action={ PAGE.SYSTEM } path={ ACTION.SLASH + ACTION.LIST } onClick={ this._onClick.bind(this) }>
                   { <FaLink /> }
                   <span>{ Utils.getJsonValue(Msg, 'system_setting') }</span>
-                </NavDropdown.Item>
+                </NavDropdown.Item> */}
+                <Link action={ PAGE.SYSTEM } to={ ACTION.SLASH + ACTION.LIST } className="dropdown-item" onClick={ this._onClick.bind(this) }>
+                  { <FaKey /> }
+                  <span>{ Utils.getJsonValue(Msg, 'system_setting') }</span>
+                </Link>
                 <NavDropdown.Divider />
-                {/* <Link to={ ACTION.SLASH } className="dropdown-item" onClick={ this._onLogout.bind(this) }>
+                <Link to={ ACTION.SLASH } className="dropdown-item" onClick={ this._onLogout.bind(this) }>
                   { <FaKey /> }
                   <span>{ Utils.getJsonValue(Msg, 'bt_logout') }</span>
-                </Link> */}
+                </Link>
 
-                <NavDropdown.Item path={ ACTION.SLASH } onClick={ this._onLogout.bind(this) }>
+                {/* <NavDropdown.Item path={ ACTION.SLASH } onClick={ this._onLogout.bind(this) }>
                   { <FaKey /> }
                   <span>{ Utils.getJsonValue(Msg, 'bt_logout') }</span>
-                </NavDropdown.Item>
+                </NavDropdown.Item> */}
               </NavDropdown>
             </Navbar.Collapse>
           </Navbar>

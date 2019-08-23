@@ -29,5 +29,17 @@ const doLogout = () => {
     return new Promise(resolve => setTimeout(resolve, 1000));
 };
 
+const isUserInit = (isUser) => {
+  var auth = {};
+  auth['uLid'] = '';
+  auth['viewHeader'] = false;
+  auth['device'] = isUser.device;
+  auth['language'] = isUser.language;
+  auth['action'] = '';
+  auth['path'] = '/';
+  return auth;  
+}
+
+module.exports.isUserInit = isUserInit;
 module.exports.doLogin = doLogin;
 module.exports.doLogout = doLogout;

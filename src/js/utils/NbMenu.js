@@ -74,9 +74,9 @@ class NbMenu extends C {
   }
 
   render() {
-    console.log(this.state.isUser);
+    // console.log(this.state.isUser);
     const Msg = Messages[ this.state.isUser.language ];
-    console.log(Msg);
+    // console.log(Msg);
     return ( 
       <div className="Headder">
         <Navbar bg="dark" expand="lg" variant="dark">

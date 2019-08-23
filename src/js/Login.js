@@ -41,6 +41,8 @@ class Login extends C {
       } else {
         this.state.validated = true;
         this.state.isUser['uLid'] = this.state.uLid;
+        this.state.isUser['path'] = ACTION.SLASH + ACTION.LIST;
+        console.log(this.state.isUser);
         this.props.onLogin(this.state.isUser, 'token');
         this.props.history.push(ACTION.SLASH + ACTION.LIST);
         console.log(this.state);

@@ -43,14 +43,15 @@ class App extends C {
         }
     }
 
-    _onLogin(isUser, token){
+    _onLogin(isUser, inToken){
         this.state.isUser = isUser;
         this._setViewHeader(true);
-        AuthSession.doLogin(isUser, token).then(response => {
-            console.log(this.state);
+        AuthSession.doLogin(isUser, inToken).then(response => {
+            // console.log(this.state);
             const { token } = response;
             sessionService.saveSession({ token }).then(() => {
               sessionService.saveUser(isUser).then(() => {
+                console.log(isUser);
                 console.log(sessionService.loadUser('COOKIES'));
                 // callBack(auth);
             });
@@ -79,24 +80,6 @@ class App extends C {
 
     _onUpdateUser(objs) {
         this._onUpdatePromise(objs, this.state.isUser, this._setIsUser);
-        // const isUser = sessionService.loadUser('COOKIES');
-        // console.log(isUser);
-        // isUser.then(function(data) {
-        //     var keys = Object.keys(objs);
-        //     if(!isEmpty(keys) && keys.length > 0) {
-        //         for(var i=0; i<keys.length; i++) {
-        //             data[keys[i]] = objs[keys[i]];
-        //         }
-        //     }
-        //     console.log(data);
-        //     this.forceUpdate();
-        //     // this.state.isUser =data;
-        // }).catch(function(error) {
-        //     // this.state.isUser = AuthSession.isUserInit(this.state.isUser);
-        //     history.push(ACTION.SLASH);
-        //     this.forceUpdate();
-        //     // console.log(error);
-        // });
     }
 
     _onUpdatePromise(objs, stateIsUser, callBack) {
@@ -110,7 +93,7 @@ class App extends C {
                 }
             }
             console.log(data);
-            // callBack(data);
+            callBack(data);
         }).catch(function(error) {
             console.log(stateIsUser);
             const isUserInit = AuthSession.isUserInit(stateIsUser);
@@ -121,15 +104,20 @@ class App extends C {
         this.forceUpdate();
     }
 
-    _setIsUser(isUser) {
+    async _setIsUser(isUser) {
         this.state.isUser = isUser;
+        console.log('_setIsUser');
+        console.log(this.state.isUser);
     }
 
     componentWillMount() {
         const isUser = sessionService.loadUser('COOKIES');
         console.log(isUser);
         isUser.then((data) => {
-            console.log(data);
+            if(data['path'] === ACTION.SLASH) {
+                data['viewHeader'] = false;
+                history.push(ACTION.SLASH);
+            };
             this.state.isUser = data;
             this.forceUpdate();
         }).catch((error) => {

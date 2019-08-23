@@ -8,6 +8,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory, { PaginationProvider, SizePerPageDropdownStandalone, PaginationListStandalone }  from 'react-bootstrap-table2-paginator';
 // import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
 import filterFactory, { textFilter, selectFilter } from 'react-bootstrap-table2-filter';
+import { sessionService, sessionReducer } from 'redux-react-session';
 
 import { ACTION } from '../utils/Types';
 import Utils from '../utils/Utils';
@@ -291,13 +292,13 @@ class List extends C {
 
   componentDidMount(){
     // this._removeExpandRowAll();
-    console.log('componentDidMount' + window.innerHeight);
+    // console.log('componentDidMount' + window.innerHeight);
     // this.forceUpdate();
   }
 
   componentWillMount(){
     // console.log(this);
-    console.log('componentWillMount' + window.innerHeight);
+    // console.log('componentWillMount' + window.innerHeight);
     // const headers = {
     //   'Accept': 'application/json',
     //   'Content-Type': 'application/json'
@@ -360,13 +361,11 @@ class List extends C {
   //   }
   // }
 
-  componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps');
-    console.log(this.props);
-    // You don't have to do this check first, but it can help prevent an unneeded render
-    if (nextProps.startTime !== this.state.startTime) {
-      this.setState({ startTime: nextProps.startTime });
-    }
+  componentWillReceiveProps(props) {
+    // console.log('componentWillReceiveProps');
+    // console.log(this.props);
+    // console.log(sessionService.loadUser('COOKIES'));
+    // console.log(props);
   }
 
   render() {

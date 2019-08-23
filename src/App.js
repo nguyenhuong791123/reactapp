@@ -1,5 +1,5 @@
 import React, { Component as C } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
@@ -7,7 +7,7 @@ import { sessionService, sessionReducer } from 'redux-react-session';
 import thunkMiddleware from 'redux-thunk';
 
 import { ACTION } from './js/utils/Types';
-import { isEmpty } from './js/utils/Utils';
+import Utils from './js/utils/Utils';
 
 /* eslint-disable import/first */
 import P404 from './js/error/P404';
@@ -19,58 +19,28 @@ import Create from './js/pages/Create';
 import View from './js/pages/View';
 
 import AuthSession from './js/auth/AuthSession';
-import { USER_DATA } from 'redux-react-session/dist/constants';
 let reducer = combineReducers({ session: sessionReducer });
 let store = createStore(reducer, compose(applyMiddleware(thunkMiddleware)));
+// const validateSession = (session) => { return true; }
+// sessionService.initSessionService(store, { driver: 'COOKIES', validateSession });
 sessionService.initSessionService(store, { driver: 'COOKIES' });
 const history = createBrowserHistory();
 
 class App extends C {
     constructor(props) {
         super(props);
-        this._onLogin = this._onLogin.bind(this);
-        this._onLogout = this._onLogout.bind(this);
         this._setViewHeader = this._setViewHeader.bind(this);
+        this._doLogin = this._doLogin.bind(this);
+        this._doLogout = this._doLogout.bind(this);
+        this._loadAuthCookies = this._loadAuthCookies.bind(this);
+        this._onUpdatePromise = this._onUpdatePromise.bind(this);
+        this._updateStateIsUser = this._updateStateIsUser.bind(this);
 
         this.state = {
             copyright: "Copyright ©2018 VNEXT All Rights Reserved."
-            ,isUser: {
-                device: this.props.ua.device
-                ,language: this.props.ua.language
-                ,viewHeader: false
-                ,path: ACTION.SLASH
-            }        
+            ,isUser: { device: this.props.ua.device, language: this.props.ua.language, viewHeader: false }
+            ,options: null
         }
-    }
-
-    _onLogin(isUser, inToken){
-        this.state.isUser = isUser;
-        this._setViewHeader(true);
-        AuthSession.doLogin(isUser, inToken).then(response => {
-            // console.log(this.state);
-            const { token } = response;
-            sessionService.saveSession({ token }).then(() => {
-              sessionService.saveUser(isUser).then(() => {
-                console.log(isUser);
-                console.log(sessionService.loadUser('COOKIES'));
-                // callBack(auth);
-            });
-          });
-        });
-    }
-    
-    _onLogout(){
-        this.state.isUser.viewHeader = false;
-        this.forceUpdate();
-        AuthSession.doLogout().then(() => {
-            sessionService.deleteSession();
-            sessionService.deleteUser();
-            this.state.isUser = AuthSession.isUserInit(this.state.isUser);
-            // this._setViewHeader(false);
-            // console.log(sessionService.loadUser('COOKIES'));
-            // console.log(this.state);
-        }).catch(err => { throw (err); });
-        // history.push(SLASH);
     }
 
     _setViewHeader(isView) {
@@ -78,58 +48,83 @@ class App extends C {
         this.forceUpdate();
     }
 
-    _onUpdateUser(objs) {
-        this._onUpdatePromise(objs, this.state.isUser, this._setIsUser);
+    _doLogin = (isUser, options) => {
+        const auth = { info: isUser, options: options };
+        this._updateStateIsUser(auth);
+        AuthSession.doLogin(auth).then(response => {
+            const { token } = response;
+            sessionService.saveSession({ token }).then(() => {
+                sessionService.saveUser(auth).then(() => {
+                    console.log('_doLogin complete !!!');
+                });
+            });
+        });
+    };
+
+    _doLogout = () => {
+        AuthSession.doLogout().then(() => {
+            sessionService.deleteSession();
+            sessionService.deleteUser();
+            const auth = AuthSession.isUserInit(null);
+            this.state.isUser = auth.info;
+            this.state.options = auth.options;
+        }).catch(err => { throw (err); });
+    };
+
+    _loadAuthCookies = (callBack) => {
+        const objAuth = sessionService.loadUser('COOKIES');
+        console.log(objAuth);
+        if(objAuth !== undefined) {
+            objAuth.then(function(data) {
+                if(data.info['path'] === ACTION.SLASH) {
+                    data.info['viewHeader'] = false;
+                }
+                callBack(data);
+            }).catch(function(error) {
+                console.log(error);
+                callBack(AuthSession.isUserInit(null));
+            });
+        } else {
+            const auth = AuthSession.isUserInit(null);
+            this.state.isUser = auth.info;
+            this.state.options = auth.options;
+        }
     }
 
-    _onUpdatePromise(objs, stateIsUser, callBack) {
+    _onUpdatePromise(inIsUser, inOptions) {
         const isUser = sessionService.loadUser('COOKIES');
-        console.log(isUser);
         isUser.then(function(data) {
-            var keys = Object.keys(objs);
-            if(!isEmpty(keys) && keys.length > 0) {
-                for(var i=0; i<keys.length; i++) {
-                    data[keys[i]] = objs[keys[i]];
+            var ukeys = Object.keys(inIsUser);
+            if(!Utils.isEmpty(ukeys) && ukeys.length > 0) {
+                for(var i=0; i<ukeys.length; i++) {
+                    data.info[ukeys[i]] = inIsUser[ukeys[i]];
                 }
+                this.state.isUser = data.info;
             }
-            console.log(data);
-            callBack(data);
+            var okeys = Object.keys(inOptions);
+            if(!Utils.isEmpty(okeys) && okeys.length > 0) {
+                for(var o=0; o<okeys.length; o++) {
+                    data.options[okeys[o]] = inOptions[okeys[o]];
+                }
+                this.state.options = data.options;
+            }
+            this.forceUpdate();
         }).catch(function(error) {
-            console.log(stateIsUser);
-            const isUserInit = AuthSession.isUserInit(stateIsUser);
-            console.log(isUserInit);
-            // callBack(isUserInit);
-            history.push(ACTION.SLASH);
-        });
+            console.log('_onUpdatePromise');
+            console.log(error);
+        })
+    }
+
+    _updateStateIsUser(isUser) {
+        this.state.isUser = isUser.info;
+        this.state.options = isUser.options;
+        console.log('_updateStateIsUser');
+        console.log(this.state);
         this.forceUpdate();
     }
 
-    async _setIsUser(isUser) {
-        this.state.isUser = isUser;
-        console.log('_setIsUser');
-        console.log(this.state.isUser);
-    }
-
-    componentWillMount() {
-        const isUser = sessionService.loadUser('COOKIES');
-        console.log(isUser);
-        isUser.then((data) => {
-            if(data['path'] === ACTION.SLASH) {
-                data['viewHeader'] = false;
-                history.push(ACTION.SLASH);
-            };
-            this.state.isUser = data;
-            this.forceUpdate();
-        }).catch((error) => {
-            console.log(error);
-            this.state.isUser = AuthSession.isUserInit(this.state.isUser);
-            console.log(this.state.isUser);
-            history.push(ACTION.SLASH);
-        });
-    // if(!isEmpty(isUser)) {
-    //     } else {
-    //         history.replace(ACTION.SLASH);
-    //     }
+    UNSAFE_componentWillMount() {
+        this._loadAuthCookies(this._updateStateIsUser);
     }
 
     render() {
@@ -139,17 +134,19 @@ class App extends C {
                     <Router history={ history }>
                         <div id="div_header">
                             <Header
-                                // history={ history }
                                 isUser={ this.state.isUser }
-                                viewHeader={ this.state.isUser.viewHeader }
-                                onUpdateUser={ this._onUpdateUser.bind(this) }
-                                onLogout={ this._onLogout.bind(this) } />
+                                options={ this.state.options }
+                                onUpdateUser={ this._onUpdatePromise.bind(this) }
+                                onLogout={ this._doLogout.bind(this) } />
                         </div>
                         <div id="div_body">
                             <Switch>
                                 <Route
                                     exact path={ ACTION.SLASH }
-                                    render={ ({ props }) => <Login isUser={ this.state.isUser } onLogin={ this._onLogin.bind(this) } {...this.props} />} />
+                                    render={ ({ props }) => <Login
+                                                                isUser={ this.state.isUser }
+                                                                onLogin={ this._doLogin.bind(this) }
+                                                                {...this.props} />} />
                                 <Route
                                     path={ ACTION.SLASH + ACTION.LIST }
                                     render={ ({ props }) => <List isUser={ this.state.isUser } {...this.props} />} />
@@ -172,6 +169,7 @@ class App extends C {
                         </div>
                     </Router>
                 </Provider>
+
                 <div id="div_footer" className="bg-light div-footer">
                     <Footer copyright={ this.state.copyright } viewFooter={ !this.state.isUser.viewHeader } />
                 </div>

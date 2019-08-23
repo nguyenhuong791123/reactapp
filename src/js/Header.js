@@ -1,7 +1,7 @@
 import React, { Component as C } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown, Form, FormControl } from 'react-bootstrap';
-import { FaUser, FaSearch, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaLink, FaKey, FaRocketchat } from 'react-icons/fa';
+import { FaUser, FaSearch, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaKey, FaRocketchat } from 'react-icons/fa';
 
 import { ACTION , LINK, NOT_LINK, PAGE } from './utils/Types';
 import Utils from './utils/Utils';
@@ -32,6 +32,7 @@ class Header extends C {
 
     this.state = {
       isUser: this.props.isUser
+      ,options: this.props.options
       ,menus: [
         { view: LINK, target: 'target_00', label: 'label_00', level: 0, items: [] }
         ,{ view: NOT_LINK, target: 'target_01', label: 'label_01', level: 0, items: 
@@ -102,11 +103,11 @@ class Header extends C {
     console.log(e);
   }
 
-  componentDidUpdate() {
+  UNSAFE_componentDidUpdate() {
     this._loadButtonToggle();
   }
 
-  componentDidMount() {
+  UNSAFE_componentDidMount() {
     this._loadButtonToggle();
   }
 

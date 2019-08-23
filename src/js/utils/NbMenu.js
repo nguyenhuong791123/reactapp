@@ -2,7 +2,7 @@ import React, { Component as C } from 'react';
 import { Link } from 'react-router-dom';
 import onClickOutside from 'react-onclickoutside';
 import { Navbar, Nav, NavDropdown, Form, FormControl, Image } from 'react-bootstrap';
-import { FaUser, FaSearch, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaLink, FaKey, FaRocketchat } from 'react-icons/fa';
+import { FaUser, FaSearch, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaKey, FaRocketchat } from 'react-icons/fa';
 
 import Messages from '../../msg/Msg';
 import { LINK, ACTION, PAGE } from './Types';
@@ -73,6 +73,18 @@ class NbMenu extends C {
     });
   }
 
+  _newWindow(e) {
+    var href = e.target.getAttribute("page");
+    console.log(e.target);
+    if(Utils.isEmpty(href) && e.target.tagName === 'IMG') {
+      href = e.target.parentElement.getAttribute("page");
+    }
+    if(Utils.isEmpty(href)) return;
+    var w = window.open();
+    w.opener = null;
+    w.location = href;
+  }
+
   render() {
     // console.log(this.state.isUser);
     const Msg = Messages[ this.state.isUser.language ];
@@ -80,8 +92,8 @@ class NbMenu extends C {
     return ( 
       <div className="Headder">
         <Navbar bg="dark" expand="lg" variant="dark">
-          <a target="_blank" href="https://vnext.co.jp/company-info.html" className="header-image-icon">
-            <Image src="favicon.ico" rounded />
+          <a href='#home-page' page={ 'https://vnext.co.jp/company-info.html' } onClick={ this._newWindow.bind(this) } className={ 'header-image-icon' }>
+            <Image src={ 'favicon.ico' } rounded />
             <span>SmartCRM</span>
           </a>
           <Navbar.Toggle aria-controls="basic-navbar-nav" id="basic-navbar-nav-toggle" />

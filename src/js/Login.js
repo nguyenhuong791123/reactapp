@@ -20,6 +20,7 @@ class Login extends C {
     this._onChange = this._onChange.bind(this);
     this._onChangeSelect = this._onChangeSelect.bind(this);
 
+    console.log(this.props.isUser);
     this.state = {
       isUser: this.props.isUser
       ,validated: true
@@ -39,13 +40,14 @@ class Login extends C {
       if(this.state.uLid.length > 8 || this.state.pw.length > 8) {
         return;
       } else {
-        this.state.validated = true;
+        // this.state.validated = true;
         this.state.isUser['uLid'] = this.state.uLid;
         this.state.isUser['path'] = ACTION.SLASH + ACTION.LIST;
-        console.log(this.state.isUser);
-        this.props.onLogin(this.state.isUser, 'token');
+        this.state.isUser['viewHeader'] = true;
+        // console.log(this.state.isUser);
+        this.props.onLogin(this.state.isUser, null);
         this.props.history.push(ACTION.SLASH + ACTION.LIST);
-        console.log(this.state);
+        // console.log(this.state);
       }
     }
   }
@@ -55,7 +57,7 @@ class Login extends C {
     const dError = e.target.parentElement.childNodes[1];
     if(!isEmpty(dError)) {
       if(value.length <= 0) {
-        dError.style.display = 'none';
+        dError.style.display = 'block';
         dError.innerText = this._getMsg(MSG_TYPE.LOGIN, 'login_id') + this._getMsg(MSG_TYPE.ERROR, 'required');
       } else if(value.length > 8) {
         dError.style.display = 'block';
@@ -73,10 +75,7 @@ class Login extends C {
     this.forceUpdate();
   }
 
-  // componentWillMount(){
-  // }
-
-  componentDidMount() {
+  UNSAFE_componentDidMount() {
     var div = document.getElementById('div_alert_login');
     if(!isEmpty(div)) {
       window.onresize = function(event) {
@@ -103,6 +102,13 @@ class Login extends C {
     if(!isEmpty(page) && page === MSG_TYPE.ERROR) return getJsonValue(MsgError, key);
     if(!isEmpty(page) && page === MSG_TYPE.LOGIN) return getJsonValue(MsgLogin, key);
     return page + '/' + key;
+  }
+
+  UNSAFE_componentWillReceiveProps(props) {
+    console.log('componentWillReceiveProps');
+    console.log(this.props);
+    // console.log(sessionService.loadUser('COOKIES'));
+    // console.log(props);
   }
 
   render() {

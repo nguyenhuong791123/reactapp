@@ -1,7 +1,7 @@
 
 import React, { Component as C } from 'react';
 import { Link } from 'react-router-dom';
-import { Alert, Button } from 'react-bootstrap';
+import { Alert } from 'react-bootstrap';
 
 import { ACTION } from '../utils/Types';
 import '../../css/Alert.css';

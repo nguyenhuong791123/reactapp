@@ -7,15 +7,15 @@ class Footer extends C {
     super(props);
 
     this.state = { };
-
   }
 
   render() {
     if(!this.props.viewFooter) return "";
+    console.log(this.props.viewFooter);
     return (
       <div>
         <span>
-          Copyright ©2018 VNEXT All Rights Reserved.
+          { this.props.copyright }
         </span>
       </div>
     );

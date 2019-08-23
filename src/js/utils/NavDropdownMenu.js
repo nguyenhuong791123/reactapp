@@ -56,10 +56,7 @@ class NavDropdownMenu extends C {
 
       if(!Utils.isEmpty(items) && items.length > 0) {
         this._getMenuLinkBoxHTML(isExistObj, idx, items);
-        // console.log(ReactDOM.findDOMNode(obj).getBoundingClientRect());
         const objPos = ReactDOM.findDOMNode(obj).getBoundingClientRect();
-        // isExistObj.style.top = e.clientY + 'px';
-        // isExistObj.style.left = e.clientX + 'px';
         isExistObj.style.top = (objPos.top) + 'px';
         isExistObj.style.left = (objPos.x + objPos.width) + 'px';
   
@@ -99,6 +96,7 @@ class NavDropdownMenu extends C {
         nDiv.appendChild(this._getMenuLink(o, index));
         pDiv.appendChild(nDiv);
       }
+      return o;
     });
   }
 
@@ -136,8 +134,6 @@ class NavDropdownMenu extends C {
       var isExistObj = document.getElementById(this.state.id + '_level_' + idx);
       if(!Utils.isEmpty(isExistObj)) {
         isExistObj.remove();
-        // const className = isExistObj.className;
-        // isExistObj.className = className.replace(' show', '');
       }
     }  
   }

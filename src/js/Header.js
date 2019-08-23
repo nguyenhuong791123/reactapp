@@ -61,15 +61,10 @@ class Header extends C {
 
   _onClick(e) {
     var hBts = document.getElementById("basic-navbar-nav");
-    // console.log(window.innerWidth);
     if(!Utils.isEmpty(hBts) && window.innerWidth <= 991) {
       var btn = hBts.parentElement.childNodes[0];
       if(!Utils.isEmpty(btn) && btn.tagName === "BUTTON") btn.click();
     }
-    // e.preventDefault();
-    // e.stopPropagation();
-    // e.nativeEvent.stopImmediatePropagation();
-    // e.nativeEvent.composedPath();
 
     var obj = e.target;
     if(obj.tagName !== 'A') {
@@ -90,24 +85,13 @@ class Header extends C {
     }
 
     const action = obj.getAttribute('action');
-    console.log(window.location.protocol);
-    console.log(window.location.host);
-    // const path = obj.getAttribute('path');
     if(!Utils.isEmpty(action)) {
-      // this.state.isUser.path = path;
       this.state.isUser.action = action;
-      console.log(this.state.isUser);
       const url = window.location.protocol + '//' + window.location.host;
-      console.log(url);
       var path = obj.href.replace(url, '');
-      console.log(path);
       this.props.onUpdateUser({ path: path, action: action });
-      // obj.href = path;
-      // obj.click();
     }
-
-    // console.log(obj);
-    // this.props.history.push({ pathname: ACTION.SLASH + ACTION.LIST, params: { "para": obj.para } });
+    // this.props.history.push(ACTION.SLASH);
   }
 
   _onLogout(){

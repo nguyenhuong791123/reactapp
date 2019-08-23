@@ -360,6 +360,15 @@ class List extends C {
   //   }
   // }
 
+  componentWillReceiveProps(nextProps) {
+    console.log('componentWillReceiveProps');
+    console.log(this.props);
+    // You don't have to do this check first, but it can help prevent an unneeded render
+    if (nextProps.startTime !== this.state.startTime) {
+      this.setState({ startTime: nextProps.startTime });
+    }
+  }
+
   render() {
     // if(Utils.isEmpty(this.props.isUser) || Utils.isEmpty(this.props.list)) return("");
     const styles = { 'height': (window.innerHeight - 100 ) + 'px' };

@@ -59,11 +59,12 @@ class App extends C {
     }
     
     _onLogout(){
+        this.state.isUser.viewHeader = false;
+        this.forceUpdate();
         AuthSession.doLogout().then(() => {
             sessionService.deleteSession();
             sessionService.deleteUser();
             this.state.isUser = AuthSession.isUserInit(this.state.isUser);
-            this.forceUpdate();
             // this._setViewHeader(false);
             // console.log(sessionService.loadUser('COOKIES'));
             // console.log(this.state);
@@ -150,6 +151,7 @@ class App extends C {
                     <Router history={ history }>
                         <div id="div_header">
                             <Header
+                                // history={ history }
                                 isUser={ this.state.isUser }
                                 viewHeader={ this.state.isUser.viewHeader }
                                 onUpdateUser={ this._onUpdateUser.bind(this) }

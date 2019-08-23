@@ -72,10 +72,17 @@ class Login extends C {
   }
 
   // componentWillMount(){
-  //   this.props.history.push(SLASH +LIST);
   // }
 
   componentDidMount() {
+    var div = document.getElementById('div_alert_login');
+    if(!isEmpty(div)) {
+      window.onresize = function(event) {
+        div.style.left = (window.innerWidth - div.offsetWidth)/2;
+        // console.log((window.innerWidth - div.offsetWidth)/2);
+      };
+      window.onresize();  
+    }
     this._reLoadBody();
   }
 
@@ -101,7 +108,7 @@ class Login extends C {
 
     return (
       <div>
-        <Alert variant="success" className="div-center">
+        <Alert id="div_alert_login" variant="success" className="div-center">
           {/* <Alert.Heading>{ <FaUnlockAlt /> }System Authorization{ <FaUnlockAlt /> }</Alert.Heading> */}
           <Alert.Heading>{ this._getMsg(MSG_TYPE.LOGIN, 'system_auth') }</Alert.Heading>
           <hr />

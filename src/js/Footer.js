@@ -6,12 +6,18 @@ class Footer extends C {
   constructor(props) {
     super(props);
 
-    this.state = { };
+    this.state = { viewFooter: this.props.viewFooter };
+  }
+
+  UNSAFE_componentWillReceiveProps(props) {
+    console.log('FOOTER componentWillReceiveProps');
+    this.state.viewFooter = props.viewFooter;
+    this.forceUpdate();
   }
 
   render() {
-    if(!this.props.viewFooter) return "";
-    console.log(this.props.viewFooter);
+    if(!this.state.viewFooter) return "";
+    // console.log(this.props.viewFooter);
     return (
       <div>
         <span>

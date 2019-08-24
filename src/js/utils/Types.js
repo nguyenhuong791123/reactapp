@@ -22,4 +22,5 @@ export const PAGE = {
     ,SETTING: 'setting'
     ,SYSTEM: 'system'
     ,MAIL: 'mail'
+    ,CHAT: 'chat'
 };

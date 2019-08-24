@@ -35,25 +35,27 @@ class List extends C {
     this.forceUpdate();
   }
 
-  // UNSAFE_componentDidUpdate() {
-  //   // this._removeExpandRowAll();
-  // }
-
-  // UNSAFE_componentDidMount(){
-  //   // this._removeExpandRowAll();
-  //   // console.log('componentDidMount' + window.innerHeight);
-  //   // this.forceUpdate();
-  // }
-
-  // UNSAFE_componentWillMount(){
-  // }
-
   _onPageChange(e) {
     console.log(e);
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps');
+  UNSAFE_componentWillMount(){
+    console.log('LIST UNSAFE_componentWillMount');
+  }
+
+  UNSAFE_componentDidUpdate() {
+    console.log('LIST UNSAFE_componentDidUpdate');
+  }
+
+  UNSAFE_componentDidMount(){
+    console.log('LIST UNSAFE_componentDidMount');
+  }
+
+  UNSAFE_componentWillReceiveProps(props) {
+    console.log('LIST componentWillReceiveProps');
+    this.state.isUser = props.isUser;
+    // console.log(props);
+    // console.log(this.state);
     // console.log(this.props);
     // console.log(sessionService.loadUser('COOKIES'));
     // console.log(props);
@@ -64,7 +66,7 @@ class List extends C {
     // const styles = { 'height': (window.innerHeight - 100 ) + 'px' };
     return (
       <div>
-        List
+        { this.state.isUser.path + '/' + this.state.isUser.action }
       </div>
     )
   };

@@ -22,7 +22,7 @@ const isUserInit = (isUser) => {
       ,uName: (isUser===null || isUser.info===undefined)?'':isUser.info.uName
       ,viewHeader: (isUser===null || isUser.info===undefined)?false:isUser.info.viewHeader
       ,path: (isUser===null || isUser.info===undefined)?'':isUser.info.path
-      ,action: (isUser===null || isUser.info===undefined)?'':isUser.info.action
+      ,action: (isUser===null || isUser.info===undefined)?'customer':isUser.info.action
       ,logo: (isUser===null || isUser.info===undefined)?'':isUser.info.logo
     }
     ,options: {

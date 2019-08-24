@@ -29,10 +29,13 @@ const history = createBrowserHistory();
 class App extends C {
     constructor(props) {
         super(props);
+
+        this._setIsUserInit = this._setIsUserInit.bind(this);
         this._setViewHeader = this._setViewHeader.bind(this);
         this._doLogin = this._doLogin.bind(this);
         this._doLogout = this._doLogout.bind(this);
         this._loadAuthCookies = this._loadAuthCookies.bind(this);
+        this._onUpdateIsUserCallBack = this._onUpdateIsUserCallBack.bind(this);
         this._onUpdatePromise = this._onUpdatePromise.bind(this);
         this._updateStateIsUser = this._updateStateIsUser.bind(this);
 
@@ -41,6 +44,13 @@ class App extends C {
             ,isUser: { device: this.props.ua.device, language: this.props.ua.language, viewHeader: false }
             ,options: null
         }
+    }
+
+    _setIsUserInit() {
+        const auth = AuthSession.isUserInit(null);
+        this.state.isUser = auth.info;
+        this.state.options = auth.options;
+        this.forceUpdate();
     }
 
     _setViewHeader(isView) {
@@ -62,21 +72,22 @@ class App extends C {
     };
 
     _doLogout = () => {
+        this._setIsUserInit();
         AuthSession.doLogout().then(() => {
             sessionService.deleteSession();
             sessionService.deleteUser();
-            const auth = AuthSession.isUserInit(null);
-            this.state.isUser = auth.info;
-            this.state.options = auth.options;
+            console.log('_doLogout complete !!!');
         }).catch(err => { throw (err); });
     };
 
     _loadAuthCookies = (callBack) => {
         const objAuth = sessionService.loadUser('COOKIES');
-        console.log(objAuth);
+        // console.log(history.location);
         if(objAuth !== undefined) {
             objAuth.then(function(data) {
-                if(data.info['path'] === ACTION.SLASH) {
+                // console.log(data.info['path']);
+                const isUrl = history.location.pathname;
+                if(isUrl === ACTION.SLASH || data.info['path'] === ACTION.SLASH) {
                     data.info['viewHeader'] = false;
                 }
                 callBack(data);
@@ -85,41 +96,49 @@ class App extends C {
                 callBack(AuthSession.isUserInit(null));
             });
         } else {
-            const auth = AuthSession.isUserInit(null);
-            this.state.isUser = auth.info;
-            this.state.options = auth.options;
+            this._setIsUserInit();
         }
     }
 
-    _onUpdatePromise(inIsUser, inOptions) {
+    _onUpdateIsUserCallBack(auth) {
+        this._updateStateIsUser(auth);
+        this.forceUpdate();
+    }
+
+    _onUpdatePromise(inIsUser, inOptions, callBack) {
+        const auth = { info: inIsUser, options: inOptions };
+        console.log(auth);
+
         const isUser = sessionService.loadUser('COOKIES');
         isUser.then(function(data) {
-            var ukeys = Object.keys(inIsUser);
-            if(!Utils.isEmpty(ukeys) && ukeys.length > 0) {
-                for(var i=0; i<ukeys.length; i++) {
-                    data.info[ukeys[i]] = inIsUser[ukeys[i]];
+            if(!Utils.isEmpty(inIsUser)) {
+                var ukeys = Object.keys(inIsUser);
+                if(!Utils.isEmpty(ukeys) && ukeys.length > 0) {
+                    for(var i=0; i<ukeys.length; i++) {
+                        data.info[ukeys[i]] = inIsUser[ukeys[i]];
+                    }
+                    auth.info = data.info;
                 }
-                this.state.isUser = data.info;
             }
-            var okeys = Object.keys(inOptions);
-            if(!Utils.isEmpty(okeys) && okeys.length > 0) {
-                for(var o=0; o<okeys.length; o++) {
-                    data.options[okeys[o]] = inOptions[okeys[o]];
+            if(!Utils.isEmpty(inOptions)) {
+                var okeys = Object.keys(inOptions);
+                if(!Utils.isEmpty(okeys) && okeys.length > 0) {
+                    for(var o=0; o<okeys.length; o++) {
+                        data.options[okeys[o]] = inOptions[okeys[o]];
+                    }
+                    auth.options = data.options;
                 }
-                this.state.options = data.options;
             }
-            this.forceUpdate();
+            callBack(auth);
         }).catch(function(error) {
-            console.log('_onUpdatePromise');
+            console.log('ERROR _onUpdatePromise');
             console.log(error);
-        })
+        });
     }
 
     _updateStateIsUser(isUser) {
         this.state.isUser = isUser.info;
         this.state.options = isUser.options;
-        console.log('_updateStateIsUser');
-        console.log(this.state);
         this.forceUpdate();
     }
 
@@ -137,6 +156,7 @@ class App extends C {
                                 isUser={ this.state.isUser }
                                 options={ this.state.options }
                                 onUpdateUser={ this._onUpdatePromise.bind(this) }
+                                onUpdateIsUserCallBack={ this._onUpdateIsUserCallBack.bind(this) }
                                 onLogout={ this._doLogout.bind(this) } />
                         </div>
                         <div id="div_body">

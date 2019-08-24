@@ -1,0 +1,26 @@
+div.mr-auto {
+    margin-left: 2.5em;
+    margin-right: 2.5em;
+}
+
+div.mr-auto nav.nav-tabs {
+    border-bottom: none !important;
+    overflow-x: auto;
+}
+
+div.mr-auto nav.nav-tabs a.nav-link:first-child {
+    position: absolute;
+    border-color: #dee2e6 #dee2e6 #fff;
+    border-bottom: none;
+    margin-left: -2em;
+}
+
+div.mr-auto nav.nav-tabs a.nav-link:last-child {
+    position: absolute;
+    border-color: #dee2e6 #dee2e6 #fff;
+    border-bottom: none;
+}
+
+div.mr-auto nav.nav-tabs a.nav-link.active {
+    background: none;
+}

@@ -105,14 +105,15 @@ class Login extends C {
   }
 
   UNSAFE_componentWillReceiveProps(props) {
-    console.log('componentWillReceiveProps');
+    console.log('Login componentWillReceiveProps');
     console.log(this.props);
     // console.log(sessionService.loadUser('COOKIES'));
     // console.log(props);
   }
 
   render() {
-    // console.log(this.state);
+    console.log('Login Render!!!');
+    console.log(this.state);
 
     return (
       <div>

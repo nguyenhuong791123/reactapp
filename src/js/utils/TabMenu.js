@@ -1,6 +1,6 @@
 import React, { Component as C } from 'react';
 // import ReactDOM from 'react-dom';
-import { Tabs, Tab } from 'react-bootstrap';
+import { Nav, Tabs, Tab } from 'react-bootstrap';
 
 import Utils from './Utils';
 import "../../css/TabMenu.css";
@@ -10,15 +10,16 @@ class TabMenu extends C {
         super(props);
   
         this._onSelect = this._onSelect.bind(this);
-    //   this._onShow = this._onShow.bind(this);
-    //   this._onClick = this._onClick.bind(this);
+        this._onClick = this._onClick.bind(this);
+        //   this._onShow = this._onShow.bind(this);
     //   this._onMouseOver = this._onMouseOver.bind(this)
   
         this.state = {
             isUser: this.props.isUser
             ,isActive: 1
-            ,isSliderTab: 1
+            ,isSliderTab: 0
             ,isMargin: 0
+            ,isLastChild: 0
         // ,id: this.props.id
         // ,title: this.props.title
         // ,show: false
@@ -158,44 +159,77 @@ class TabMenu extends C {
     //   return obj;
     // }
 
-    _onSelect(tabId) {
-        if(Utils.isEmpty(tabId)) return;
-        if(tabId === '-' || tabId === '+') {
-            this._nextPrevTab(tabId);
-            return;
-        }
-        this.state.isActive = tabId;
+    _onSelect(tabIdx) {
+        if(Utils.isEmpty(tabIdx)) return;
+        // if(tabIdx === '-' || tabIdx === '+') {
+        //     this._nextPrevTab(tabIdx);
+        //     var div = document.getElementById('div-nav-tab-menu');
+        //     // const active = (this.state.isActive+1);
+        //     // console.log(active);
+        //     const nav = div.childNodes[0];
+        //     const navChilds = nav.childNodes;
+        //     if(Utils.isEmpty(navChilds) || navChilds.length <= 0) return;
+        //     console.log('isActive');
+        //     console.log(this.state.isActive);
+        //         for(var i=1; i<navChilds.length; i++) {
+        //         if(i !== (this.state.isActive+1)) {
+        //             navChilds[i].className = navChilds[i].className.replace(' active', '');
+        //         } else {
+        //             var className = navChilds[i].className;
+        //             if(!Utils.isEmpty(className) && className.indexOf('active') === -1) {
+        //                 navChilds[i].className = navChilds[i].className + ' active';
+        //             }        
+        //         }
+        //     }
+        //     return;
+        // }
+        // console.log('tabIdx');
+        // console.log(tabIdx);
+        this.state.isActive = parseInt(tabIdx);
     }
 
-    _nextPrevTab(tabId) {
+    _onClick(e) {
+        const action = e.target.getAttribute("action");
+        if(Utils.isEmpty(action) || (action !== '-' && action !== '+')) return;
+        this._nextPrevTab(action, e.target);
+    }
+
+    _nextPrevTab(action, nextObj) {
         var div = document.getElementById('div-nav-tab-menu');
-        const nav = div.childNodes[0];
+        const nav = div.childNodes[0].childNodes[1];
+        if(Utils.isEmpty(nav)) return;
         const navChilds = nav.childNodes;
-        this.state.isSliderTab = (tabId === '-')?(this.state.isSliderTab+1):(this.state.isSliderTab-1);
-        if(this.state.isSliderTab <= 1) this.state.isSliderTab = 1;
-        if(this.state.isSliderTab === 1) {
-            isMargin = 0;
-        } else {
+        if(Utils.isEmpty(navChilds) || navChilds.length <= 0) return;
+        this.state.isSliderTab = (action === '-')?(this.state.isSliderTab+1):(this.state.isSliderTab-1);
+        if(this.state.isSliderTab <= 0) this.state.isSliderTab = 0;
+        const last1st = navChilds[navChilds.length-1];
+        console.log(last1st.offsetLeft);
+        console.log(nextObj.offsetLeft);
+        if(last1st.offsetLeft <= nextObj.offsetLeft && action === '-') {
+            this.state.isSliderTab = (this.state.isSliderTab-1);
+            return;
+        }
+
+        console.log(this.state.isSliderTab);
+        var isMargin = 0;
+        if(this.state.isSliderTab !== 0) {
             const isTab = navChilds[this.state.isSliderTab];
             if(Utils.isEmpty(isTab)) return;
-            var isMargin = this.state.isMargin + parseInt(tabId + isTab.offsetWidth);    
+            isMargin = this.state.isMargin + parseInt(action + isTab.offsetWidth);
         }
-        console.log(this.state.isMargin);
-        console.log(this.state.isActive);
-        console.log(this.state.isSliderTab);
-        console.log(isMargin);
         if(isMargin > 0) {
             return;
         }
+
         this.state.isMargin = isMargin;
-        navChilds[1].style.marginLeft = isMargin + 'px';
+        navChilds[0].style.marginLeft = isMargin + 'px';
     }
   
     _getTabs(items) {
         if(Utils.isEmpty(items) || items.length === 0) return "";
         return items.map((o, index) => {
             return (
-                <Tab key={ index } eventKey={ o.id } title={ o.label }></Tab>
+                <Tab key={ index } eventKey={ index } title={ o.label }></Tab>
             );
         });
     }
@@ -211,12 +245,11 @@ class TabMenu extends C {
             if(!Utils.isEmpty(div)) {
                 const divContent = div.childNodes[1];
                 if(!Utils.isEmpty(divContent)) divContent.remove();
-                const nav = div.childNodes[0];
+                const nav = div.childNodes[0].childNodes[1];;
                 console.log(div.offsetLeft);
                 if(!Utils.isEmpty(nav)) {
                     const nl = nav.childNodes.length;
-                    nav.style.width = (window.innerWidth - 630) + 'px';
-                    nav.childNodes[nl-1].style.left = ((window.innerWidth - 620) + (div.offsetLeft - 10)) + 'px';
+                    nav.style.width = (window.innerWidth - 610) + 'px';
                 }
             }    
         };
@@ -225,11 +258,13 @@ class TabMenu extends C {
   
     render() {
       return (
-            <Tabs defaultActiveKey={ this.state.isActive } onSelect={ this._onSelect.bind(this) }>
-                <Tab eventKey={ '+' } title={ '◀︎' }></Tab>
-                { this._getTabs(this.state.objs) }
-                <Tab eventKey={ '-' } title={ '▶︎' }></Tab>
-            </Tabs>
+            <div>
+                <Nav.Link action={ '+' } onClick={ this._onClick.bind(this) }>{ '◀︎' }</Nav.Link>
+                    <Tabs defaultActiveKey={ this.state.isActive } onSelect={ this._onSelect.bind(this) }>
+                        { this._getTabs(this.state.objs) }
+                    </Tabs>
+                <Nav.Link action={ '-' } onClick={ this._onClick.bind(this) }>{ '▶︎' }</Nav.Link>
+            </div>
         );
     }
 }

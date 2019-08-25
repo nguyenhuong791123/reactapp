@@ -57,15 +57,15 @@ class Header extends C {
             }
           ]
         }
-        ,{ id: 10, view: LINK, target: 'target_10', label: 'label_10', level: 0, items: [] }
+        ,{ id: 10, view: LINK, target: 'target_10', label: 'label_10-label_10', level: 0, items: [] }
         ,{ id: 11, view: LINK, target: 'target_11', label: 'label_11', level: 0, items: [] }
         ,{ id: 12, view: LINK, target: 'target_12', label: 'label_12', level: 0, items: [] }
         ,{ id: 13, view: LINK, target: 'target_13', label: 'label_13', level: 0, items: [] }
-        ,{ id: 14, view: LINK, target: 'target_14', label: 'label_14', level: 0, items: [] }
+        ,{ id: 14, view: LINK, target: 'target_14', label: 'label_14-label_14', level: 0, items: [] }
         ,{ id: 15, view: LINK, target: 'target_15', label: 'label_15', level: 0, items: [] }
         ,{ id: 16, view: LINK, target: 'target_16', label: 'label_16', level: 0, items: [] }
         ,{ id: 17, view: LINK, target: 'target_17', label: 'label_17', level: 0, items: [] }
-        ,{ id: 18, view: LINK, target: 'target_18', label: 'label_18', level: 0, items: [] }
+        ,{ id: 18, view: LINK, target: 'target_18', label: 'label_18-label_18', level: 0, items: [] }
         ,{ id: 19, view: LINK, target: 'target_19', label: 'label_19', level: 0, items: [] }
         ,{ id: 20, view: LINK, target: 'target_20', label: 'label_20', level: 0, items: [] }
         ,{ id: 21, view: LINK, target: 'target_21', label: 'label_21', level: 0, items: [] }

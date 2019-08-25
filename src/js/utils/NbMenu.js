@@ -84,10 +84,11 @@ class NbMenu extends C {
   }
 
   _newWindow(e) {
-    var href = e.target.getAttribute("page");
-    console.log(e.target);
-    if(Utils.isEmpty(href) && e.target.tagName === 'IMG') {
-      href = e.target.parentElement.getAttribute("page");
+    var obj = e.target;
+    if(Utils.isEmpty(obj) || Utils.isEmpty(obj.tagName)) return;
+    var href = obj.getAttribute("page");
+    if(Utils.isEmpty(href) && (obj.tagName === 'IMG' || obj.tagName === 'SPAN')) {
+      href = obj.parentElement.getAttribute("page");
     }
     if(Utils.isEmpty(href)) return;
     var w = window.open();

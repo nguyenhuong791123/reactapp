@@ -47,7 +47,7 @@ class Header extends C {
             }
           ]
         }
-        ,{ id: 6, view: NOT_LINK, target: 'target_03', label: 'label_03', level: 0, items: 
+        ,{ id: 6, view: NOT_LINK, target: 'target_06', label: 'label_06', level: 0, items: 
           [
             { id: 7, view: LINK, target: 'target_003', level: 1, label: 'label_003' }
             ,{ id: 8, view: NOT_LINK, target: 'target_0003', level: 1, label: 'label_0003', items: 
@@ -86,6 +86,7 @@ class Header extends C {
     }
 
     var obj = e.target;
+    // if(Utils.isEmpty(e.tagName) && e.tagName === 'A') obj = e;
     if(obj.tagName !== 'A') {
       if(obj.tagName === 'path') {
         obj = e.target.parentElement.parentElement;

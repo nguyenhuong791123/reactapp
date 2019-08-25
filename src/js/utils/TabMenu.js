@@ -1,7 +1,9 @@
 import React, { Component as C } from 'react';
-// import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom';
+import onClickOutside from 'react-onclickoutside';
 import { Nav, Tabs, Tab } from 'react-bootstrap';
 
+import { LINK, NOT_LINK } from './Types';
 import Utils from './Utils';
 import "../../css/TabMenu.css";
 
@@ -10,185 +12,227 @@ class TabMenu extends C {
         super(props);
   
         this._onSelect = this._onSelect.bind(this);
+        this._onClickNextPrev = this._onClickNextPrev.bind(this);
         this._onClick = this._onClick.bind(this);
-        //   this._onShow = this._onShow.bind(this);
-    //   this._onMouseOver = this._onMouseOver.bind(this)
+        // this._onShow = this._onShow.bind(this);
+        this._onMouseOver = this._onMouseOver.bind(this)
   
         this.state = {
             isUser: this.props.isUser
             ,isActive: 1
             ,isSliderTab: 0
             ,isMargin: 0
-            ,isLastChild: 0
-        // ,id: this.props.id
-        // ,title: this.props.title
-        // ,show: false
-        // ,level: 0
+            ,level: 0
+            ,id: null
             ,objs: this.props.objs
         }
     }
   
-    // _onClick(e) {
-    //   console.log('NDMENU _onClick');
-    //   var obj = this.getLinkObj(e);
-    //   const view = parseInt(obj.getAttribute("view"));
-    //   if(view === NOT_LINK) {
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    //     return;
-    //   }
-    //   const level = parseInt(obj.getAttribute("level"));
-    //   var div = document.getElementById(this.state.id);
-    //   const className = div.childNodes[0].className;
-    //   if(className.indexOf('show ') === -1) {
-    //     this._hideAllChildMenu(0);
-    //   } else {
-    //     this._hideAllChildMenu(level);
-    //   }
-    //   this.props.onClick(e);
-    // }
+    _onClick(e) {
+        console.log('TAMENU _onClick');
+        var obj = this.getLinkObj(e);
+        const view = parseInt(obj.getAttribute("view"));
+        if(view === NOT_LINK) {
+            e.preventDefault();
+            e.stopPropagation();
+            return;
+        }
+        const level = parseInt(obj.getAttribute("level"));
+        var div = document.getElementById(this.state.id + '_level_' + level);
+        if(!Utils.isEmpty(div)) {
+            const className = div.className;
+            if(className.indexOf('show ') === -1) {
+                this._hideAllChildMenu(0);
+            } else {
+                this._hideAllChildMenu(level);
+            }
+        } else {
+            this._removeAllDropdown();
+        }
+        this.props.onClick(e);
+    }
+
+    _removeAllDropdown() {
+        var divs = document.getElementsByClassName('dropdown-menu');
+        if(!Utils.isEmpty(divs) && divs.length > 1) {
+            for(var i=0; i<divs.length; i++) {
+                var id = divs[i].id;
+                if(Utils.isEmpty(id) || id.indexOf('_level_') === -1) continue
+                divs[i].remove();
+            }
+        }
+    }
   
-    // _onMouseOver(e) {
-    //   console.log('NDMENU _onMouseOver');
-    //   console.log(e.target);
-    //   var obj = this.getLinkObj(e);
-    //   const view = parseInt(obj.getAttribute("view"));
-    //   const level = parseInt(obj.getAttribute("level"));
-    //   const divId = this.state.id + '_level_' + (level+1);
-    //   if(view === NOT_LINK) {
-    //     e.preventDefault();
-    //     e.stopPropagation();
-    //     console.log(e);
-    //     var isExistObj = document.getElementById(divId);
-    //     if(!Utils.isEmpty(isExistObj)) isExistObj.remove();
-    //     const pObj = obj.parentElement.parentElement;
-    //     isExistObj = pObj.cloneNode(true);
-    //     isExistObj.id = divId;
-    //     isExistObj.innerHTML = "";
-    //     const idx = obj.getAttribute("idx");
-    //     var items = [];
-    //     var idxs = idx.split('-');
-    //     // console.log(idxs);
-    //     if(!Utils.isEmpty(idxs) && idxs.length === 1) {
-    //       items = this.state.objs[idxs[0]].items;
-    //     }
-    //     if(!Utils.isEmpty(idxs) && idxs.length === 2) {
-    //       items = this.state.objs[idxs[0]].items[idxs[1]].items;
-    //     }
-    //     if(!Utils.isEmpty(idxs) && idxs.length === 3) {
-    //       items = this.state.objs[idxs[0]].items[idxs[1]].items[idxs[2]].items;
-    //     }
-    //     if(!Utils.isEmpty(idxs) && idxs.length === 4) {
-    //       items = this.state.objs[idxs[0]].items[idxs[1]].items[idxs[2]].items[idxs[3]].items;
-    //     }
+    _onWriteDropDownMenu(idx, obj, json) {
+        console.log('TAMENU _onWriteDropDownMenu');
+        const view = json["view"];
+        const level = json["level"];
+        const divId = 'div_' + idx + '_level_' + (level+1);
+        if(view !== NOT_LINK) return
+        this._removeAllDropdown();
+        var isExistObj = document.createElement('div');
+        isExistObj.id = divId;
+        isExistObj.className = 'dropdown-menu show';
+        var items = json.items;
+        if(!Utils.isEmpty(items) && items.length > 0) {
+            this._getMenuLinkBoxHTML(isExistObj, idx, items);
+            isExistObj.style.top = (obj.offsetTop + obj.offsetHeight) + 'px';
+            isExistObj.style.left = (obj.offsetLeft) + 'px';
+        
+            var header = document.getElementById('div_header');
+            console.log(isExistObj);
+            header.appendChild(isExistObj);
+            this.setState({ level: (level+1) });  
+        }
+
+        this._hideAllChildMenu((level+1));
+        this.setState({ show: true, id: 'div_' + idx });
+        this.forceUpdate();
+    }
   
-    //     if(!Utils.isEmpty(items) && items.length > 0) {
-    //       this._getMenuLinkBoxHTML(isExistObj, idx, items);
-    //       const objPos = ReactDOM.findDOMNode(obj).getBoundingClientRect();
-    //       isExistObj.style.top = (objPos.top) + 'px';
-    //       isExistObj.style.left = (objPos.x + objPos.width) + 'px';
-    
-    //       var header = document.getElementById('div_header');
-    //       header.appendChild(isExistObj);
-    //       this.setState({ level: (level+1) });  
-    //     }
+    _getMenuLinkBoxHTML(pDiv, idx, items) {
+      if(Utils.isEmpty(items) || items.length === 0) return "";
+      return items.map((o, index) => {
+        index = idx + '-' + index;
+        if(o.view === LINK) {
+          pDiv.appendChild(this._getMenuLink(o, index));
+        } else {
+          const nDiv = document.createElement('div');
+          nDiv.className = "dropright"
+          nDiv.appendChild(this._getMenuLink(o, index));
+          pDiv.appendChild(nDiv);
+        }
+        return o;
+      });
+    }
   
-    //     this._hideAllChildMenu((level+1));
-    //     this.setState({ show: true });
-    //     this.forceUpdate();
-    //   } else {
-    //     // console.log(e);
-    //     var div = document.getElementById(this.state.id);
-    //     const className = div.childNodes[0].className;
-    //     if(className.indexOf('show ') === -1) {
-    //       this._hideAllChildMenu(0);
-    //     } else {
-    //       this._hideAllChildMenu(level);
-    //     }
-    //   }
-    // }
+    _getMenuLink(item, index) {
+        console.log(item);
+        const nObj = document.createElement('a');
+        if(item.view === LINK) {
+            nObj.className = "dropdown-item";
+        } else {
+            nObj.className = "dropdown-item dropdown-toggle";
+        }
+        nObj.innerHTML = item.label;
+        nObj.setAttribute('idx', index);
+        nObj.setAttribute('action', item.target);
+        nObj.setAttribute('href', '#');
+        nObj.setAttribute('level', item.level);
+        nObj.setAttribute('view', item.view);
+        nObj.onclick = this._onClick.bind(this);
+        nObj.onmouseover = this._onMouseOver.bind(this);
+        return nObj;
+    }
+
+    _onMouseOver(e) {
+        console.log('TAMENU _onMouseOver');
+        var obj = this.getLinkObj(e);
+        const view = parseInt(obj.getAttribute("view"));
+        const level = parseInt(obj.getAttribute("level"));
+        const divId = this.state.id + '_level_' + (level+1);
+        if(view === NOT_LINK) {
+            e.preventDefault();
+            e.stopPropagation();
+            var isExistObj = document.getElementById(divId);
+            if(!Utils.isEmpty(isExistObj)) isExistObj.remove();
+            const pObj = obj.parentElement.parentElement;
+            isExistObj = pObj.cloneNode(true);
+            isExistObj.id = divId;
+            isExistObj.innerHTML = "";
+            const idx = obj.getAttribute("idx");
+            var items = [];
+            var json = {};
+            var idxs = idx.split('-');
+            // for(var i=0; i<idxs.length; i++) {
+            //     json = this.state.objs[idxs[i]];
+            //     console.log(json);
+            //     if(Utils.isEmpty(json[idxs[i]].items)) break;
+            //     items = json[idxs[i]].items;
+            // }
+            if(!Utils.isEmpty(idxs) && idxs.length === 1) {
+                items = this.state.objs[idxs[0]].items;
+            }
+            if(!Utils.isEmpty(idxs) && idxs.length === 2) {
+                items = this.state.objs[idxs[0]].items[idxs[1]].items;
+            }
+            if(!Utils.isEmpty(idxs) && idxs.length === 3) {
+                items = this.state.objs[idxs[0]].items[idxs[1]].items[idxs[2]].items;
+            }
+            if(!Utils.isEmpty(idxs) && idxs.length === 4) {
+                items = this.state.objs[idxs[0]].items[idxs[1]].items[idxs[2]].items[idxs[3]].items;
+            }
+        
+            if(!Utils.isEmpty(items) && items.length > 0) {
+                this._getMenuLinkBoxHTML(isExistObj, idx, items);
+                const objPos = ReactDOM.findDOMNode(obj).getBoundingClientRect();
+                isExistObj.style.top = (objPos.top) + 'px';
+                isExistObj.style.left = (objPos.x + objPos.width) + 'px';
+        
+                var header = document.getElementById('div_header');
+                header.appendChild(isExistObj);
+                this.setState({ level: (level+1) });
+                console.log(this.state.level);
+            }
+        
+            this._hideAllChildMenu((level+1));
+            this.setState({ show: true });
+            this.forceUpdate();
+        } else {
+            var div = document.getElementById(this.state.id + '_level_' + level);
+            if(Utils.isEmpty(div)) return;
+            const className = div.className;
+            if(className.indexOf(' show') === -1) {
+                this._hideAllChildMenu(0);
+            } else {
+                this._hideAllChildMenu(level);
+            }
+        }
+    }
   
-    // _onShow(e) {
-    //   this.setState({ show: !this.state.show });
-    // }
-  
-    // _getMenuLinkBoxHTML(pDiv, idx, items) {
-    //   if(Utils.isEmpty(items) || items.length === 0) return "";
-    //   return items.map((o, index) => {
-    //     index = idx + '-' + index;
-    //     if(o.view === LINK) {
-    //       pDiv.appendChild(this._getMenuLink(o, index));
-    //     } else {
-    //       const nDiv = document.createElement('div');
-    //       nDiv.className = "dropright"
-    //       nDiv.appendChild(this._getMenuLink(o, index));
-    //       pDiv.appendChild(nDiv);
-    //     }
-    //     return o;
-    //   });
-    // }
-  
-    // _getMenuLink(item, index) {
-    //   const nObj = document.createElement('a');
-    //   if(item.view === LINK) {
-    //     nObj.className = "dropdown-item";
-    //   } else {
-    //     nObj.className = "dropdown-item dropdown-toggle";
-    //   }
-    //   nObj.innerHTML = item.label;
-    //   nObj.setAttribute('idx', index);
-    //   nObj.setAttribute('action', item.target);
-    //   nObj.setAttribute('href', '#');
-    //   nObj.setAttribute('level', item.level);
-    //   nObj.setAttribute('view', item.view);
-    //   nObj.onclick = this._onClick.bind(this);
-    //   nObj.onmouseover = this._onMouseOver.bind(this);
-    //   return nObj;
-    // }
-  
-    // getLinkObj(e) {
-    //   var obj = e.target;
-    //   if(obj.tagName !== 'A') {
-    //     if(obj.tagName === 'path') {
-    //       obj = e.target.parentElement.parentElement;
-    //     } else {
-    //       obj = e.target.parentElement;
-    //     }
-    //     if(Utils.isEmpty(obj) || obj.tagName !== 'A') return;
-    //   }
-    //   return obj;
-    // }
+    getLinkObj(e) {
+      var obj = e.target;
+      if(obj.tagName !== 'A') {
+        if(obj.tagName === 'path') {
+          obj = e.target.parentElement.parentElement;
+        } else {
+          obj = e.target.parentElement;
+        }
+        if(Utils.isEmpty(obj) || obj.tagName !== 'A') return;
+      }
+      return obj;
+    }
+
+    _hideAllChildMenu(level) {
+        for(var idx = 0; idx <= this.state.level; idx++) {
+            if(idx < (level+1)) continue;
+            var isExistObj = document.getElementById(this.state.id + '_level_' + idx);
+            if(!Utils.isEmpty(isExistObj)) {
+                isExistObj.remove();
+            }
+        }  
+    }    
 
     _onSelect(tabIdx) {
         if(Utils.isEmpty(tabIdx)) return;
-        // if(tabIdx === '-' || tabIdx === '+') {
-        //     this._nextPrevTab(tabIdx);
-        //     var div = document.getElementById('div-nav-tab-menu');
-        //     // const active = (this.state.isActive+1);
-        //     // console.log(active);
-        //     const nav = div.childNodes[0];
-        //     const navChilds = nav.childNodes;
-        //     if(Utils.isEmpty(navChilds) || navChilds.length <= 0) return;
-        //     console.log('isActive');
-        //     console.log(this.state.isActive);
-        //         for(var i=1; i<navChilds.length; i++) {
-        //         if(i !== (this.state.isActive+1)) {
-        //             navChilds[i].className = navChilds[i].className.replace(' active', '');
-        //         } else {
-        //             var className = navChilds[i].className;
-        //             if(!Utils.isEmpty(className) && className.indexOf('active') === -1) {
-        //                 navChilds[i].className = navChilds[i].className + ' active';
-        //             }        
-        //         }
-        //     }
-        //     return;
-        // }
-        // console.log('tabIdx');
-        // console.log(tabIdx);
+        const obj = this.state.objs[tabIdx];
+        if(Utils.isEmpty(obj)) return;
         this.state.isActive = parseInt(tabIdx);
+        const div = document.getElementById('div-nav-tab-menu');
+        const nav = div.childNodes[0].childNodes[1];
+        if(Utils.isEmpty(nav)) return;
+        const navChilds = nav.childNodes;
+        if(Utils.isEmpty(navChilds) || Utils.isEmpty(navChilds[this.state.isActive])) return;
+        this._onWriteDropDownMenu(tabIdx, navChilds[this.state.isActive], obj);
+        // this._onShow();
+        // console.log(obj);
     }
 
-    _onClick(e) {
+    // _onShow(e) {
+    //     this.setState({ show: !this.state.show });
+    // }    
+
+    _onClickNextPrev(e) {
         const action = e.target.getAttribute("action");
         if(Utils.isEmpty(action) || (action !== '-' && action !== '+')) return;
         this._nextPrevTab(action, e.target);
@@ -203,15 +247,11 @@ class TabMenu extends C {
         this.state.isSliderTab = (action === '-')?(this.state.isSliderTab+1):(this.state.isSliderTab-1);
         if(this.state.isSliderTab <= 0) this.state.isSliderTab = 0;
         const last1st = navChilds[navChilds.length-1];
-        console.log(last1st.offsetLeft);
-        console.log(nextObj.offsetLeft);
+        var isMargin = 0;
         if(last1st.offsetLeft <= nextObj.offsetLeft && action === '-') {
             this.state.isSliderTab = (this.state.isSliderTab-1);
             return;
         }
-
-        console.log(this.state.isSliderTab);
-        var isMargin = 0;
         if(this.state.isSliderTab !== 0) {
             const isTab = navChilds[this.state.isSliderTab];
             if(Utils.isEmpty(isTab)) return;
@@ -238,35 +278,61 @@ class TabMenu extends C {
     //     console.log('TABMENU componentWillReceiveProps');
     // }
 
+    handleClickOutside = (e) => {
+        var obj = this.getLinkObj(e);
+        if(!Utils.isEmpty(obj)) {
+            const view = obj.getAttribute("view");
+            if(view === NOT_LINK) return;
+        }
+        var level = 0;
+        if(!Utils.isEmpty(obj)) level = obj.getAttribute("level");
+        this._hideAllChildMenu(level);
+    }
+
     componentDidMount() {
         console.log('TABMENU componentDidMount');
+        var div = document.getElementById('div-nav-tab-menu');
         window.onresize = function(event) {
-            var div = document.getElementById('div-nav-tab-menu');
             if(!Utils.isEmpty(div)) {
-                const divContent = div.childNodes[1];
+                const divContent = div.childNodes[0].childNodes[2];
                 if(!Utils.isEmpty(divContent)) divContent.remove();
-                const nav = div.childNodes[0].childNodes[1];;
+                const nav = div.childNodes[0].childNodes[1];
                 console.log(div.offsetLeft);
                 if(!Utils.isEmpty(nav)) {
-                    const nl = nav.childNodes.length;
                     nav.style.width = (window.innerWidth - 610) + 'px';
                 }
             }    
         };
         window.onresize();
+
+        const nav = div.childNodes[0].childNodes[1];
+        if(!Utils.isEmpty(nav)) {
+            const a = nav.childNodes;
+            for(var i=0; i<a.length; i++) {
+                var item = this.state.objs[i];
+                if(Utils.isEmpty(a[i]) || Utils.isEmpty(item)) continue;
+                var nObj = a[i];
+                nObj.setAttribute('idx', i);
+                nObj.setAttribute('action', item.target);
+                nObj.setAttribute('href', '#');
+                nObj.setAttribute('level', item.level);
+                nObj.setAttribute('view', item.view);
+                if(item.view === LINK) nObj.onclick = this._onClick.bind(this);
+            }
+        }
     }
   
     render() {
       return (
             <div>
-                <Nav.Link action={ '+' } onClick={ this._onClick.bind(this) }>{ '◀︎' }</Nav.Link>
+                <Nav.Link action={ '+' } onClick={ this._onClickNextPrev.bind(this) }>{ '◀︎' }</Nav.Link>
                     <Tabs defaultActiveKey={ this.state.isActive } onSelect={ this._onSelect.bind(this) }>
                         { this._getTabs(this.state.objs) }
                     </Tabs>
-                <Nav.Link action={ '-' } onClick={ this._onClick.bind(this) }>{ '▶︎' }</Nav.Link>
+                <Nav.Link action={ '-' } onClick={ this._onClickNextPrev.bind(this) }>{ '▶︎' }</Nav.Link>
             </div>
         );
     }
 }
   
-export default TabMenu;
+export default onClickOutside(TabMenu);

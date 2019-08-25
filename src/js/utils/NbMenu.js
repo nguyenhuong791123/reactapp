@@ -110,7 +110,10 @@ class NbMenu extends C {
           <Navbar.Toggle aria-controls="basic-navbar-nav" id="basic-navbar-nav-toggle" />
           <Navbar.Collapse id="basic-navbar-nav">
             {/* <Nav className="mr-auto">{ this._getMenu(this.state.menus) }</Nav> */}
-            <Nav className="mr-auto" id="div-nav-tab-menu"><TabMenu isUser={ this.state.isUser } objs={ this.state.menus }/></Nav>
+            <Nav className="mr-auto" id="div-nav-tab-menu">
+              <TabMenu isUser={ this.state.isUser } objs={ this.state.menus } onClick={ this._onClick.bind(this) }/>
+            </Nav>
+
             <Form inline>
               <FormControl type="text" placeholder="Search" className="mr-sm-2" />
               <Nav.Link href="#search" className="global-search"><FaSearch /></Nav.Link>

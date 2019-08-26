@@ -290,14 +290,17 @@ class TabMenu extends C {
     }
 
     componentDidMount() {
-        console.log('TABMENU componentDidMount');
+        // console.log('TABMENU componentDidMount');
         var div = document.getElementById('div-nav-tab-menu');
         window.onresize = function(event) {
             if(!Utils.isEmpty(div)) {
                 const divContent = div.childNodes[0].childNodes[2];
-                if(!Utils.isEmpty(divContent)) divContent.remove();
+                // console.log(divContent);
+                if(!Utils.isEmpty(divContent)
+                    && !Utils.isEmpty(divContent.className)
+                    && divContent.className === 'tab-content') divContent.remove();
                 const nav = div.childNodes[0].childNodes[1];
-                console.log(div.offsetLeft);
+                // console.log(div.offsetLeft);
                 if(!Utils.isEmpty(nav)) {
                     nav.style.width = (window.innerWidth - 610) + 'px';
                 }
@@ -326,9 +329,9 @@ class TabMenu extends C {
       return (
             <div>
                 <Nav.Link action={ '+' } onClick={ this._onClickNextPrev.bind(this) }>{ '◀︎' }</Nav.Link>
-                    <Tabs defaultActiveKey={ this.state.isActive } onSelect={ this._onSelect.bind(this) }>
-                        { this._getTabs(this.state.objs) }
-                    </Tabs>
+                <Tabs defaultActiveKey={ this.state.isActive } onSelect={ this._onSelect.bind(this) }>
+                    { this._getTabs(this.state.objs) }
+                </Tabs>
                 <Nav.Link action={ '-' } onClick={ this._onClickNextPrev.bind(this) }>{ '▶︎' }</Nav.Link>
             </div>
         );

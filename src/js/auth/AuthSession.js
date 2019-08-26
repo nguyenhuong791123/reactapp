@@ -47,7 +47,7 @@ const isUserInit = (isUser) => {
       customize: getJsonValue(isUser, 'options', 'customize', false)
       ,mail: getJsonValue(isUser, 'options', 'mail', false)
       ,chat: getJsonValue(isUser, 'options', 'chat', false)
-      ,cti: getJsonValue(isUser, 'options', 'cti', false)
+      ,dailer: getJsonValue(isUser, 'options', 'cti', true)
     }
   }
   return reUser;  

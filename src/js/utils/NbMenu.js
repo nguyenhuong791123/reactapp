@@ -41,6 +41,10 @@ class NbMenu extends C {
     this.props.onLogout();
   }
 
+  _onClickPhone(e) {
+    this.props.onClickPhone(e);
+  }
+
   _getMenu(menus) {
     if(Utils.isEmpty(menus) || menus.length === 0) return "";
     return menus.map((o, index) => {
@@ -119,7 +123,7 @@ class NbMenu extends C {
               <Nav.Link href="#search" className="global-search"><FaSearch /></Nav.Link>
             </Form>
       
-            <Nav.Link onClick={ this._onClick.bind(this) }>{ <FaPhone /> }</Nav.Link>
+            <Nav.Link onClick={ this._onClickPhone.bind(this) }>{ <FaPhone /> }</Nav.Link>
             <Nav.Link action={ PAGE.MAIL } onClick={ this._onClick.bind(this) }>{ <FaMailBulk /> }</Nav.Link>
             <Nav.Link action={ PAGE.CHAT } onClick={ this._onClick.bind(this) } id="a-chat-icon">{ <FaRocketchat /> }</Nav.Link>
             <NavDropdown title={<FaUser />} id="basic-nav-dropdown-right" alignRight>

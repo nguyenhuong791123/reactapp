@@ -29,7 +29,8 @@ class LMenu extends C {
     this._onClick = this._onClick.bind(this);
 
     this.state = {
-      menus: this.props.menus
+      isUser: this.props.isUser
+      ,menus: this.props.menus
     }
   }
 

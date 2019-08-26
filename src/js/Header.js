@@ -8,6 +8,7 @@ import Utils from './utils/Utils';
 import LMenu from "./utils/LMenu";
 import RMenu from "./utils/RMenu";
 import NbMenu from "./utils/NbMenu";
+import DailerBox from "./utils/DailerBox";
 
 import Messages from '../msg/Msg';
 import "../css/Index.css";
@@ -74,6 +75,7 @@ class Header extends C {
         ,{ id: 24, view: LINK, target: 'target_24', label: 'label_24', level: 0, items: [] }
         ,{ id: 25, view: LINK, target: 'target_25', label: 'label_25', level: 0, items: [] }
       ]
+      ,dailer: { show: false, top: 50, left: 0 }
       ,chats: { room: {}, data: [] }
     };
   }
@@ -137,7 +139,24 @@ class Header extends C {
   }
 
   _onClickPhone(e) {
-    console.log(e);
+    const obj = this.getLinkObj(e);
+    this.state.dailer.show = (!this.state.dailer.show);
+    this.state.dailer.top = ((obj.offsetTop + obj.offsetHeight) + 5);
+    this.state.dailer.left = ((obj.offsetLeft + obj.offsetWidth) - 200);
+    this.forceUpdate();
+  }
+
+  getLinkObj(e) {
+    var obj = e.target;
+    if(obj.tagName !== 'A') {
+      if(obj.tagName === 'path') {
+        obj = e.target.parentElement.parentElement;
+      } else {
+        obj = e.target.parentElement;
+      }
+      if(Utils.isEmpty(obj) || obj.tagName !== 'A') return;
+    }
+    return obj;
   }
 
   UNSAFE_componentDidUpdate() {
@@ -174,12 +193,16 @@ class Header extends C {
     // console.log(this.state.isUser);
     const Msg = Messages[ this.props.isUser.language ];
     // console.log(Msg);
+    const LeftMenu = (<LMenu isUser={ this.props.isUser } menus={ this.state.menus }/>);
+    const RigthMenu = (<RMenu isUser={ this.props.isUser } action={ this.state.isUser.action }/>);
+    const Dailer = (this.state.options.dailer)?(<DailerBox dailer={ this.state.dailer } isUser={ this.props.isUser }/>):"";
 
     if(this.props.isUser != null && this.props.isUser.menu===1) {
       return ( 
         <div className="Headder">
-          <LMenu ua={ this.state.ua } isUser={ this.props.isUser } menus={ this.state.menus }/>
-          <RMenu ua={ this.state.ua } isUser={ this.props.isUser } action={ this.state.isUser.action }/>
+          {/* <LMenu isUser={ this.props.isUser } menus={ this.state.menus }/>
+          <RMenu isUser={ this.props.isUser } action={ this.state.isUser.action }/> */}
+          { LeftMenu } { RigthMenu } { Dailer }
           <Navbar bg="dark" expand="lg" variant="dark">
             {/* <Navbar.Brand href="#home" className="a-homepage"><img src="favicon.ico" /></Navbar.Brand> */}
             <Navbar.Toggle aria-controls="basic-navbar-nav" id="basic-navbar-nav-toggle"/>
@@ -229,12 +252,14 @@ class Header extends C {
     } else {
       return (
         <div>
-          <RMenu isUser={ this.props.isUser } />
+          {/* <RMenu isUser={ this.props.isUser } /> */}
+          { RigthMenu } { Dailer }
           <NbMenu
             ua={ this.state.ua }
             isUser={ this.props.isUser }
             onLogout={ this._onLogout.bind(this) }
             onClick={ this._onClick.bind(this) }
+            onClickPhone={ this._onClickPhone.bind(this) }
             menus={ this.state.menus } />
         </div>
       );

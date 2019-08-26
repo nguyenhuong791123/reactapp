@@ -106,15 +106,15 @@ class Login extends C {
     return page + '/' + key;
   }
 
-  UNSAFE_componentWillReceiveProps(props) {
-    console.log('Login componentWillReceiveProps');
-    console.log(props);
-    this.setState.isUser = props.isUser;
-    console.log(this.setState.isUser);
-    this.forceUpdate();
-    // console.log(sessionService.loadUser('COOKIES'));
-    // console.log(props);
-  }
+  // UNSAFE_componentWillReceiveProps(props) {
+  //   console.log('Login componentWillReceiveProps');
+  //   console.log(props);
+  //   this.setState.isUser = props.isUser;
+  //   console.log(this.setState.isUser);
+  //   this.forceUpdate();
+  //   // console.log(sessionService.loadUser('COOKIES'));
+  //   // console.log(props);
+  // }
 
   render() {
     console.log('Login Render!!!');

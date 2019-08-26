@@ -27,7 +27,8 @@ class RMenu extends C {
     this._onClick = this._onClick.bind(this);
 
     this.state = {
-      isOpen: false
+      isUser: this.props.isUser
+      ,isOpen: false
       ,menus: this.props.menus
     }
   }

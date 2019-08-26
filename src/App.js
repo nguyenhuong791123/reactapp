@@ -30,7 +30,7 @@ class App extends C {
     constructor(props) {
         super(props);
 
-        this._setIsUserInit = this._setIsUserInit.bind(this);
+        // this._setIsUserInit = this._setIsUserInit.bind(this);
         this._setViewHeader = this._setViewHeader.bind(this);
         this._doLogin = this._doLogin.bind(this);
         this._doLogout = this._doLogout.bind(this);
@@ -41,17 +41,15 @@ class App extends C {
 
         this.state = {
             copyright: "Copyright ©2018 VNEXT All Rights Reserved."
-            ,isUser: { device: this.props.ua.device, language: this.props.ua.language, viewHeader: false }
-            ,options: null
+            ,isUser: AuthSession.isUserInit(null).info
+            // ,isUser: { device: this.props.ua.device, language: this.props.ua.language, viewHeader: false }
+            ,options: AuthSession.isUserInit(null).options
         }
     }
 
-    _setIsUserInit() {
-        const auth = AuthSession.isUserInit(null);
-        this.state.isUser = auth.info;
-        this.state.options = auth.options;
-        this.forceUpdate();
-    }
+    // _setIsUserInit() {
+    //     return AuthSession.isUserInit(null).info;
+    // }
 
     _setViewHeader(isView) {
         this.state.isUser.viewHeader = isView;
@@ -72,7 +70,11 @@ class App extends C {
     };
 
     _doLogout = () => {
-        this._setIsUserInit();
+        const auth = { info:  AuthSession.isUserInit(null).info, options:  AuthSession.isUserInit(null).options };
+        auth.info.language = this.state.isUser.language;
+        this.state.isUser = auth.info;
+        this.state.options = auth.options;
+        this.forceUpdate();
         AuthSession.doLogout().then(() => {
             sessionService.deleteSession();
             sessionService.deleteUser();
@@ -80,9 +82,9 @@ class App extends C {
         }).catch(err => { throw (err); });
     };
 
-    _loadAuthCookies = (callBack) => {
+    _loadAuthCookies = (isUser, callBack) => {
         const objAuth = sessionService.loadUser('COOKIES');
-        // console.log(history.location);
+        console.log(objAuth);
         if(objAuth !== undefined) {
             objAuth.then(function(data) {
                 // console.log(data.info['path']);
@@ -90,13 +92,16 @@ class App extends C {
                 if(isUrl === ACTION.SLASH || data.info['path'] === ACTION.SLASH) {
                     data.info['viewHeader'] = false;
                 }
+                // console.log('_loadAuthCookies');
+                // console.log(data);    
                 callBack(data);
             }).catch(function(error) {
                 console.log(error);
-                callBack(AuthSession.isUserInit(null));
+                console.log(AuthSession.isUserInit(isUser));
+                callBack(AuthSession.isUserInit(isUser));
             });
         } else {
-            this._setIsUserInit();
+            callBack({ info: AuthSession.isUserInit(null).info, options: AuthSession.isUserInit(null).options });
         }
     }
 
@@ -107,8 +112,7 @@ class App extends C {
 
     _onUpdatePromise(inIsUser, inOptions, callBack) {
         const auth = { info: inIsUser, options: inOptions };
-        console.log(auth);
-
+        // console.log(auth);
         const isUser = sessionService.loadUser('COOKIES');
         isUser.then(function(data) {
             if(!Utils.isEmpty(inIsUser)) {
@@ -137,16 +141,21 @@ class App extends C {
     }
 
     _updateStateIsUser(isUser) {
+        // console.log('_updateStateIsUser');
+        // console.log(isUser);
         this.state.isUser = isUser.info;
         this.state.options = isUser.options;
+        history.push(isUser.info.path);
         this.forceUpdate();
     }
 
     UNSAFE_componentWillMount() {
-        this._loadAuthCookies(this._updateStateIsUser);
+        this._loadAuthCookies(this.state.isUser, this._updateStateIsUser);
     }
 
     render() {
+        // console.log('APP Render !!!');
+        // console.log(this.state.isUser);
         return (
             <div>
                 <Provider store={ store }>

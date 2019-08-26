@@ -5,7 +5,9 @@ div.mr-auto {
 
 div.mr-auto nav.nav-tabs {
     border-bottom: none !important;
+    overflow: hidden;
     overflow-x: hidden;
+    overflow-y: hidden;
     /* margin-right: 2em; */
 }
 

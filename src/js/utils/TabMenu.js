@@ -142,7 +142,7 @@ class TabMenu extends C {
             isExistObj.innerHTML = "";
             const idx = obj.getAttribute("idx");
             var items = [];
-            var json = {};
+            // var json = {};
             var idxs = idx.split('-');
             // for(var i=0; i<idxs.length; i++) {
             //     json = this.state.objs[idxs[i]];

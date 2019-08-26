@@ -20,6 +20,7 @@ class Login extends C {
     this._onChange = this._onChange.bind(this);
     this._onChangeSelect = this._onChangeSelect.bind(this);
 
+    console.log('LOGIN constructor !!!');
     console.log(this.props.isUser);
     this.state = {
       isUser: this.props.isUser
@@ -44,7 +45,7 @@ class Login extends C {
         this.state.isUser['uLid'] = this.state.uLid;
         this.state.isUser['path'] = ACTION.SLASH + ACTION.LIST;
         this.state.isUser['viewHeader'] = true;
-        // console.log(this.state.isUser);
+        console.log(this.state.isUser);
         this.props.onLogin(this.state.isUser, null);
         this.props.history.push(ACTION.SLASH + ACTION.LIST);
         // console.log(this.state);
@@ -106,7 +107,10 @@ class Login extends C {
 
   UNSAFE_componentWillReceiveProps(props) {
     console.log('Login componentWillReceiveProps');
-    console.log(this.props);
+    console.log(props);
+    this.setState.isUser = props.isUser;
+    console.log(this.setState.isUser);
+    this.forceUpdate();
     // console.log(sessionService.loadUser('COOKIES'));
     // console.log(props);
   }

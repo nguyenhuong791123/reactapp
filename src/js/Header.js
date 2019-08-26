@@ -1,13 +1,13 @@
 import React, { Component as C } from 'react';
 import { Link } from 'react-router-dom';
-import { Navbar, Nav, NavDropdown, Form, FormControl } from 'react-bootstrap';
-import { FaUser, FaSearch, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaKey, FaLink, FaRocketchat } from 'react-icons/fa';
+import { Navbar, Nav, NavDropdown, Form, FormControl, Image } from 'react-bootstrap';
+import { FaUser, FaSearch, FaTty, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaKey, FaLink, FaRocketchat } from 'react-icons/fa';
 
 import { ACTION , LINK, NOT_LINK, PAGE } from './utils/Types';
 import Utils from './utils/Utils';
 import LMenu from "./utils/LMenu";
 import RMenu from "./utils/RMenu";
-import NbMenu from "./utils/NbMenu";
+import TabMenu from './utils/TabMenu';
 import DailerBox from "./utils/DailerBox";
 
 import Messages from '../msg/Msg';
@@ -24,6 +24,7 @@ class Header extends C {
     this._onSelect = this._onSelect.bind(this);
     this._onLogout = this._onLogout.bind(this);
     this._onClickPhone = this._onClickPhone.bind(this);
+    this._newWindow = this._newWindow.bind(this);
     // console.log(props.ua.device);
     // console.log(props.ua.language);
     // socket.emit('join room', 'room', 1);
@@ -142,7 +143,7 @@ class Header extends C {
     const obj = this.getLinkObj(e);
     this.state.dailer.show = (!this.state.dailer.show);
     this.state.dailer.top = ((obj.offsetTop + obj.offsetHeight) + 5);
-    this.state.dailer.left = ((obj.offsetLeft + obj.offsetWidth) - 200);
+    this.state.dailer.left = ((obj.offsetLeft + obj.offsetWidth) - 240);
     this.forceUpdate();
   }
 
@@ -159,6 +160,19 @@ class Header extends C {
     return obj;
   }
 
+  _newWindow(e) {
+    var obj = e.target;
+    if(Utils.isEmpty(obj) || Utils.isEmpty(obj.tagName)) return;
+    var href = obj.getAttribute("page");
+    if(Utils.isEmpty(href) && (obj.tagName === 'IMG' || obj.tagName === 'SPAN')) {
+      href = obj.parentElement.getAttribute("page");
+    }
+    if(Utils.isEmpty(href)) return;
+    var w = window.open();
+    w.opener = null;
+    w.location = href;
+  }
+
   UNSAFE_componentDidUpdate() {
     this._loadButtonToggle();
   }
@@ -170,6 +184,7 @@ class Header extends C {
   UNSAFE_componentWillReceiveProps(props) {
     console.log('HEADER componentWillReceiveProps');
     this.state.isUser = props.isUser;
+    this.state.options = props.options;
     // console.log(props);
     // console.log(this.state);
     // console.log(sessionService.loadUser('COOKIES'));
@@ -190,80 +205,74 @@ class Header extends C {
   render() {
     if(!this.state.isUser.viewHeader) return "";
     this._loadButtonToggle();
-    // console.log(this.state.isUser);
     const Msg = Messages[ this.props.isUser.language ];
-    // console.log(Msg);
-    const LeftMenu = (<LMenu isUser={ this.props.isUser } menus={ this.state.menus }/>);
-    const RigthMenu = (<RMenu isUser={ this.props.isUser } action={ this.state.isUser.action }/>);
     const Dailer = (this.state.options.dailer)?(<DailerBox dailer={ this.state.dailer } isUser={ this.props.isUser }/>):"";
 
-    if(this.props.isUser != null && this.props.isUser.menu===1) {
-      return ( 
-        <div className="Headder">
-          {/* <LMenu isUser={ this.props.isUser } menus={ this.state.menus }/>
-          <RMenu isUser={ this.props.isUser } action={ this.state.isUser.action }/> */}
-          { LeftMenu } { RigthMenu } { Dailer }
-          <Navbar bg="dark" expand="lg" variant="dark">
-            {/* <Navbar.Brand href="#home" className="a-homepage"><img src="favicon.ico" /></Navbar.Brand> */}
-            <Navbar.Toggle aria-controls="basic-navbar-nav" id="basic-navbar-nav-toggle"/>
-            <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="mr-auto"></Nav>
+    return (
+      <div className="Headder">
+        {(() => {
+          if(this.state.isUser.menu === 1) {
+            return ( <LMenu isUser={ this.props.isUser } menus={ this.state.menus }/> );
+          }
+        })()}
+        <RMenu isUser={ this.props.isUser } action={ this.state.isUser.action }/>
+        { Dailer }
+        <Navbar bg="dark" expand="lg" variant="dark">
+          <a href='#home-page' page={ 'https://vnext.co.jp/company-info.html' } onClick={ this._newWindow.bind(this) } className={ 'header-image-icon' }>
+            <Image src={ 'favicon.ico' } rounded />
+            <span>SmartCRM</span>
+          </a>
 
-              <Form inline>
-                <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                <Nav.Link href="#search" className="global-search"><FaSearch /></Nav.Link>
-              </Form>
-      
-              <Nav.Link onClick={ this._onClickPhone.bind(this) }>{ <FaPhone /> }</Nav.Link>
-              <Nav.Link action={ PAGE.MAIL } onClick={ this._onClick.bind(this) }>{ <FaMailBulk /> }</Nav.Link>
-              <Nav.Link action={ PAGE.CHAT } onClick={ this._onClick.bind(this) } id="a-chat-icon">{ <FaRocketchat /> }</Nav.Link>
-              <NavDropdown title={<FaUser />} id="basic-nav-dropdown-right" alignRight>
-                <NavDropdown.Item action={ PAGE.USER } onClick={ this._onClick.bind(this) }>
-                  { <FaUserCog /> }
-                  <span>{ Utils.getJsonValue(Msg, 'bt_profile') }</span>
-                </NavDropdown.Item>
-                <NavDropdown.Item action={ PAGE.SETTING } onClick={ this._onClick.bind(this) } id="a-page-setting">
-                  { <FaSitemap /> }
-                  <span>{ Utils.getJsonValue(Msg, 'page_setting') }</span>
-                </NavDropdown.Item>
-                <NavDropdown.Item action={ PAGE.SYSTEM } onClick={ this._onClick.bind(this) }>
-                  { <FaLink /> }
-                  <span>{ Utils.getJsonValue(Msg, 'system_setting') }</span>
-                </NavDropdown.Item>
-                {/* <Link action={ PAGE.SYSTEM } to={ ACTION.SLASH + ACTION.LIST } className="dropdown-item" onClick={ this._onClick.bind(this) }>
-                  { <FaKey /> }
-                  <span>{ Utils.getJsonValue(Msg, 'system_setting') }</span>
-                </Link> */}
-                <NavDropdown.Divider />
-                <Link to={ ACTION.SLASH } className="dropdown-item" onClick={ this._onLogout.bind(this) }>
-                  { <FaKey /> }
-                  <span>{ Utils.getJsonValue(Msg, 'bt_logout') }</span>
-                </Link>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" id="basic-navbar-nav-toggle"/>
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="mr-auto" id="div-nav-tab-menu">
+              {(() => {
+                if (this.state.isUser.menu === 0) {
+                  return (<TabMenu isUser={ this.state.isUser } objs={ this.state.menus } onClick={ this._onClick.bind(this) }/>);
+                }
+              })()}
+            </Nav>
 
-                {/* <NavDropdown.Item path={ ACTION.SLASH } onClick={ this._onLogout.bind(this) }>
-                  { <FaKey /> }
-                  <span>{ Utils.getJsonValue(Msg, 'bt_logout') }</span>
-                </NavDropdown.Item> */}
-              </NavDropdown>
-            </Navbar.Collapse>
-          </Navbar>
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          {/* <RMenu isUser={ this.props.isUser } /> */}
-          { RigthMenu } { Dailer }
-          <NbMenu
-            ua={ this.state.ua }
-            isUser={ this.props.isUser }
-            onLogout={ this._onLogout.bind(this) }
-            onClick={ this._onClick.bind(this) }
-            onClickPhone={ this._onClickPhone.bind(this) }
-            menus={ this.state.menus } />
-        </div>
-      );
-    }
+            <Form inline>
+              <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+              <Nav.Link href="#search" className="global-search"><FaSearch /></Nav.Link>
+            </Form>
+    
+            <Nav.Link onClick={ this._onClickPhone.bind(this) }>
+              {(() => {
+                if(!this.state.dailer.show) { return ( <FaTty /> );
+                }
+              })()}
+              {(() => {
+                if(this.state.dailer.show) { return ( <FaPhone /> );
+                }
+              })()}
+            </Nav.Link>
+            <Nav.Link action={ PAGE.MAIL } onClick={ this._onClick.bind(this) }>{ <FaMailBulk /> }</Nav.Link>
+            <Nav.Link action={ PAGE.CHAT } onClick={ this._onClick.bind(this) } id="a-chat-icon">{ <FaRocketchat /> }</Nav.Link>
+            <NavDropdown title={<FaUser />} id="basic-nav-dropdown-right" alignRight>
+              <NavDropdown.Item action={ PAGE.USER } onClick={ this._onClick.bind(this) }>
+                { <FaUserCog /> }
+                <span>{ Utils.getJsonValue(Msg, 'bt_profile') }</span>
+              </NavDropdown.Item>
+              <NavDropdown.Item action={ PAGE.SETTING } onClick={ this._onClick.bind(this) } id="a-page-setting">
+                { <FaSitemap /> }
+                <span>{ Utils.getJsonValue(Msg, 'page_setting') }</span>
+              </NavDropdown.Item>
+              <NavDropdown.Item action={ PAGE.SYSTEM } onClick={ this._onClick.bind(this) }>
+                { <FaLink /> }
+                <span>{ Utils.getJsonValue(Msg, 'system_setting') }</span>
+              </NavDropdown.Item>
+              <NavDropdown.Divider />
+              <Link to={ ACTION.SLASH } className="dropdown-item" onClick={ this._onLogout.bind(this) }>
+                { <FaKey /> }
+                <span>{ Utils.getJsonValue(Msg, 'bt_logout') }</span>
+              </Link>
+            </NavDropdown>
+          </Navbar.Collapse>
+        </Navbar>
+      </div>
+    );
   };
 }
 

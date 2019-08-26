@@ -2,7 +2,7 @@ import React, { Component as C } from 'react';
 import { Link } from 'react-router-dom';
 import onClickOutside from 'react-onclickoutside';
 import { Navbar, Nav, NavDropdown, Form, FormControl, Image } from 'react-bootstrap';
-import { FaUser, FaSearch, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaKey, FaLink, FaRocketchat } from 'react-icons/fa';
+import { FaUser, FaSearch, FaTty, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaKey, FaLink, FaRocketchat } from 'react-icons/fa';
 
 import Messages from '../../msg/Msg';
 import { LINK, ACTION, PAGE } from './Types';
@@ -20,6 +20,7 @@ class NbMenu extends C {
 
     this.state = {
       isUser: this.props.isUser
+      ,dailer: this.props.dailer
       ,menus: this.props.menus
       ,isShow: false
     }
@@ -100,10 +101,17 @@ class NbMenu extends C {
     w.location = href;
   }
 
+  UNSAFE_componentWillReceiveProps(props) {
+    console.log('HEADER componentWillReceiveProps');
+    this.state.isUser = props.isUser;
+    this.state.dailer = props.dailer;
+  }
+
   render() {
     // console.log(this.state.isUser);
     const Msg = Messages[ this.state.isUser.language ];
     // console.log(Msg);
+
     return ( 
       <div className="Headder">
         <Navbar bg="dark" expand="lg" variant="dark">
@@ -123,7 +131,10 @@ class NbMenu extends C {
               <Nav.Link href="#search" className="global-search"><FaSearch /></Nav.Link>
             </Form>
       
-            <Nav.Link onClick={ this._onClickPhone.bind(this) }>{ <FaPhone /> }</Nav.Link>
+            <Nav.Link onClick={ this._onClickPhone.bind(this) }>
+              {(() => { if(!this.state.dailer) { return ( <FaTty /> ); } })()}
+              {(() => { if(this.state.dailer) { return ( <FaPhone /> ); } })()}
+            </Nav.Link>
             <Nav.Link action={ PAGE.MAIL } onClick={ this._onClick.bind(this) }>{ <FaMailBulk /> }</Nav.Link>
             <Nav.Link action={ PAGE.CHAT } onClick={ this._onClick.bind(this) } id="a-chat-icon">{ <FaRocketchat /> }</Nav.Link>
             <NavDropdown title={<FaUser />} id="basic-nav-dropdown-right" alignRight>

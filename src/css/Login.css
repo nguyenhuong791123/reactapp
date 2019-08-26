@@ -24,7 +24,7 @@ div.div-center div.form-group:last-child {
     padding-top: 0.5em;
 }
 
-button svg:first-child {
+/* button svg:first-child {
     float: left;
     margin-top: 0.2em;
 }
@@ -32,4 +32,4 @@ button svg:first-child {
 button svg:last-child {
     float: right;
     margin-top: 0.2em;
-}
+} */

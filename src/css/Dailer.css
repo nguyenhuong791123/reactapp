@@ -1,6 +1,70 @@
 div.div-alert-dailer {
-    width: 200px;
+    width: 240px;
     position: absolute;
-    padding: 0.3em;
-    right: 0;
+    padding: .3em;
+    z-index: 10;
+}
+
+div.div-alert-dailer div {
+    text-align: center;
+}
+
+div.div-alert-dailer div video {
+    background: black;
+    width: 230px;
+    max-width: 230px;
+}
+
+div.div-alert-dailer div.input-group input {
+    font-size: larger;
+    font-weight: bold;
+}
+
+div.div-alert-dailer div.input-group div.input-group-append svg {
+    cursor: pointer;
+}
+
+div.div-alert-dailer button {
+    margin: 0.3em;
+    padding-left: .9em;
+    padding-right: .9em;
+}
+
+div.div-alert-dailer button:hover
+,div.div-alert-dailer div.input-group div.input-group-append svg:hover {
+    color: brown;
+    font-weight: bold;
+}
+
+div.div-alert-dailer button svg {
+    margin-left: -.2em;
+    margin-top: -.2em;
+}
+
+div.div-alert-dailer div button:last-child {
+    width: 40px;
+    height: 38px;
+}
+
+div.div-alert-dailer div:first-child {
+    width: 100%;
+}
+
+div.div-alert-dailer div:first-child span.span-dailer-title {
+    width: 80%;
+    margin-bottom: .3em;
+    text-align: right;
+    font-weight: bold;
+}
+
+div.div-alert-dailer div:first-child a {
+    position: absolute;
+    padding: .2em;
+    right: .2em;
+    top: 0;
+    padding-top: 0;
+}
+
+div.div-alert-dailer form div.form-group {
+    margin-bottom: .3em;
 }

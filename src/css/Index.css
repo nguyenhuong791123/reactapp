@@ -141,17 +141,17 @@ div.dropdown-menu a:hover {
     background-color: #cce5ff;
 }
 
-div.dropdown-menu a svg {
+div.dropdown-menu a.dropdown-item svg {
     margin-right: 0.3em;
 }
 
-button svg:first-child {
+/* button svg:first-child {
     margin-right: 0.3em;
 }
 
 button svg:last-child {
     margin-left: 0.3em;
-}
+} */
 
 div.div-actions-box {
     padding: 0.2em;

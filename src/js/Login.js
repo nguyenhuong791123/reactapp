@@ -47,6 +47,7 @@ class Login extends C {
         this.state.isUser['path'] = ACTION.SLASH + ACTION.LIST;
         this.state.isUser['viewHeader'] = true;
         console.log(this.state.isUser);
+        console.log(this.state.options);
         this.props.onLogin(this.state.isUser, this.state.options);
         this.props.history.push(ACTION.SLASH + ACTION.LIST);
         // console.log(this.state);

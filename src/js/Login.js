@@ -24,6 +24,7 @@ class Login extends C {
     console.log(this.props.isUser);
     this.state = {
       isUser: this.props.isUser
+      ,options: this.props.options
       ,validated: true
       ,uLid: ''
       ,pw: ''
@@ -46,7 +47,7 @@ class Login extends C {
         this.state.isUser['path'] = ACTION.SLASH + ACTION.LIST;
         this.state.isUser['viewHeader'] = true;
         console.log(this.state.isUser);
-        this.props.onLogin(this.state.isUser, null);
+        this.props.onLogin(this.state.isUser, this.state.options);
         this.props.history.push(ACTION.SLASH + ACTION.LIST);
         // console.log(this.state);
       }

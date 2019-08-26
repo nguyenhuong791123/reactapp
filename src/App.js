@@ -64,6 +64,7 @@ class App extends C {
             sessionService.saveSession({ token }).then(() => {
                 sessionService.saveUser(auth).then(() => {
                     console.log('_doLogin complete !!!');
+                    console.log(sessionService.loadUser('COOKIES'));
                 });
             });
         });
@@ -84,7 +85,7 @@ class App extends C {
 
     _loadAuthCookies = (isUser, callBack) => {
         const objAuth = sessionService.loadUser('COOKIES');
-        console.log(objAuth);
+        // console.log(objAuth);
         if(objAuth !== undefined) {
             objAuth.then(function(data) {
                 // console.log(data.info['path']);
@@ -92,8 +93,8 @@ class App extends C {
                 if(isUrl === ACTION.SLASH || data.info['path'] === ACTION.SLASH) {
                     data.info['viewHeader'] = false;
                 }
-                // console.log('_loadAuthCookies');
-                // console.log(data);    
+                console.log('_loadAuthCookies');
+                console.log(data);    
                 callBack(data);
             }).catch(function(error) {
                 console.log(error);
@@ -174,6 +175,7 @@ class App extends C {
                                     exact path={ ACTION.SLASH }
                                     render={ ({ props }) => <Login
                                                                 isUser={ this.state.isUser }
+                                                                options={ this.state.options }
                                                                 onLogin={ this._doLogin.bind(this) }
                                                                 {...this.props} />} />
                                 <Route

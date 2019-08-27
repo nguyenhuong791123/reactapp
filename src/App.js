@@ -85,12 +85,14 @@ class App extends C {
 
     _loadAuthCookies = (isUser, callBack) => {
         const objAuth = sessionService.loadUser('COOKIES');
-        // console.log(objAuth);
+        console.log(objAuth);
         if(objAuth !== undefined) {
             objAuth.then(function(data) {
-                // console.log(data.info['path']);
                 const isUrl = history.location.pathname;
+                console.log(history);
+                console.log(data.info['path']);
                 if(isUrl === ACTION.SLASH || data.info['path'] === ACTION.SLASH) {
+                    data.info['path'] = ACTION.SLASH;
                     data.info['viewHeader'] = false;
                 }
                 console.log('_loadAuthCookies');

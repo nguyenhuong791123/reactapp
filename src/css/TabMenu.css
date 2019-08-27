@@ -11,6 +11,16 @@ div.mr-auto nav.nav-tabs {
     /* margin-right: 2em; */
 }
 
+div.mr-auto nav.nav-tabs-vertical {
+    border: 1px solid #dee2e6;
+    height: 150px;
+    position: absolute;
+    overflow-y: auto;
+    background-color: lightgrey;
+    right: .5em;
+    margin-top: .3em;
+}
+
 div.mr-auto div:first-child {
     display: flex;
 }

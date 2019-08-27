@@ -63,10 +63,10 @@ div.navbar-collapse a.nav-link:hover {
     background-color: #cce5ff;
 }
 
-a.global-search {
+/* a.global-search {
     margin-left: -3em !important;
     border: none !important;
-}
+} */
 
 .a-homepage {
     margin-left: 1.5em;

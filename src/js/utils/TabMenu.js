@@ -302,7 +302,19 @@ class TabMenu extends C {
                 const nav = div.childNodes[0].childNodes[1];
                 // console.log(div.offsetLeft);
                 if(!Utils.isEmpty(nav)) {
-                    nav.style.width = (window.innerWidth - 610) + 'px';
+                    console.log(window.innerWidth);
+                    nav.style.width = (window.innerWidth - 660) + 'px';
+                    if(!Utils.isEmpty(nav.className)) {
+                        if(window.innerWidth < 992) {
+                            if(nav.className.indexOf(' nav-tabs-vertical') === -1) {
+                                nav.className = nav.className + ' nav-tabs-vertical';
+                            }
+                        } else {
+                            if(nav.className.indexOf(' nav-tabs-vertical') !== -1) {
+                                nav.className = nav.className.replace(' nav-tabs-vertical', '');
+                            }
+                        }    
+                    }
                 }
             }    
         };

@@ -78,12 +78,13 @@ class Login extends C {
     this.forceUpdate();
   }
 
-  UNSAFE_componentDidMount() {
+  componentDidMount() {
+    // console.log('LOGIN componentDidMount !!!');
     var div = document.getElementById('div_alert_login');
     if(!isEmpty(div)) {
       window.onresize = function(event) {
-        div.style.left = (window.innerWidth - div.offsetWidth)/2;
-        // console.log((window.innerWidth - div.offsetWidth)/2);
+        div.style.left = ((window.innerWidth/2) - (div.offsetWidth/2)) + 'px';
+        div.style.marginTop = ((window.innerHeight/2) - (div.offsetHeight/2)) + 'px';
       };
       window.onresize();  
     }

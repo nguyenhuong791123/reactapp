@@ -1,6 +1,33 @@
 div.mr-auto {
-    margin-left: .5em;
     margin-right: .5em;
+}
+
+div.mr-auto-parent {
+    border-radius: 0.5em;
+    padding: 0.2em;
+    position: absolute;
+    max-width: 265px;
+    right: .2em;
+    background: grey;
+    top: 3em;
+}
+
+div.mr-auto-parent form.form-inline input {
+    width: 100%;
+}
+
+div.mr-auto-parent div:last-child
+,div.mr-auto-parent form a:last-child
+,div.mr-auto-parent a:last-child
+,div.mr-auto-parent a:nth-last-child(1)
+,div.mr-auto-parent a:nth-last-child(2)
+,div.mr-auto-parent a:nth-last-child(3)
+,div.mr-auto-parent a:nth-last-child(4) {
+        float: left;
+}
+
+div.mr-auto-parent a:last-child {
+    float: left;
 }
 
 div.mr-auto nav.nav-tabs {
@@ -8,17 +35,19 @@ div.mr-auto nav.nav-tabs {
     overflow: hidden;
     overflow-x: hidden;
     overflow-y: hidden;
-    /* margin-right: 2em; */
 }
 
 div.mr-auto nav.nav-tabs-vertical {
-    border: 1px solid #dee2e6;
+    width: 100%;
     height: 150px;
-    position: absolute;
     overflow-y: auto;
-    background-color: lightgrey;
     right: .5em;
-    margin-top: .3em;
+    margin-top: .1em;
+    margin-bottom: .2em;
+}
+
+div.mr-auto nav.nav-tabs-vertical a:first-child {
+    margin-left: 0;
 }
 
 div.mr-auto div:first-child {

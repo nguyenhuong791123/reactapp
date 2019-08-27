@@ -143,7 +143,7 @@ class Header extends C {
     const obj = this.getLinkObj(e);
     this.state.dailer.show = (!this.state.dailer.show);
     this.state.dailer.top = ((obj.offsetTop + obj.offsetHeight) + 5);
-    this.state.dailer.left = ((obj.offsetLeft + obj.offsetWidth) - 240);
+    this.state.dailer.left = ((obj.offsetLeft + obj.offsetWidth) - 245);
     this.forceUpdate();
   }
 
@@ -224,7 +224,7 @@ class Header extends C {
           </a>
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" id="basic-navbar-nav-toggle"/>
-          <Navbar.Collapse id="basic-navbar-nav">
+          <Navbar.Collapse className="mr-auto-parent">
             <Nav className="mr-auto" id="div-nav-tab-menu">
               {(() => {
                 if (this.state.isUser.menu === 0) {

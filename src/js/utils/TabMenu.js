@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import onClickOutside from 'react-onclickoutside';
 import { Nav, Tabs, Tab } from 'react-bootstrap';
 
-import { LINK, NOT_LINK } from './Types';
+import { LINK, NOT_LINK, WINDOWN_WIDTH } from './Types';
 import Utils from './Utils';
 import "../../css/TabMenu.css";
 
@@ -76,8 +76,14 @@ class TabMenu extends C {
         var items = json.items;
         if(!Utils.isEmpty(items) && items.length > 0) {
             this._getMenuLinkBoxHTML(isExistObj, idx, items);
-            isExistObj.style.top = (obj.offsetTop + obj.offsetHeight) + 'px';
-            isExistObj.style.left = (obj.offsetLeft) + 'px';
+            if(window.innerWidth < WINDOWN_WIDTH) {
+                isExistObj.style.top = (obj.offsetTop + (obj.offsetHeight + 5)) + 'px';
+                isExistObj.style.left = 'auto';
+                isExistObj.style.right ='270px';
+            } else {
+                isExistObj.style.top = (obj.offsetTop + obj.offsetHeight) + 'px';
+                isExistObj.style.left = (obj.offsetLeft) + 'px';    
+            }
         
             var header = document.getElementById('div_header');
             console.log(isExistObj);
@@ -166,8 +172,13 @@ class TabMenu extends C {
             if(!Utils.isEmpty(items) && items.length > 0) {
                 this._getMenuLinkBoxHTML(isExistObj, idx, items);
                 const objPos = ReactDOM.findDOMNode(obj).getBoundingClientRect();
-                isExistObj.style.top = (objPos.top) + 'px';
-                isExistObj.style.left = (objPos.x + objPos.width) + 'px';
+                if(window.innerWidth < WINDOWN_WIDTH) {
+                    isExistObj.style.top = (objPos.top) + 'px';
+                    isExistObj.style.left = (objPos.x - (objPos.width + 3)) + 'px';
+                } else {
+                    isExistObj.style.top = (objPos.top) + 'px';
+                    isExistObj.style.left = (objPos.x + objPos.width) + 'px';    
+                }
         
                 var header = document.getElementById('div_header');
                 header.appendChild(isExistObj);
@@ -303,17 +314,27 @@ class TabMenu extends C {
                 // console.log(div.offsetLeft);
                 if(!Utils.isEmpty(nav)) {
                     console.log(window.innerWidth);
-                    nav.style.width = (window.innerWidth - 660) + 'px';
-                    if(!Utils.isEmpty(nav.className)) {
-                        if(window.innerWidth < 992) {
-                            if(nav.className.indexOf(' nav-tabs-vertical') === -1) {
-                                nav.className = nav.className + ' nav-tabs-vertical';
-                            }
-                        } else {
-                            if(nav.className.indexOf(' nav-tabs-vertical') !== -1) {
-                                nav.className = nav.className.replace(' nav-tabs-vertical', '');
-                            }
-                        }    
+                    const divP = div.parentElement;
+                    const navParent = nav.parentElement.childNodes;
+                    if(window.innerWidth < WINDOWN_WIDTH) {
+                        if(nav.className.indexOf(' nav-tabs-vertical') === -1) {
+                            nav.className = nav.className + ' nav-tabs-vertical';
+                            navParent[0].style.display = 'none';
+                            navParent[navParent.length-1].style.display = 'none';
+                        }
+                        if(divP.className.indexOf('mr-auto-parent ') === -1) {
+                            divP.className = divP.className + 'mr-auto-parent ';
+                        }
+                    } else {
+                        nav.style.width = (window.innerWidth - 660) + 'px';
+                        if(nav.className.indexOf(' nav-tabs-vertical') !== -1) {
+                            nav.className = nav.className.replace(' nav-tabs-vertical', '');
+                            navParent[0].style.display = 'block';
+                            navParent[navParent.length-1].style.display = 'block';
+                        }
+                        if(divP.className.indexOf('mr-auto-parent ') !== -1) {
+                            divP.className = divP.className.replace('mr-auto-parent ', '');
+                        }
                     }
                 }
             }    

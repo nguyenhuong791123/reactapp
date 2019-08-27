@@ -1,3 +1,4 @@
+export const WINDOWN_WIDTH = 992;
 export const LINK = 0;
 export const NOT_LINK = 1;
 

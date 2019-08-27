@@ -1,6 +1,3 @@
-/* .nav-tabs {
-    display: inline-flex !important;
-} */
 nav ul li{ 	
     display: inline;
 }
@@ -18,11 +15,12 @@ nav.navbar a.header-image-icon {
 
 nav.navbar a.header-image-icon img {
     width: 2em;
-    margin-left: -0.5em;
+    margin-left: -.5em;
 }
 
 nav.navbar a.header-image-icon span {
-    margin-left: 0.5em;
+    margin-left: .5em;
+    margin-right: .5em;
 }
 
 nav.navbar {
@@ -38,7 +36,7 @@ nav.navbar div.navbar-collapse {
 }
 
 nav.navbar div.navbar-collapse div.dropdown-menu-right {
-    right: 0.5em;
+    right: .5em;
 }
 nav.navbar button.navbar-toggler {
     padding: 0;
@@ -85,7 +83,7 @@ div.div-left-menu div.bm-item {
 }
 
 div.div-left-menu-child {
-    padding-left: 0.5em;
+    padding-left: .5em;
 }
 
 div.div-left-menu-child-hide {

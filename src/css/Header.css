@@ -47,24 +47,28 @@ nav.navbar button.navbar-toggler {
     font-size: x-large;
 }
 
-/* div.navbar-collapse a.nav-link {
-    border:1px solid #dee2e6;
-    border-radius: 0.5em;
-    margin: 0.1em;
-    padding: 0.3em;
-    padding-left: 0.4em;
-    padding-right: 0.4em;
-    color: #007bff !important;
-} */
-
 div.navbar-collapse a.nav-link:hover {
     background-color: #cce5ff;
 }
-
-/* a.global-search {
-    margin-left: -3em !important;
-    border: none !important;
-} */
+/* 点滅 */
+div.navbar-collapse a.blinking {
+	-webkit-animation:blink .5s ease-in-out infinite alternate;
+    -moz-animation:blink .5s ease-in-out infinite alternate;
+    animation:blink .5s ease-in-out infinite alternate;
+    color: red;
+}
+@-webkit-keyframes blink {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+@-moz-keyframes blink {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+@keyframes blink {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
 
 .a-homepage {
     margin-left: 1.5em;

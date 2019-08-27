@@ -15,6 +15,13 @@ div.div-alert-dailer div video {
     max-width: 230px;
 }
 
+div.div-alert-dailer div:last-child div:first-child div:first-child svg {
+    position: absolute;
+    color: white;
+    margin: 0.2em;
+    right: .2em;
+}
+
 div.div-alert-dailer div.input-group input {
     font-size: larger;
     font-weight: bold;
@@ -25,7 +32,7 @@ div.div-alert-dailer div.input-group div.input-group-append svg {
 }
 
 div.div-alert-dailer button {
-    margin: 0.3em;
+    margin: .5em;
     padding-left: .9em;
     padding-right: .9em;
 }
@@ -33,7 +40,7 @@ div.div-alert-dailer button {
 div.div-alert-dailer button:hover
 ,div.div-alert-dailer div.input-group div.input-group-append svg:hover {
     color: brown;
-    font-weight: bold;
+    /* font-weight: bold; */
 }
 
 div.div-alert-dailer button svg {
@@ -41,7 +48,7 @@ div.div-alert-dailer button svg {
     margin-top: -.2em;
 }
 
-div.div-alert-dailer div button:last-child {
+div.div-alert-dailer div button {
     width: 40px;
     height: 38px;
 }
@@ -52,9 +59,14 @@ div.div-alert-dailer div:first-child {
 
 div.div-alert-dailer div:first-child span.span-dailer-title {
     width: 80%;
-    margin-bottom: .3em;
+    margin-bottom: .5em;
     text-align: right;
     font-weight: bold;
+}
+
+div.div-alert-dailer div:first-child span.span-dailer-title svg {
+    float: left;
+    cursor: pointer;
 }
 
 div.div-alert-dailer div:first-child a {

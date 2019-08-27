@@ -1,6 +1,6 @@
 import React, { Component as C } from 'react';
 import { Alert, Form, FormControl, InputGroup, Button, Nav } from 'react-bootstrap';
-import { FaCogs, FaCheck, FaArrowLeft, FaListAlt, FaLanguage } from 'react-icons/fa';
+import { FaCogs, FaCheck, FaArrowLeft, FaListAlt, FaLanguage, FaPhone , FaVolumeUp, FaVolumeOff, FaTty, FaSignal, FaRandom } from 'react-icons/fa';
 import { TiTimes, TiVideo } from 'react-icons/ti';
 
 import Utils from './Utils';
@@ -11,7 +11,9 @@ class DailerBox extends C {
         super(props);
 
         this._onClick = this._onClick.bind(this);
-        this._onSettingClick = this._onSettingClick.bind(this)
+        this._onSettingClick = this._onSettingClick.bind(this);
+        this._onOpenBoxPhone = this._onOpenBoxPhone.bind(this);
+        this._onIsCall = this._onIsCall.bind(this);
 
         this.state = {
             isUser: this.props.isUser
@@ -36,19 +38,25 @@ class DailerBox extends C {
                     { id: 5, variant: 'info', label: '5' }
                     ,{ id: 6, variant: 'info', label: '6' }
                     ,{ id: 7, variant: 'info', label: '7' }
-                    ,{ id: 'video', variant: 'info', label: '' }
+                    ,{ id: 'sound', variant: 'info', label: '' }
                 ]
                 ,[
                     { id: 7, variant: 'info', label: '7' }
                     ,{ id: 8, variant: 'info', label: '8' }
                     ,{ id: 9, variant: 'info', label: '9' }
-                    ,{ id: 'group', variant: 'info', label: '' }
+                    ,{ id: 'video', variant: 'info', label: '' }
                 ]
                 ,[
                     { id: '*', variant: 'info', label: '*' }
                     ,{ id: 0, variant: 'info', label: '0' }
                     ,{ id: '#', variant: 'info', label: '#' }
-                    ,{ id: 'code', variant: 'info', label: '' }
+                    ,{ id: 'group', variant: 'info', label: '' }
+                ]
+                ,[
+                    { id: 'code', variant: 'info', label: '' }
+                    ,{ id: 'call', variant: 'success', label: '' }
+                    ,{ id: 'end', variant: 'danger', label: '' }
+                    ,{ id: 'tranfer', variant: 'warning', label: '' }
                 ]
             ]
         };
@@ -59,26 +67,25 @@ class DailerBox extends C {
     }
 
     _onSettingClick(e) {
-        console.log(e);
+        var obj = e.target;
+        if(obj.tagName === 'path') obj = obj.parentElement;
+        if(Utils.isEmpty(obj.id)) return;
         this.state.setting = !this.state.setting;
-        this.forceUpdate();
+        if(obj.id === 'svg_icon_check') {
+            this.props.onRegister();
+        }
+        if(obj.id === 'svg_icon_setting') {
+            this.forceUpdate();
+        }
+    }
+
+    _onIsCall(e) {
+        console.log(e);
+        this.props.onIsCall();
     }
 
     _onChange(e){
         const value = e.target.value;
-        // const dError = e.target.parentElement.childNodes[1];
-        // if(!isEmpty(dError)) {
-        //   if(value.length <= 0) {
-        //     dError.style.display = 'block';
-        //     dError.innerText = this._getMsg(MSG_TYPE.LOGIN, 'login_id') + this._getMsg(MSG_TYPE.ERROR, 'required');
-        //   } else if(value.length > 8) {
-        //     dError.style.display = 'block';
-        //     var msg = StringUtil.format(this._getMsg(MSG_TYPE.ERROR, 'max_length'), 8, value.length - 8);
-        //     dError.innerText = msg;
-        //   } else {
-        //     dError.style.display = 'none';
-        //   }
-        // }
         this.setState({ [e.target.name]: value });
         console.log(this.state);
     }
@@ -87,12 +94,19 @@ class DailerBox extends C {
         console.log(e);
     }
 
+    _onOpenBoxPhone(e) {
+        this.props.onOpenBoxPhone(e);
+    }
+
     _getDailerHeaderTitle() {
-        var icon = (<FaCogs />);
-        if(this.state.setting) icon = (<FaCheck />);
+        var icon = (<FaCogs id="svg_icon_setting"/>);
+        if(this.state.setting) icon = (<FaCheck id="svg_icon_check"/>);
         return (
             <div>
-                <span className={ 'span-dailer-title' }>{ this.state.title }</span>
+                <span className={ 'span-dailer-title' }>
+                    { <TiTimes onClick={ this._onOpenBoxPhone.bind(this) } /> }
+                    { this.state.title }
+                </span>
                 <Nav.Link id={ 'setting' } onClick={ this._onSettingClick.bind(this) }>{ icon }</Nav.Link>
             </div>
         );
@@ -101,7 +115,14 @@ class DailerBox extends C {
     _getDailerHeader() {
         return (
             <div>
-                <video src="sample.mp4"></video>
+                <div>
+                    {(() => {
+                        if(this.state.dailer.register) {
+                            return ( <FaSignal /> );
+                        }
+                    })()}
+                    <video src="sample.mp4"></video>
+                </div>
                 <InputGroup>
                     <FormControl placeholder="電話番号"/>
                     <InputGroup.Append>
@@ -123,10 +144,20 @@ class DailerBox extends C {
         if(Utils.isEmpty(json)) return "";
         return json.map((o, index) => {
             var icon = o.label;
-            if(o.id === 'video') icon = (<TiVideo />);
             if(o.id === 'clear') icon =(<TiTimes />);
             if(o.id === 'group') icon = (<FaListAlt />);
             if(o.id === 'code') icon = (<FaLanguage />);
+            if(o.id === 'call') icon = (<FaPhone />);
+            if(o.id === 'end') icon = (<FaTty />);
+            if(o.id === 'tranfer') icon = (<FaRandom />);
+            if(o.id === 'sound') {
+                if(this.state.dailer.sound) icon = (<FaVolumeUp />);
+                icon = (<FaVolumeOff />);
+            }
+            if(o.id === 'video') {
+                if(this.state.dailer.audio) icon = (<TiVideo />);
+                icon = (<TiVideo />);
+            }
             return (
                 <Button key={ index } id={ o.id } variant={ o.variant } onClick={ this._onClick.bind(this) }>{ icon }</Button>
             );

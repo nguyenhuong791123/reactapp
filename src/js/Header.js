@@ -23,7 +23,9 @@ class Header extends C {
     this._onClick = this._onClick.bind(this);
     this._onSelect = this._onSelect.bind(this);
     this._onLogout = this._onLogout.bind(this);
-    this._onClickPhone = this._onClickPhone.bind(this);
+    this._onOpenBoxPhone = this._onOpenBoxPhone.bind(this);
+    this._onRegister = this._onRegister.bind(this);
+    this._onIsCall = this._onIsCall.bind(this);
     this._newWindow = this._newWindow.bind(this);
     // console.log(props.ua.device);
     // console.log(props.ua.language);
@@ -77,7 +79,7 @@ class Header extends C {
         ,{ id: 25, view: LINK, target: 'target_25', label: 'label_25', level: 0, items: [] }
       ]
       ,title: ''
-      ,dailer: { show: false, top: 50, left: 0 }
+      ,dailer: { register: false, isCall: false, audio: true, sound: true, show: false, top: 50, left: 0 }
       ,chats: { room: {}, data: [] }
     };
   }
@@ -152,11 +154,23 @@ class Header extends C {
     console.log(e);
   }
 
-  _onClickPhone(e) {
+  _onOpenBoxPhone(e) {
     const obj = this.getLinkObj(e);
     this.state.dailer.show = (!this.state.dailer.show);
-    this.state.dailer.top = ((obj.offsetTop + obj.offsetHeight) + 5);
-    this.state.dailer.left = ((obj.offsetLeft + obj.offsetWidth) - 245);
+    if(!Utils.isEmpty(obj)) {
+      this.state.dailer.top = ((obj.offsetTop + obj.offsetHeight) + 5);
+      this.state.dailer.left = ((obj.offsetLeft + obj.offsetWidth) - 245);  
+    }
+    this.forceUpdate();
+  }
+
+  _onRegister() {
+    this.state.dailer.register = !this.state.dailer.register;
+    this.forceUpdate();
+  }
+
+  _onIsCall() {
+    this.state.dailer.isCall = !this.state.dailer.isCall;
     this.forceUpdate();
   }
 
@@ -215,7 +229,13 @@ class Header extends C {
     if(!this.state.isUser.viewHeader) return "";
     this._loadButtonToggle();
     const Msg = Messages[ this.props.isUser.language ];
-    const Dailer = (this.state.options.dailer)?(<DailerBox dailer={ this.state.dailer } isUser={ this.props.isUser }/>):"";
+    const isCallClass = (this.state.dailer.isCall)?"blinking":"";
+    const Dailer = (this.state.options.dailer)?(<DailerBox
+                                                  dailer={ this.state.dailer }
+                                                  isUser={ this.props.isUser }
+                                                  onOpenBoxPhone={ this._onOpenBoxPhone.bind(this) }
+                                                  onRegister={ this._onRegister.bind(this) }
+                                                  onIsCall={ this._onIsCall.bind(this) }/>):"";
 
     return (
       <div className="Headder">
@@ -247,13 +267,13 @@ class Header extends C {
               <Nav.Link href="#search" className="global-search"><FaSearch /></Nav.Link>
             </Form>
     
-            <Nav.Link onClick={ this._onClickPhone.bind(this) }>
+            <Nav.Link onClick={ this._onOpenBoxPhone.bind(this) } className={ isCallClass }>
               {(() => {
-                if(!this.state.dailer.show) { return ( <FaTty /> );
+                  if(!this.state.dailer.show) { return ( <FaTty /> );
                 }
               })()}
               {(() => {
-                if(this.state.dailer.show) { return ( <FaPhone /> );
+                  if(this.state.dailer.show) { return ( <FaPhone /> );
                 }
               })()}
             </Nav.Link>

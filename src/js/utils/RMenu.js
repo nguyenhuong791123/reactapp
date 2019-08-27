@@ -29,7 +29,7 @@ class RMenu extends C {
     this.state = {
       isUser: this.props.isUser
       ,isOpen: false
-      ,menus: this.props.menus
+      ,title: this.props.title
     }
   }
 
@@ -54,6 +54,16 @@ class RMenu extends C {
     // console.log(body);
   }
 
+  _getTitle() {
+    return( <div>{ this.state.title }</div> );
+  }
+
+  UNSAFE_componentWillReceiveProps(props) {
+    console.log('HEADER componentWillReceiveProps');
+    this.state.isUser = props.isUser;
+    this.state.title = props.title;
+  }
+
   render() {
     return (
       <div>
@@ -63,12 +73,10 @@ class RMenu extends C {
           className="div-menu-right"
           { ...this.props }
           customBurgerIcon={ <FaRocketchat id="div-right-chat-icon" className="div-right-chat-icon" /> }
-          customCrossIcon={ false }
+          // customCrossIcon={ false }
           onStateChange={ this._onClick.bind(this) }
           right>
-          <a className="menu-item" href="/">
-            Home
-          </a>
+          { this._getTitle() }
         </Menu>
       </div>
     );

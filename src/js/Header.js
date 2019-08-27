@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown, Form, FormControl, Image } from 'react-bootstrap';
 import { FaUser, FaSearch, FaTty, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaKey, FaLink, FaRocketchat } from 'react-icons/fa';
 
-import { ACTION , LINK, NOT_LINK, PAGE } from './utils/Types';
+import { ACTION , LINK, NOT_LINK, PAGE, WINDOWN_WIDTH } from './utils/Types';
 import Utils from './utils/Utils';
 import LMenu from "./utils/LMenu";
 import RMenu from "./utils/RMenu";
@@ -76,14 +76,16 @@ class Header extends C {
         ,{ id: 24, view: LINK, target: 'target_24', label: 'label_24', level: 0, items: [] }
         ,{ id: 25, view: LINK, target: 'target_25', label: 'label_25', level: 0, items: [] }
       ]
+      ,title: ''
       ,dailer: { show: false, top: 50, left: 0 }
       ,chats: { room: {}, data: [] }
     };
   }
 
   _onClick(e) {
-    var hBts = document.getElementById("basic-navbar-nav");
-    if(!Utils.isEmpty(hBts) && window.innerWidth <= 991) {
+    var hBts = document.getElementById("basic-navbar-nav-toggle");
+    if(!Utils.isEmpty(hBts) && window.innerWidth < WINDOWN_WIDTH) {
+      if(hBts.tagName === "BUTTON") hBts.click();
       var btn = hBts.parentElement.childNodes[0];
       if(!Utils.isEmpty(btn) && btn.tagName === "BUTTON") btn.click();
     }
@@ -109,22 +111,33 @@ class Header extends C {
           && this.state.right !== action) {
             this.state.right = action;
             this.state.isUser.action = action;
-            return;
+            // return;
+        } else {
+          var svg = document.getElementById('div-right-chat-icon');
+          if(!Utils.isEmpty(svg.parentElement.childNodes) && svg.parentElement.childNodes.length > 1) {
+            svg.parentElement.childNodes[1].click();
+            this.state.right = action;
+            this.state.isUser.action = action;
+          }  
         }
-        var svg = document.getElementById('div-right-chat-icon');
-        if(!Utils.isEmpty(svg.parentElement.childNodes) && svg.parentElement.childNodes.length > 1) {
-          svg.parentElement.childNodes[1].click();
-          this.state.right = action;
-          this.state.isUser.action = action;
-        }
-        return;  
-      }
 
-      this.state.isUser.action = action;
-      const url = window.location.protocol + '//' + window.location.host;
-      var path = obj.href.replace(url, '').replace('#', '');
-      this.state.isUser.path = path;
-      this.props.onUpdateUser(this.state.isUser, this.state.options, this.props.onUpdateIsUserCallBack);
+        if(obj.id === "a-chat-icon") {
+          this.state.title = 'Messenger v0.1.0';
+          console.log(this.state.title);
+        }
+        if(obj.id === "a-page-setting") {
+          this.state.title = 'Page Setting';
+          console.log(this.state.title);
+        }
+        this.forceUpdate();
+        // return;
+      } else {
+        this.state.isUser.action = action;
+        const url = window.location.protocol + '//' + window.location.host;
+        var path = obj.href.replace(url, '').replace('#', '');
+        this.state.isUser.path = path;
+        this.props.onUpdateUser(this.state.isUser, this.state.options, this.props.onUpdateIsUserCallBack);  
+      }
       console.log('HEADER _onClick complete !!!');
     } else {
       console.log('HEADER _onClick Not setting action !!!');
@@ -185,10 +198,6 @@ class Header extends C {
     console.log('HEADER componentWillReceiveProps');
     this.state.isUser = props.isUser;
     this.state.options = props.options;
-    // console.log(props);
-    // console.log(this.state);
-    // console.log(sessionService.loadUser('COOKIES'));
-    // console.log(props);
   }
 
   _loadButtonToggle() {
@@ -215,7 +224,7 @@ class Header extends C {
             return ( <LMenu isUser={ this.props.isUser } menus={ this.state.menus }/> );
           }
         })()}
-        <RMenu isUser={ this.props.isUser } action={ this.state.isUser.action }/>
+        <RMenu isUser={ this.props.isUser } title={ this.state.title }/>
         { Dailer }
         <Navbar bg="dark" expand="lg" variant="dark">
           <a href='#home-page' page={ 'https://vnext.co.jp/company-info.html' } onClick={ this._newWindow.bind(this) } className={ 'header-image-icon' }>

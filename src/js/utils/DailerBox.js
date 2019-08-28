@@ -12,6 +12,7 @@ class DailerBox extends C {
         super(props);
 
         this._onClick = this._onClick.bind(this);
+        this._onChange = this._onChange.bind(this);
         this._onSettingClick = this._onSettingClick.bind(this);
         this._onOpenBoxPhone = this._onOpenBoxPhone.bind(this);
 
@@ -123,6 +124,15 @@ class DailerBox extends C {
         this.forceUpdate();
     }
 
+    // _onKeyPress(e) {
+    //     console.log(e.key);
+    //     console.log(e.target);
+    //     // const value = e.target.value;
+    //     // if(!Utils.isTelNumber(value)) return;
+    //     // this.setState({ [e.target.name]: value });
+    //     // console.log(this.state);
+    // }
+
     _onSave(e) {
         console.log(e);
     }
@@ -162,7 +172,7 @@ class DailerBox extends C {
                     <video src="sample.mp4"></video>
                 </div>
                 <InputGroup>
-                    <FormControl name="phone" value={ this.state.phone } placeholder="電話番号" onChange={ this._onChange.bind(this) }/>
+                    <FormControl name="phone" value={ this.state.phone } placeholder="電話番号" onChange={ this._onChange.bind(this) } />
                     <InputGroup.Append>
                     <InputGroup.Text id={ DAILER.CLEAR }>{ <FaArrowLeft onClick={ this._onClick.bind(this) }/> }</InputGroup.Text>
                     </InputGroup.Append>

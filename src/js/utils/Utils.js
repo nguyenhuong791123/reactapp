@@ -5,7 +5,8 @@ function isNumber(val) {
   
 function isTelNumber(val) {
     if(isNull(val)) return false;
-    return true;///^([0-9]|#|\*|-)+$/.test(val.replace(/[-()\s]/g,''));
+    return /^([0-9]|#|\*|-)+$/.test(val.replace(/[-()\s]/g,''));
+    // return true;///^([0-9]|#|\*|-)+$/.test(val.replace(/[-()\s]/g,''));
 }
   
 function isReplace(symbol, val) {

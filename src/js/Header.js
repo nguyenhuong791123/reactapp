@@ -229,7 +229,7 @@ class Header extends C {
     if(!this.state.isUser.viewHeader) return "";
     this._loadButtonToggle();
     const Msg = Messages[ this.props.isUser.language ];
-    const isCallClass = (this.state.dailer.isCall && this.state.dailer.register && this.state.dailer.isCall)?"blinking":"";
+    const isCallClass = (this.state.dailer.isCall && this.state.dailer.register)?"blinking":"";
     const Dailer = (this.state.options.dailer)?(<DailerBox
                                                   dailer={ this.state.dailer }
                                                   isUser={ this.props.isUser }
@@ -269,13 +269,21 @@ class Header extends C {
     
             <Nav.Link onClick={ this._onOpenBoxPhone.bind(this) } className={ isCallClass }>
               {(() => {
+                  if(!this.state.dailer.register) { return ( <FaTty /> );
+                }
+              })()}
+              {(() => {
+                  if(this.state.dailer.register) { return ( <FaPhone /> );
+                }
+              })()}
+              {/* {(() => {
                   if(!this.state.dailer.show) { return ( <FaTty /> );
                 }
               })()}
               {(() => {
                   if(this.state.dailer.show) { return ( <FaPhone /> );
                 }
-              })()}
+              })()} */}
             </Nav.Link>
             <Nav.Link action={ PAGE.MAIL } onClick={ this._onClick.bind(this) }>{ <FaMailBulk /> }</Nav.Link>
             <Nav.Link action={ PAGE.CHAT } onClick={ this._onClick.bind(this) } id="a-chat-icon">{ <FaRocketchat /> }</Nav.Link>

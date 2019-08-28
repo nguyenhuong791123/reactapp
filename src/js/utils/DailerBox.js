@@ -20,6 +20,8 @@ class DailerBox extends C {
             ,dailer: this.props.dailer
             ,title: 'SmartCRM Ver0.1.0'
             ,setting: false
+            ,btCall: null
+            ,btTranfer: null
             ,validated: true
             ,id: ''
             ,pw: ''
@@ -55,12 +57,16 @@ class DailerBox extends C {
                 ,[
                     { id: 'code', variant: 'info', label: '' }
                     ,{ id: 'call', variant: 'success', label: '' }
-                    ,{ id: 'end', variant: 'danger', label: '' }
+                    // ,{ id: 'end', variant: 'danger', label: '' }
                     ,{ id: 'tranfer', variant: 'warning', label: '' }
                 ]
             ]
         };
     };
+
+    _getBuuton(id) {
+        return document.getElementById(id);
+    }
 
     _onClick(e) {
         var obj = this._getClickButton(e.target);
@@ -160,9 +166,15 @@ class DailerBox extends C {
             if(o.id === 'clear') icon =(<TiTimes />);
             if(o.id === 'group') icon = (<FaListAlt />);
             if(o.id === 'code') icon = (<FaLanguage />);
-            if(o.id === 'call') icon = (<FaPhone />);
-            if(o.id === 'end') icon = (<FaTty />);
+            // if(o.id === 'end') icon = (<FaTty />);
             if(o.id === 'tranfer') icon = (<FaRandom />);
+            if(o.id === 'call') {
+                if(this.state.dailer.register && this.state.dailer.isCall) {
+                    icon = (<FaPhone />);
+                } else {
+                    icon = (<FaTty />);
+                }
+            }
             if(o.id === 'sound') {
                 if(this.state.dailer.sound) {
                     icon = (<FaVolumeUp />);
@@ -252,6 +264,12 @@ class DailerBox extends C {
                 </Form>
             </div>
         );
+    }
+
+    componentDidUpdate() {
+        this.state.btCall = this._getBuuton('call');
+        this.state.btCall.setAttribute('disabled', true);
+        console.log(this.state);
     }
 
     render() {

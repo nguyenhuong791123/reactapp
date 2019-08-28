@@ -51,10 +51,11 @@ div.navbar-collapse a.nav-link:hover {
     background-color: #cce5ff;
 }
 /* 点滅 */
-div.navbar-collapse a.blinking {
-	-webkit-animation:blink .5s ease-in-out infinite alternate;
-    -moz-animation:blink .5s ease-in-out infinite alternate;
-    animation:blink .5s ease-in-out infinite alternate;
+a.blinking
+,button.blinking {
+	-webkit-animation:blink .7s ease-in-out infinite alternate;
+    -moz-animation:blink .7s ease-in-out infinite alternate;
+    animation:blink .7s ease-in-out infinite alternate;
     color: red;
 }
 @-webkit-keyframes blink {

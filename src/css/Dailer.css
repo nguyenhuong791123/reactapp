@@ -15,7 +15,7 @@ div.div-alert-dailer div video {
     max-width: 230px;
 }
 
-div.div-alert-dailer div:last-child div:first-child div:first-child svg {
+div.div-alert-dailer div:last-child div:first-child svg {
     position: absolute;
     color: white;
     margin: 0.2em;
@@ -35,6 +35,10 @@ div.div-alert-dailer button {
     margin: .5em;
     padding-left: .9em;
     padding-right: .9em;
+}
+
+div.div-alert-dailer button.btn-register {
+    width: auto;
 }
 
 div.div-alert-dailer button:hover
@@ -58,15 +62,21 @@ div.div-alert-dailer div:first-child {
 }
 
 div.div-alert-dailer div:first-child span.span-dailer-title {
-    width: 80%;
+    margin-right: 1em;
+    font-weight: bold;
+    /* width: 80%;
     margin-bottom: .5em;
     text-align: right;
-    font-weight: bold;
+    font-weight: bold; */
 }
 
 div.div-alert-dailer div:first-child span.span-dailer-title svg {
     float: left;
     cursor: pointer;
+}
+
+div.div-alert-dailer div:first-child span.span-dailer-title a {
+    margin-top: .3em;
 }
 
 div.div-alert-dailer div:first-child a {
@@ -79,4 +89,32 @@ div.div-alert-dailer div:first-child a {
 
 div.div-alert-dailer form div.form-group {
     margin-bottom: .3em;
+}
+
+div.div-alert-dailer div.form-group-user {
+    text-align: left;
+    background: white;
+    margin-bottom: .2em;
+}
+
+div.div-alert-dailer div.div-text-align-left {
+    text-align: left;
+}
+
+
+div.div-alert-dailer div.form-group-user label {
+    background: #cce5ff;
+    padding: .3em;
+    width: 100%;
+    margin-bottom: 0;
+}
+
+div.div-alert-dailer div.form-group-user a {
+    padding: .3em;
+    margin-bottom: 0;
+    border-bottom: 1px solid #dee2e6;
+}
+
+div.div-alert-dailer div.form-group-user a:hover {
+    background-color: #cce5ff;
 }

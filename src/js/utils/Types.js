@@ -2,6 +2,14 @@ export const WINDOWN_WIDTH = 992;
 export const LINK = 0;
 export const NOT_LINK = 1;
 
+export const HTML_TAG = {
+    CHECKBOX: 'checkbox'
+    ,RADIO: 'radio'
+    ,SELECT: 'select'
+    ,TEXT: 'text'
+    ,PASSWORD: 'password'
+}
+
 export const VARIANT_TYPES = {
     OUTLINE: 'outline-'
     ,PRIMARY: 'primary'

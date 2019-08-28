@@ -1,10 +1,10 @@
 import React, { Component as C } from 'react';
 import { Alert, Form, FormControl, InputGroup, Button, Nav } from 'react-bootstrap';
-import { FaCogs, FaCheck, FaArrowLeft, FaListAlt, FaLanguage, FaPhone , FaVolumeUp, FaVolumeOff, FaTty, FaSignal, FaRandom } from 'react-icons/fa';
-import { TiTimes, TiVideo } from 'react-icons/ti';
+import { FaCogs, FaCheck, FaArrowLeft, FaListAlt, FaLanguage, FaPhone , FaVolumeUp, FaVolumeOff, FaTty, FaSignal, FaRandom, FaSpinner } from 'react-icons/fa';
+import { TiTimes, TiVideo, TiVolumeMute, TiVolumeUp, TiArrowBack } from 'react-icons/ti';
 
 import Utils from './Utils';
-import { DAILER, NUMBER, VARIANT_TYPES } from './Types';
+import { DAILER, NUMBER, VARIANT_TYPES, HTML_TAG } from './Types';
 import '../../css/Dailer.css';
 
 class DailerBox extends C {
@@ -14,14 +14,15 @@ class DailerBox extends C {
         this._onClick = this._onClick.bind(this);
         this._onChange = this._onChange.bind(this);
         this._onKeyDown = this._onKeyDown.bind(this);
-        this._onSettingClick = this._onSettingClick.bind(this);
+        this._onClickRegister = this._onClickRegister.bind(this);
         this._onOpenBoxPhone = this._onOpenBoxPhone.bind(this);
 
         this.state = {
             isUser: this.props.isUser
             ,dailer: this.props.dailer
-            ,title: 'SmartCRM Ver0.1.0'
+            ,title: 'IP PBX Ver0.1.0'
             ,setting: false
+            ,group: false
             ,validated: true
             ,phone: ''
             ,id: ''
@@ -61,6 +62,16 @@ class DailerBox extends C {
                     ,{ id: DAILER.TRANFER, variant: VARIANT_TYPES.WARNING }
                 ]
             ]
+            ,groups: [
+                { id: 1, name: 'group_01' }
+                ,{ id: 2, name: 'group_02' }
+                ,{ id: 3, name: 'group_03' }
+            ]
+            ,users: [
+                { id: 1, ext: '1001', name: 'user_01' }
+                ,{ id: 2, ext: '1002', name: 'user_02' }
+                ,{ id: 3, ext: '1003', name: 'user_03' }
+            ]
         };
     };
 
@@ -84,22 +95,38 @@ class DailerBox extends C {
         if(obj.id === DAILER.VIDEO) {
             this.props.onUpdateDailer(DAILER.VIDEO);
         }
+        if(obj.id === DAILER.CONTRACT) {
+            this._onClickContract();
+        }
         if(Utils.isTelNumber(obj.id)) {
             this.state.phone += obj.id;
             this.forceUpdate();
         }
     }
 
-    _onSettingClick(e) {
+    _onClickContract() {
+        this.state.group = !this.state.group;
+        console.log(this.state.setting);
+        console.log(this.state.group);
+        this.forceUpdate();
+    }
+
+    _onClickSettingBox(e) {
+        if(!this.state.dailer.register) return;
         var obj = e.target;
         if(obj.tagName === 'path') obj = obj.parentElement;
         if(Utils.isEmpty(obj.id)) return;
         this.state.setting = !this.state.setting;
-        if(obj.id === 'svg_icon_check') {
+        this.forceUpdate();
+    }
+
+    _onClickRegister(e) {
+        var obj = e.target;
+        if(obj.tagName === 'path') obj = obj.parentElement;
+        if(Utils.isEmpty(obj.id)) return;
+        this.state.setting = true;
+        if(obj.id === 'bt_register') {
             this.props.onUpdateDailer(DAILER.REGISTER);
-        }
-        if(obj.id === 'svg_icon_setting') {
-            this.forceUpdate();
         }
     }
 
@@ -145,14 +172,18 @@ class DailerBox extends C {
 
     _getDailerHeaderTitle() {
         var icon = (<FaCogs id="svg_icon_setting"/>);
-        if(this.state.setting) icon = (<FaCheck id="svg_icon_check"/>);
+        // if(this.state.setting) icon = (<FaCheck id="svg_icon_check"/>);
         return (
             <div>
                 <span className={ 'span-dailer-title' }>
                     { <TiTimes onClick={ this._onOpenBoxPhone.bind(this) } /> }
                     { this.state.title }
+                    {(() => {
+                        if(!this.state.group) {
+                            return( <Nav.Link id={ 'setting' } onClick={ this._onClickSettingBox.bind(this) }>{ icon }</Nav.Link>);
+                        }
+                    })()}
                 </span>
-                <Nav.Link id={ 'setting' } onClick={ this._onSettingClick.bind(this) }>{ icon }</Nav.Link>
             </div>
         );
     }
@@ -167,6 +198,29 @@ class DailerBox extends C {
         this.forceUpdate();
     }
 
+    _onClickSelectUser(e) {
+        var id = e.target.id;
+        if(Utils.isEmpty(id)) {
+            const bt = this._getClickButton(e.target);
+            if(Utils.isEmpty(bt)) return;
+            id = bt.id;
+        }
+        if(Utils.isNumber(id)) {
+            this.state.phone = e.target.id;
+            return;
+        }
+        if(id === 'bt_user') {
+            this.state.group = false;
+            this.props.onUpdateDailer(DAILER.CALL);
+            return;
+        }
+        if(id === 'bt_user_cancel') {
+            this.state.phone = '';
+        }
+        this.state.group = false;
+        this.forceUpdate();
+    }
+
     _getDailerHeader() {
         return (
             <div>
@@ -175,7 +229,11 @@ class DailerBox extends C {
                         return ( <FaSignal /> );
                     }
                 })()}
-                <video src="sample.mp4"></video>
+                {(() => {
+                    if(this.state.dailer.video) {
+                        return ( <video src="sample.mp4"></video> );
+                    }
+                })()}
             </div>
         );
     }
@@ -183,7 +241,12 @@ class DailerBox extends C {
     _getInputPhone() {
         return (
             <InputGroup>
-                <FormControl name="phone" value={ this.state.phone } placeholder="電話番号" onChange={ this._onChange.bind(this) } onKeyDown={ this._onKeyDown.bind(this) } />
+                <FormControl
+                    name="phone"
+                    value={ this.state.phone }
+                    placeholder="電話番号"
+                    onChange={ this._onChange.bind(this) }
+                    onKeyDown={ this._onKeyDown.bind(this) } />
                 <InputGroup.Append>
                 <InputGroup.Text id={ DAILER.CLEAR }>{ <FaArrowLeft onClick={ this._onClick.bind(this) }/> }</InputGroup.Text>
                 </InputGroup.Append>
@@ -202,34 +265,37 @@ class DailerBox extends C {
         if(Utils.isEmpty(json)) return "";
         return json.map((o, index) => {
             var icon = o.id;
+            var variant = o.variant;
             if(o.id === DAILER.CLEARALL) icon =(<TiTimes />);
             if(o.id === DAILER.CONTRACT) icon = (<FaListAlt />);
             if(o.id === DAILER.CODE) icon = (<FaLanguage />);
             // if(o.id === 'end') icon = (<FaTty />);
             if(o.id === DAILER.TRANFER) icon = (<FaRandom />);
             if(o.id === DAILER.CALL) {
+                icon = (<FaPhone />);
                 if(this.state.dailer.register && this.state.dailer.isCall) {
-                    icon = (<FaPhone />);
+                    variant = VARIANT_TYPES.DANGER;
                 } else {
-                    icon = (<FaTty />);
+                    variant = VARIANT_TYPES.SUCCESS;
+                    // icon = (<FaTty />);
                 }
             }
             if(o.id === DAILER.SOUND) {
                 if(this.state.dailer.sound) {
-                    icon = (<FaVolumeUp />);
+                    icon = (<TiVolumeUp />);
                 } else {
-                    icon = (<FaVolumeOff />);
+                    icon = (<TiVolumeMute />);
                 }
             }
             if(o.id === DAILER.VIDEO) {
-                if(this.state.dailer.audio) {
+                if(this.state.dailer.video) {
                     icon = (<TiVideo />);
                 } else {
                     icon = (<TiVideo />);
                 }
             }
             return (
-                <Button key={ index } id={ o.id } variant={ o.variant } onClick={ this._onClick.bind(this) }>{ icon }</Button>
+                <Button key={ index } id={ o.id } variant={ variant } onClick={ this._onClick.bind(this) }>{ icon }</Button>
             );
         });
     }
@@ -240,7 +306,7 @@ class DailerBox extends C {
                 <Form noValidate validated={ this.state.validated } onSubmit={ this._onSave.bind(this) }>
                     <Form.Group>
                         <Form.Control
-                            type="text"
+                            type={ HTML_TAG.TEXT }
                             name="id"
                             onChange={ this._onChange.bind(this) }
                             placeholder={ 'SIP ID' }
@@ -251,7 +317,7 @@ class DailerBox extends C {
                     </Form.Group>
                     <Form.Group>
                         <Form.Control
-                            type="password"
+                            type={ HTML_TAG.PASSWORD }
                             name="pw"
                             onChange={ this._onChange.bind(this) }
                             placeholder={ 'SIP PW' }
@@ -262,7 +328,7 @@ class DailerBox extends C {
                     </Form.Group>
                     <Form.Group>
                         <Form.Control
-                            type="text"
+                            type={ HTML_TAG.TEXT }
                             name="realm"
                             onChange={ this._onChange.bind(this) }
                             placeholder={ 'Realm' }
@@ -273,7 +339,7 @@ class DailerBox extends C {
                     </Form.Group>
                     <Form.Group>
                         <Form.Control
-                            type="text"
+                            type={ HTML_TAG.TEXT }
                             name="asturl"
                             onChange={ this._onChange.bind(this) }
                             placeholder={ 'Asturl' }
@@ -284,7 +350,7 @@ class DailerBox extends C {
                     </Form.Group>
                     <Form.Group>
                         <Form.Control
-                            type="text"
+                            type={ HTML_TAG.TEXT }
                             name="wsurl"
                             onChange={ this._onChange.bind(this) }
                             placeholder={ 'Wsurl' }
@@ -295,12 +361,51 @@ class DailerBox extends C {
                     </Form.Group>
                     <Form.Group>
                         <Form.Control
-                            type="text"
+                            type={ HTML_TAG.TEXT }
                             name="udpproxy"
                             onChange={ this._onChange.bind(this) }
                             placeholder={ 'Udpproxy' }/>
                     </Form.Group>
+                    <Button id='bt_register' className='btn-register' variant={ VARIANT_TYPES.SUCCESS } onClick={ this._onClickRegister.bind(this) }>
+                        認証
+                    </Button>
                 </Form>
+            </div>
+        );
+    }
+
+    _getGroupUsers() {
+        return (
+            <div>
+                <Form.Group className='form-group-user'>
+                    <Form.Label>部署</Form.Label>
+                    <Form.Control as={ HTML_TAG.SELECT }>
+                        <option>---</option>
+                        {
+                            this.state.groups.map((g) => (
+                                <option key={ g.id } value={ g.id }>{ g.name }</option>
+                            ))
+                        }
+                    </Form.Control>
+                </Form.Group>
+                <Form.Group className='form-group-user'>
+                    <Form.Label>ユーザー</Form.Label>
+                    <div className='div-text-align-left'>
+                    {
+                        this.state.users.map((u) => (
+                            <Nav.Link key={ u.id } id={ u.ext } onClick={ this._onClickSelectUser.bind(this) }>{ u.name }</Nav.Link>
+                        ))
+                    }
+                    </div>
+                    <div>
+                        <Button id='bt_user' variant={ VARIANT_TYPES.SUCCESS } onClick={ this._onClickSelectUser.bind(this) }>
+                            <FaPhone />
+                        </Button>
+                        <Button id='bt_user_cancel' variant={ VARIANT_TYPES.INFO } onClick={ this._onClickSelectUser.bind(this) }>
+                            <TiArrowBack />
+                        </Button>
+                    </div>
+                </Form.Group>
             </div>
         );
     }
@@ -309,8 +414,8 @@ class DailerBox extends C {
         this._getButonDisabled(DAILER.CALL, true);
         this._getButonDisabled(DAILER.TRANFER, true);
         if(!this.state.dailer.register) {
-            var body = document.getElementById("div_dailer_body");
-            if(!Utils.isEmpty(body)) body.style.display = 'none';
+            // var body = document.getElementById("div_dailer_body");
+            // if(!Utils.isEmpty(body)) body.style.display = 'none';
         //     this._getButonDisabled(NUMBER.ZERO, true);
         //     this._getButonDisabled(NUMBER.ONE, true);
         //     this._getButonDisabled(NUMBER.TWO, true);
@@ -342,21 +447,24 @@ class DailerBox extends C {
                 show={ this.state.dailer.show }>
                 { this._getDailerHeaderTitle() }
                 {(() => {
-                    if(!this.state.setting) {
-                        return(
-                            <div>
-                                { this._getDailerHeader() }
-                                <div id='div_dailer_body'>
-                                    { this._getInputPhone() }
-                                    { this._getDailerBody(this.state.objs) }
-                                </div>
-                            </div>
-                        );
+                    if(!this.state.setting && !this.state.group) {
+                        return( this._getSettingBox() );
                     }
                 })()}
                 {(() => {
-                    if(this.state.setting) {
-                        return( this._getSettingBox() );
+                    if(this.state.group) {
+                        return( this._getGroupUsers() );
+                    }
+                })()}
+                {(() => {
+                    if(this.state.setting && !this.state.group) {
+                        return(
+                            <div>
+                                { this._getDailerHeader() }
+                                { this._getInputPhone() }
+                                { this._getDailerBody(this.state.objs) }
+                            </div>
+                        );
                     }
                 })()}
             </Alert>

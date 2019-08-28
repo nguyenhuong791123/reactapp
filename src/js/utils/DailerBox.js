@@ -137,7 +137,9 @@ class DailerBox extends C {
     }
 
     _getButonDisabled(btId, disable) {
-        var bt = document.getElementById(btId);
+        console.log(btId);
+        var bt = document.getElementById(String(btId));
+        console.log(bt);
         if(!Utils.isEmpty(bt)) bt.setAttribute('disabled', disable);
     }
 
@@ -168,21 +170,24 @@ class DailerBox extends C {
     _getDailerHeader() {
         return (
             <div>
-                <div>
-                    {(() => {
-                        if(this.state.dailer.register) {
-                            return ( <FaSignal /> );
-                        }
-                    })()}
-                    <video src="sample.mp4"></video>
-                </div>
-                <InputGroup>
-                    <FormControl name="phone" value={ this.state.phone } placeholder="電話番号" onChange={ this._onChange.bind(this) } onKeyDown={ this._onKeyDown.bind(this) } />
-                    <InputGroup.Append>
-                    <InputGroup.Text id={ DAILER.CLEAR }>{ <FaArrowLeft onClick={ this._onClick.bind(this) }/> }</InputGroup.Text>
-                    </InputGroup.Append>
-                </InputGroup>
+                {(() => {
+                    if(this.state.dailer.register) {
+                        return ( <FaSignal /> );
+                    }
+                })()}
+                <video src="sample.mp4"></video>
             </div>
+        );
+    }
+
+    _getInputPhone() {
+        return (
+            <InputGroup>
+                <FormControl name="phone" value={ this.state.phone } placeholder="電話番号" onChange={ this._onChange.bind(this) } onKeyDown={ this._onKeyDown.bind(this) } />
+                <InputGroup.Append>
+                <InputGroup.Text id={ DAILER.CLEAR }>{ <FaArrowLeft onClick={ this._onClick.bind(this) }/> }</InputGroup.Text>
+                </InputGroup.Append>
+            </InputGroup>
         );
     }
 
@@ -304,20 +309,25 @@ class DailerBox extends C {
         this._getButonDisabled(DAILER.CALL, true);
         this._getButonDisabled(DAILER.TRANFER, true);
         if(!this.state.dailer.register) {
-            this._getButonDisabled(DAILER.ZERO, true);
-            this._getButonDisabled(DAILER.ONE, true);
-            this._getButonDisabled(DAILER.TWO, true);
-            this._getButonDisabled(DAILER.THREE, true);
-            this._getButonDisabled(DAILER.FOUR, true);
-            this._getButonDisabled(DAILER.FIVE, true);
-            this._getButonDisabled(DAILER.SIX, true);
-            this._getButonDisabled(DAILER.SEVEN, true);
-            this._getButonDisabled(DAILER.EIGHT, true);
-            this._getButonDisabled(DAILER.NINE, true);
-            this._getButonDisabled(DAILER.CODE, true);
-            this._getButonDisabled(DAILER.CONTRACT, true);
-            this._getButonDisabled(DAILER.SOUND, true);
-            this._getButonDisabled(DAILER.VIDEO, true);
+            var body = document.getElementById("div_dailer_body");
+            if(!Utils.isEmpty(body)) body.style.display = 'none';
+        //     this._getButonDisabled(NUMBER.ZERO, true);
+        //     this._getButonDisabled(NUMBER.ONE, true);
+        //     this._getButonDisabled(NUMBER.TWO, true);
+        //     this._getButonDisabled(NUMBER.THREE, true);
+        //     this._getButonDisabled(NUMBER.FOUR, true);
+        //     this._getButonDisabled(NUMBER.FIVE, true);
+        //     this._getButonDisabled(NUMBER.SIX, true);
+        //     this._getButonDisabled(NUMBER.SEVEN, true);
+        //     this._getButonDisabled(NUMBER.EIGHT, true);
+        //     this._getButonDisabled(NUMBER.NINE, true);
+        //     this._getButonDisabled(NUMBER.ASTERISK, true);
+        //     this._getButonDisabled(NUMBER.SHARP, true);
+
+        //     this._getButonDisabled(DAILER.CODE, true);
+        //     this._getButonDisabled(DAILER.CONTRACT, true);
+        //     this._getButonDisabled(DAILER.SOUND, true);
+        //     this._getButonDisabled(DAILER.VIDEO, true);
         }
         // console.log(this.state);
     }
@@ -336,7 +346,10 @@ class DailerBox extends C {
                         return(
                             <div>
                                 { this._getDailerHeader() }
-                                { this._getDailerBody(this.state.objs) }
+                                <div id='div_dailer_body'>
+                                    { this._getInputPhone() }
+                                    { this._getDailerBody(this.state.objs) }
+                                </div>
                             </div>
                         );
                     }

@@ -229,7 +229,7 @@ class Header extends C {
     if(!this.state.isUser.viewHeader) return "";
     this._loadButtonToggle();
     const Msg = Messages[ this.props.isUser.language ];
-    const isCallClass = (this.state.dailer.isCall)?"blinking":"";
+    const isCallClass = (this.state.dailer.isCall && this.state.dailer.register && this.state.dailer.isCall)?"blinking":"";
     const Dailer = (this.state.options.dailer)?(<DailerBox
                                                   dailer={ this.state.dailer }
                                                   isUser={ this.props.isUser }

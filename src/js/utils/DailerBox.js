@@ -63,7 +63,13 @@ class DailerBox extends C {
     };
 
     _onClick(e) {
-        console.log(e);
+        var obj = this._getClickButton(e.target);
+        console.log(obj);
+        if(Utils.isEmpty(obj.id)) return;
+        if(obj.id === 'call') {
+            if(!this.state.dailer.register) return;
+            this.props.onIsCall();
+        }
     }
 
     _onSettingClick(e) {
@@ -77,6 +83,13 @@ class DailerBox extends C {
         if(obj.id === 'svg_icon_setting') {
             this.forceUpdate();
         }
+    }
+
+    _getClickButton(inObj) {
+        var obj = inObj;
+        if(obj.tagName === 'path') obj = obj.parentElement.parentElement;
+        if(obj.tagName === 'svg') obj = obj.parentElement;
+        return obj;
     }
 
     _onIsCall(e) {
@@ -151,12 +164,18 @@ class DailerBox extends C {
             if(o.id === 'end') icon = (<FaTty />);
             if(o.id === 'tranfer') icon = (<FaRandom />);
             if(o.id === 'sound') {
-                if(this.state.dailer.sound) icon = (<FaVolumeUp />);
-                icon = (<FaVolumeOff />);
+                if(this.state.dailer.sound) {
+                    icon = (<FaVolumeUp />);
+                } else {
+                    icon = (<FaVolumeOff />);
+                }
             }
             if(o.id === 'video') {
-                if(this.state.dailer.audio) icon = (<TiVideo />);
-                icon = (<TiVideo />);
+                if(this.state.dailer.audio) {
+                    icon = (<TiVideo />);
+                } else {
+                    icon = (<TiVideo />);
+                }
             }
             return (
                 <Button key={ index } id={ o.id } variant={ o.variant } onClick={ this._onClick.bind(this) }>{ icon }</Button>

@@ -40,7 +40,8 @@ export const PAGE = {
 };
 
 export const DAILER = {
-    CLEAR: 'clear'
+    REGISTER: 'register'
+    ,CLEAR: 'clear'
     ,CLEARALL: 'clear_all'
     ,CONTRACT: 'contract'
     ,CODE: 'code'
@@ -48,4 +49,4 @@ export const DAILER = {
     ,CALL: 'call'
     ,SOUND: 'sound'
     ,VIDEO: 'video'
-}
+};

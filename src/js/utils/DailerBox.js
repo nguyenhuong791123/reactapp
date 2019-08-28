@@ -13,6 +13,7 @@ class DailerBox extends C {
 
         this._onClick = this._onClick.bind(this);
         this._onChange = this._onChange.bind(this);
+        this._onKeyDown = this._onKeyDown.bind(this);
         this._onSettingClick = this._onSettingClick.bind(this);
         this._onOpenBoxPhone = this._onOpenBoxPhone.bind(this);
 
@@ -37,9 +38,9 @@ class DailerBox extends C {
                     ,{ id: DAILER.CLEARALL, variant: VARIANT_TYPES.WARNING, label: '' }
                 ]
                 ,[
-                    { id: 5, variant: VARIANT_TYPES.INFO, label: '5' }
+                    { id: 4, variant: VARIANT_TYPES.INFO, label: '4' }
+                    ,{ id: 5, variant: VARIANT_TYPES.INFO, label: '5' }
                     ,{ id: 6, variant: VARIANT_TYPES.INFO, label: '6' }
-                    ,{ id: 7, variant: VARIANT_TYPES.INFO, label: '7' }
                     ,{ id: DAILER.SOUND, variant: VARIANT_TYPES.PRIMARY, label: '' }
                 ]
                 ,[
@@ -66,7 +67,7 @@ class DailerBox extends C {
 
     _onClick(e) {
         var obj = this._getClickButton(e.target);
-        console.log(obj);
+        // console.log(obj);
         if(Utils.isEmpty(obj.id)) return;
         if(obj.id === DAILER.CLEAR) {
             this._onClearText(false);
@@ -76,13 +77,17 @@ class DailerBox extends C {
         }
         if(!this.state.dailer.register) return;
         if(obj.id === DAILER.CALL) {
-            this.props.onIsCall();
+            this.props.onUpdateDailer(DAILER.CALL);
         }
         if(obj.id === DAILER.SOUND) {
-            this.props.onSound();
+            this.props.onUpdateDailer(DAILER.SOUND);
         }
         if(obj.id === DAILER.VIDEO) {
-            this.props.onVideo();
+            this.props.onUpdateDailer(DAILER.VIDEO);
+        }
+        if(Utils.isTelNumber(obj.id)) {
+            this.state.phone += obj.id;
+            this.forceUpdate();
         }
     }
 
@@ -92,7 +97,7 @@ class DailerBox extends C {
         if(Utils.isEmpty(obj.id)) return;
         this.state.setting = !this.state.setting;
         if(obj.id === 'svg_icon_check') {
-            this.props.onRegister();
+            this.props.onUpdateDailer(DAILER.REGISTER);
         }
         if(obj.id === 'svg_icon_setting') {
             this.forceUpdate();
@@ -107,9 +112,9 @@ class DailerBox extends C {
     }
 
     _onChange(e){
+        if(e.target.name === 'phone') return;
         const value = e.target.value;
         this.setState({ [e.target.name]: value });
-        console.log(this.state);
     }
 
     _onClearText(clearAll) {
@@ -123,15 +128,6 @@ class DailerBox extends C {
         }
         this.forceUpdate();
     }
-
-    // _onKeyPress(e) {
-    //     console.log(e.key);
-    //     console.log(e.target);
-    //     // const value = e.target.value;
-    //     // if(!Utils.isTelNumber(value)) return;
-    //     // this.setState({ [e.target.name]: value });
-    //     // console.log(this.state);
-    // }
 
     _onSave(e) {
         console.log(e);
@@ -160,6 +156,16 @@ class DailerBox extends C {
         );
     }
 
+    _onKeyDown(e) {
+        if(e.keyCode !== 8 && !Utils.isTelNumber(e.key)) return;
+        if(e.keyCode === 8) {
+            this._onClearText(false);
+        } else {
+            this.state.phone += e.key;
+        }
+        this.forceUpdate();
+    }
+
     _getDailerHeader() {
         return (
             <div>
@@ -172,7 +178,7 @@ class DailerBox extends C {
                     <video src="sample.mp4"></video>
                 </div>
                 <InputGroup>
-                    <FormControl name="phone" value={ this.state.phone } placeholder="電話番号" onChange={ this._onChange.bind(this) } />
+                    <FormControl name="phone" value={ this.state.phone } placeholder="電話番号" onChange={ this._onChange.bind(this) } onKeyDown={ this._onKeyDown.bind(this) } />
                     <InputGroup.Append>
                     <InputGroup.Text id={ DAILER.CLEAR }>{ <FaArrowLeft onClick={ this._onClick.bind(this) }/> }</InputGroup.Text>
                     </InputGroup.Append>
@@ -302,7 +308,7 @@ class DailerBox extends C {
             this._getButonDisabled(DAILER.TRANFER, true);
             this._getButonDisabled(DAILER.CONTRACT, true);    
         }
-        console.log(this.state);
+        // console.log(this.state);
     }
 
     render() {

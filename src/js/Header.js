@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown, Form, FormControl, Image } from 'react-bootstrap';
 import { FaUser, FaSearch, FaTty, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaKey, FaLink, FaRocketchat } from 'react-icons/fa';
 
-import { ACTION , LINK, NOT_LINK, PAGE, WINDOWN_WIDTH } from './utils/Types';
+import { ACTION , LINK, NOT_LINK, PAGE, WINDOWN_WIDTH, DAILER } from './utils/Types';
 import Utils from './utils/Utils';
 import LMenu from "./utils/LMenu";
 import RMenu from "./utils/RMenu";
@@ -24,8 +24,7 @@ class Header extends C {
     this._onSelect = this._onSelect.bind(this);
     this._onLogout = this._onLogout.bind(this);
     this._onOpenBoxPhone = this._onOpenBoxPhone.bind(this);
-    this._onRegister = this._onRegister.bind(this);
-    this._onIsCall = this._onIsCall.bind(this);
+    this._onUpdateDailer = this._onUpdateDailer.bind(this);
     this._newWindow = this._newWindow.bind(this);
     // console.log(props.ua.device);
     // console.log(props.ua.language);
@@ -164,23 +163,34 @@ class Header extends C {
     this.forceUpdate();
   }
 
-  _onRegister() {
-    this.state.dailer.register = !this.state.dailer.register;
+  _onUpdateDailer(target) {
+    if(Utils.isEmpty(target)) return;
+    if(target === DAILER.REGISTER) this.state.dailer.register = !this.state.dailer.register;
+    if(target === DAILER.CALL) this.state.dailer.isCall = !this.state.dailer.isCall;
+    if(target === DAILER.SOUND) this.state.dailer.sound = !this.state.dailer.sound;
+    if(target === DAILER.VIDEO) this.state.dailer.video = !this.state.dailer.video;
     this.forceUpdate();
   }
 
-  _onIsCall() {
-    this.state.dailer.isCall = !this.state.dailer.isCall;
-    this.forceUpdate();
-  }
+  // _onRegister() {
+  //   this.state.dailer.register = !this.state.dailer.register;
+  //   this.forceUpdate();
+  // }
 
-  _onSound(e) {
-    this.state.dailer.sound = !this.state.dailer.sound;
-  }
+  // _onIsCall() {
+  //   this.state.dailer.isCall = !this.state.dailer.isCall;
+  //   this.forceUpdate();
+  // }
 
-  _onVideo(e) {
-      this.state.dailer.video = !this.state.dailer.video;
-  }
+  // _onSound(e) {
+  //   this.state.dailer.sound = !this.state.dailer.sound;
+  //   this.forceUpdate();
+  // }
+
+  // _onVideo(e) {
+  //     this.state.dailer.video = !this.state.dailer.video;
+  //     this.forceUpdate();
+  // }
 
   getLinkObj(e) {
     var obj = e.target;
@@ -242,8 +252,10 @@ class Header extends C {
                                                   dailer={ this.state.dailer }
                                                   isUser={ this.props.isUser }
                                                   onOpenBoxPhone={ this._onOpenBoxPhone.bind(this) }
-                                                  onRegister={ this._onRegister.bind(this) }
-                                                  onIsCall={ this._onIsCall.bind(this) }/>):"";
+                                                  // onVideo={ this._onVideo.bind(this) }
+                                                  // onSound={ this._onSound.bind(this) }
+                                                  // onRegister={ this._onRegister.bind(this) }
+                                                  onUpdateDailer={ this._onUpdateDailer.bind(this) }/>):"";
 
     return (
       <div className="Headder">

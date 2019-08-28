@@ -2,6 +2,19 @@ export const WINDOWN_WIDTH = 992;
 export const LINK = 0;
 export const NOT_LINK = 1;
 
+export const VARIANT_TYPES = {
+    OUTLINE: 'outline-'
+    ,PRIMARY: 'primary'
+    ,SECONDARY: 'secondary'
+    ,SUCCESS: 'success'
+    ,WARNING: 'warning'
+    ,DANGER: 'danger'
+    ,INFO: 'info'
+    ,LIGHT: 'light'
+    ,DARK: 'dark'
+    ,LINK: 'link'
+}
+
 export const ACTION = {
     SLASH: '/'
     ,LIST: 'list'
@@ -25,3 +38,14 @@ export const PAGE = {
     ,MAIL: 'mail'
     ,CHAT: 'chat'
 };
+
+export const DAILER = {
+    CLEAR: 'clear'
+    ,CLEARALL: 'clear_all'
+    ,CONTRACT: 'contract'
+    ,CODE: 'code'
+    ,TRANFER: 'tranfer'
+    ,CALL: 'call'
+    ,SOUND: 'sound'
+    ,VIDEO: 'video'
+}

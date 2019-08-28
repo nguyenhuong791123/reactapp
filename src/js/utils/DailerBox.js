@@ -4,6 +4,7 @@ import { FaCogs, FaCheck, FaArrowLeft, FaListAlt, FaLanguage, FaPhone , FaVolume
 import { TiTimes, TiVideo } from 'react-icons/ti';
 
 import Utils from './Utils';
+import { DAILER, VARIANT_TYPES } from './Types';
 import '../../css/Dailer.css';
 
 class DailerBox extends C {
@@ -13,16 +14,14 @@ class DailerBox extends C {
         this._onClick = this._onClick.bind(this);
         this._onSettingClick = this._onSettingClick.bind(this);
         this._onOpenBoxPhone = this._onOpenBoxPhone.bind(this);
-        this._onIsCall = this._onIsCall.bind(this);
 
         this.state = {
             isUser: this.props.isUser
             ,dailer: this.props.dailer
             ,title: 'SmartCRM Ver0.1.0'
             ,setting: false
-            ,btCall: null
-            ,btTranfer: null
             ,validated: true
+            ,phone: ''
             ,id: ''
             ,pw: ''
             ,realm: ''
@@ -31,50 +30,58 @@ class DailerBox extends C {
             ,udpproxy: ''
             ,objs: [
                 [
-                    { id: 1, variant: 'info', label: '1' }
-                    ,{ id: 2, variant: 'info', label: '2' }
-                    ,{ id: 3, variant: 'info', label: '3' }
-                    ,{ id: 'clear', variant: 'warning', label: '' }
+                    { id: 1, variant: VARIANT_TYPES.INFO, label: '1' }
+                    ,{ id: 2, variant: VARIANT_TYPES.INFO, label: '2' }
+                    ,{ id: 3, variant: VARIANT_TYPES.INFO, label: '3' }
+                    ,{ id: DAILER.CLEARALL, variant: VARIANT_TYPES.WARNING, label: '' }
                 ]
                 ,[
-                    { id: 5, variant: 'info', label: '5' }
-                    ,{ id: 6, variant: 'info', label: '6' }
-                    ,{ id: 7, variant: 'info', label: '7' }
-                    ,{ id: 'sound', variant: 'info', label: '' }
+                    { id: 5, variant: VARIANT_TYPES.INFO, label: '5' }
+                    ,{ id: 6, variant: VARIANT_TYPES.INFO, label: '6' }
+                    ,{ id: 7, variant: VARIANT_TYPES.INFO, label: '7' }
+                    ,{ id: DAILER.SOUND, variant: VARIANT_TYPES.PRIMARY, label: '' }
                 ]
                 ,[
-                    { id: 7, variant: 'info', label: '7' }
-                    ,{ id: 8, variant: 'info', label: '8' }
-                    ,{ id: 9, variant: 'info', label: '9' }
-                    ,{ id: 'video', variant: 'info', label: '' }
+                    { id: 7, variant: VARIANT_TYPES.INFO, label: '7' }
+                    ,{ id: 8, variant: VARIANT_TYPES.INFO, label: '8' }
+                    ,{ id: 9, variant: VARIANT_TYPES.INFO, label: '9' }
+                    ,{ id: DAILER.VIDEO, variant: VARIANT_TYPES.PRIMARY, label: '' }
                 ]
                 ,[
-                    { id: '*', variant: 'info', label: '*' }
-                    ,{ id: 0, variant: 'info', label: '0' }
-                    ,{ id: '#', variant: 'info', label: '#' }
-                    ,{ id: 'group', variant: 'info', label: '' }
+                    { id: '*', variant: VARIANT_TYPES.INFO, label: '*' }
+                    ,{ id: 0, variant: VARIANT_TYPES.INFO, label: '0' }
+                    ,{ id: '#', variant: VARIANT_TYPES.INFO, label: '#' }
+                    ,{ id: DAILER.CONTRACT, variant: VARIANT_TYPES.SUCCESS, label: '' }
                 ]
                 ,[
-                    { id: 'code', variant: 'info', label: '' }
-                    ,{ id: 'call', variant: 'success', label: '' }
+                    { id: DAILER.CODE, variant: VARIANT_TYPES.INFO, label: '' }
+                    ,{ id: DAILER.CALL, variant: VARIANT_TYPES.SUCCESS, label: '' }
                     // ,{ id: 'end', variant: 'danger', label: '' }
-                    ,{ id: 'tranfer', variant: 'warning', label: '' }
+                    ,{ id: DAILER.TRANFER, variant: VARIANT_TYPES.WARNING, label: '' }
                 ]
             ]
         };
     };
 
-    _getBuuton(id) {
-        return document.getElementById(id);
-    }
-
     _onClick(e) {
         var obj = this._getClickButton(e.target);
         console.log(obj);
         if(Utils.isEmpty(obj.id)) return;
-        if(obj.id === 'call') {
-            if(!this.state.dailer.register) return;
+        if(obj.id === DAILER.CLEAR) {
+            this._onClearText(false);
+        }
+        if(obj.id === DAILER.CLEARALL) {
+            this._onClearText(true);
+        }
+        if(!this.state.dailer.register) return;
+        if(obj.id === DAILER.CALL) {
             this.props.onIsCall();
+        }
+        if(obj.id === DAILER.SOUND) {
+            this.props.onSound();
+        }
+        if(obj.id === DAILER.VIDEO) {
+            this.props.onVideo();
         }
     }
 
@@ -98,15 +105,22 @@ class DailerBox extends C {
         return obj;
     }
 
-    _onIsCall(e) {
-        console.log(e);
-        this.props.onIsCall();
-    }
-
     _onChange(e){
         const value = e.target.value;
         this.setState({ [e.target.name]: value });
         console.log(this.state);
+    }
+
+    _onClearText(clearAll) {
+        if(Utils.isEmpty(this.state.phone)) return;
+        if(clearAll) {
+            this.state.phone = '';
+        } else {
+            const length = this.state.phone.length;
+            const text = this.state.phone;
+            this.state.phone = text.substring(0, length-1);
+        }
+        this.forceUpdate();
     }
 
     _onSave(e) {
@@ -115,6 +129,11 @@ class DailerBox extends C {
 
     _onOpenBoxPhone(e) {
         this.props.onOpenBoxPhone(e);
+    }
+
+    _getButonDisabled(btId, disable) {
+        var bt = document.getElementById(btId);
+        if(!Utils.isEmpty(bt)) bt.setAttribute('disabled', disable);
     }
 
     _getDailerHeaderTitle() {
@@ -143,9 +162,9 @@ class DailerBox extends C {
                     <video src="sample.mp4"></video>
                 </div>
                 <InputGroup>
-                    <FormControl placeholder="電話番号"/>
+                    <FormControl name="phone" value={ this.state.phone } placeholder="電話番号" onChange={ this._onChange.bind(this) }/>
                     <InputGroup.Append>
-                    <InputGroup.Text>{ <FaArrowLeft onClick={ this._onClick.bind(this) }/> }</InputGroup.Text>
+                    <InputGroup.Text id={ DAILER.CLEAR }>{ <FaArrowLeft onClick={ this._onClick.bind(this) }/> }</InputGroup.Text>
                     </InputGroup.Append>
                 </InputGroup>
             </div>
@@ -163,26 +182,26 @@ class DailerBox extends C {
         if(Utils.isEmpty(json)) return "";
         return json.map((o, index) => {
             var icon = o.label;
-            if(o.id === 'clear') icon =(<TiTimes />);
-            if(o.id === 'group') icon = (<FaListAlt />);
-            if(o.id === 'code') icon = (<FaLanguage />);
+            if(o.id === DAILER.CLEARALL) icon =(<TiTimes />);
+            if(o.id === DAILER.CONTRACT) icon = (<FaListAlt />);
+            if(o.id === DAILER.CODE) icon = (<FaLanguage />);
             // if(o.id === 'end') icon = (<FaTty />);
-            if(o.id === 'tranfer') icon = (<FaRandom />);
-            if(o.id === 'call') {
+            if(o.id === DAILER.TRANFER) icon = (<FaRandom />);
+            if(o.id === DAILER.CALL) {
                 if(this.state.dailer.register && this.state.dailer.isCall) {
                     icon = (<FaPhone />);
                 } else {
                     icon = (<FaTty />);
                 }
             }
-            if(o.id === 'sound') {
+            if(o.id === DAILER.SOUND) {
                 if(this.state.dailer.sound) {
                     icon = (<FaVolumeUp />);
                 } else {
                     icon = (<FaVolumeOff />);
                 }
             }
-            if(o.id === 'video') {
+            if(o.id === DAILER.VIDEO) {
                 if(this.state.dailer.audio) {
                     icon = (<TiVideo />);
                 } else {
@@ -267,8 +286,12 @@ class DailerBox extends C {
     }
 
     componentDidUpdate() {
-        this.state.btCall = this._getBuuton('call');
-        this.state.btCall.setAttribute('disabled', true);
+        if(!this.state.dailer.register) {
+            this._getButonDisabled(DAILER.CODE, true);
+            this._getButonDisabled(DAILER.CALL, true);
+            this._getButonDisabled(DAILER.TRANFER, true);
+            this._getButonDisabled(DAILER.CONTRACT, true);    
+        }
         console.log(this.state);
     }
 

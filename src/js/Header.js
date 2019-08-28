@@ -174,6 +174,14 @@ class Header extends C {
     this.forceUpdate();
   }
 
+  _onSound(e) {
+    this.state.dailer.sound = !this.state.dailer.sound;
+  }
+
+  _onVideo(e) {
+      this.state.dailer.video = !this.state.dailer.video;
+  }
+
   getLinkObj(e) {
     var obj = e.target;
     if(obj.tagName !== 'A') {

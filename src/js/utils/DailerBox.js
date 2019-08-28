@@ -4,7 +4,7 @@ import { FaCogs, FaCheck, FaArrowLeft, FaListAlt, FaLanguage, FaPhone , FaVolume
 import { TiTimes, TiVideo } from 'react-icons/ti';
 
 import Utils from './Utils';
-import { DAILER, VARIANT_TYPES } from './Types';
+import { DAILER, NUMBER, VARIANT_TYPES } from './Types';
 import '../../css/Dailer.css';
 
 class DailerBox extends C {
@@ -32,34 +32,33 @@ class DailerBox extends C {
             ,udpproxy: ''
             ,objs: [
                 [
-                    { id: 1, variant: VARIANT_TYPES.INFO, label: '1' }
-                    ,{ id: 2, variant: VARIANT_TYPES.INFO, label: '2' }
-                    ,{ id: 3, variant: VARIANT_TYPES.INFO, label: '3' }
-                    ,{ id: DAILER.CLEARALL, variant: VARIANT_TYPES.WARNING, label: '' }
+                    { id: NUMBER.ONE, variant: VARIANT_TYPES.INFO }
+                    ,{ id: NUMBER.TWO, variant: VARIANT_TYPES.INFO }
+                    ,{ id: NUMBER.THREE, variant: VARIANT_TYPES.INFO }
+                    ,{ id: DAILER.CLEARALL, variant: VARIANT_TYPES.WARNING }
                 ]
                 ,[
-                    { id: 4, variant: VARIANT_TYPES.INFO, label: '4' }
-                    ,{ id: 5, variant: VARIANT_TYPES.INFO, label: '5' }
-                    ,{ id: 6, variant: VARIANT_TYPES.INFO, label: '6' }
-                    ,{ id: DAILER.SOUND, variant: VARIANT_TYPES.PRIMARY, label: '' }
+                    { id: NUMBER.FOUR, variant: VARIANT_TYPES.INFO }
+                    ,{ id: NUMBER.FIVE, variant: VARIANT_TYPES.INFO }
+                    ,{ id: NUMBER.SIX, variant: VARIANT_TYPES.INFO }
+                    ,{ id: DAILER.SOUND, variant: VARIANT_TYPES.PRIMARY }
                 ]
                 ,[
-                    { id: 7, variant: VARIANT_TYPES.INFO, label: '7' }
-                    ,{ id: 8, variant: VARIANT_TYPES.INFO, label: '8' }
-                    ,{ id: 9, variant: VARIANT_TYPES.INFO, label: '9' }
-                    ,{ id: DAILER.VIDEO, variant: VARIANT_TYPES.PRIMARY, label: '' }
+                    { id: NUMBER.SEVEN, variant: VARIANT_TYPES.INFO }
+                    ,{ id: NUMBER.EIGHT, variant: VARIANT_TYPES.INFO }
+                    ,{ id: NUMBER.NINE, variant: VARIANT_TYPES.INFO }
+                    ,{ id: DAILER.VIDEO, variant: VARIANT_TYPES.PRIMARY }
                 ]
                 ,[
-                    { id: '*', variant: VARIANT_TYPES.INFO, label: '*' }
-                    ,{ id: 0, variant: VARIANT_TYPES.INFO, label: '0' }
-                    ,{ id: '#', variant: VARIANT_TYPES.INFO, label: '#' }
-                    ,{ id: DAILER.CONTRACT, variant: VARIANT_TYPES.SUCCESS, label: '' }
+                    { id: NUMBER.ASTERISK, variant: VARIANT_TYPES.INFO }
+                    ,{ id: NUMBER.ZERO, variant: VARIANT_TYPES.INFO }
+                    ,{ id: NUMBER.SHARP, variant: VARIANT_TYPES.INFO }
+                    ,{ id: DAILER.CONTRACT, variant: VARIANT_TYPES.SUCCESS }
                 ]
                 ,[
-                    { id: DAILER.CODE, variant: VARIANT_TYPES.INFO, label: '' }
-                    ,{ id: DAILER.CALL, variant: VARIANT_TYPES.SUCCESS, label: '' }
-                    // ,{ id: 'end', variant: 'danger', label: '' }
-                    ,{ id: DAILER.TRANFER, variant: VARIANT_TYPES.WARNING, label: '' }
+                    { id: DAILER.CODE, variant: VARIANT_TYPES.INFO }
+                    ,{ id: DAILER.CALL, variant: VARIANT_TYPES.SUCCESS }
+                    ,{ id: DAILER.TRANFER, variant: VARIANT_TYPES.WARNING }
                 ]
             ]
         };
@@ -197,7 +196,7 @@ class DailerBox extends C {
     _getButtons(json) {
         if(Utils.isEmpty(json)) return "";
         return json.map((o, index) => {
-            var icon = o.label;
+            var icon = o.id;
             if(o.id === DAILER.CLEARALL) icon =(<TiTimes />);
             if(o.id === DAILER.CONTRACT) icon = (<FaListAlt />);
             if(o.id === DAILER.CODE) icon = (<FaLanguage />);
@@ -302,11 +301,23 @@ class DailerBox extends C {
     }
 
     componentDidUpdate() {
+        this._getButonDisabled(DAILER.CALL, true);
+        this._getButonDisabled(DAILER.TRANFER, true);
         if(!this.state.dailer.register) {
+            this._getButonDisabled(DAILER.ZERO, true);
+            this._getButonDisabled(DAILER.ONE, true);
+            this._getButonDisabled(DAILER.TWO, true);
+            this._getButonDisabled(DAILER.THREE, true);
+            this._getButonDisabled(DAILER.FOUR, true);
+            this._getButonDisabled(DAILER.FIVE, true);
+            this._getButonDisabled(DAILER.SIX, true);
+            this._getButonDisabled(DAILER.SEVEN, true);
+            this._getButonDisabled(DAILER.EIGHT, true);
+            this._getButonDisabled(DAILER.NINE, true);
             this._getButonDisabled(DAILER.CODE, true);
-            this._getButonDisabled(DAILER.CALL, true);
-            this._getButonDisabled(DAILER.TRANFER, true);
-            this._getButonDisabled(DAILER.CONTRACT, true);    
+            this._getButonDisabled(DAILER.CONTRACT, true);
+            this._getButonDisabled(DAILER.SOUND, true);
+            this._getButonDisabled(DAILER.VIDEO, true);
         }
         // console.log(this.state);
     }

@@ -322,8 +322,8 @@ class TabMenu extends C {
                             navParent[0].style.display = 'none';
                             navParent[navParent.length-1].style.display = 'none';
                         }
-                        if(divP.className.indexOf('mr-auto-parent ') === -1) {
-                            divP.className = divP.className + 'mr-auto-parent ';
+                        if(divP.className.indexOf(' mr-auto-parent') === -1) {
+                            divP.className = divP.className + ' mr-auto-parent';
                         }
                     } else {
                         nav.style.width = (window.innerWidth - 660) + 'px';
@@ -332,8 +332,8 @@ class TabMenu extends C {
                             navParent[0].style.display = 'block';
                             navParent[navParent.length-1].style.display = 'block';
                         }
-                        if(divP.className.indexOf('mr-auto-parent ') !== -1) {
-                            divP.className = divP.className.replace('mr-auto-parent ', '');
+                        if(divP.className.indexOf(' mr-auto-parent') !== -1) {
+                            divP.className = divP.className.replace(' mr-auto-parent', '');
                         }
                     }
                 }

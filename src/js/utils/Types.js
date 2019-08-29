@@ -8,6 +8,8 @@ export const HTML_TAG = {
     ,SELECT: 'select'
     ,TEXT: 'text'
     ,PASSWORD: 'password'
+    ,CSS_LINK: 'link'
+    ,HEAD: 'head'
 }
 
 export const VARIANT_TYPES = {

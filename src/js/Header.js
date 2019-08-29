@@ -266,14 +266,15 @@ class Header extends C {
         })()}
         <RMenu isUser={ this.props.isUser } title={ this.state.title }/>
         { Dailer }
-        <Navbar bg="dark" expand="lg" variant="dark">
+        {/* <Navbar bg="dark" expand="lg" variant="dark"> */}
+        <Navbar expand="lg">
           <a href='#home-page' page={ 'https://vnext.co.jp/company-info.html' } onClick={ this._newWindow.bind(this) } className={ 'header-image-icon' }>
             <Image src={ 'favicon.ico' } rounded />
             <span>SmartCRM</span>
           </a>
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" id="basic-navbar-nav-toggle"/>
-          <Navbar.Collapse className="mr-auto-parent">
+          <Navbar.Collapse className=" mr-auto-parent">
             <Nav className="mr-auto" id="div-nav-tab-menu">
               {(() => {
                 if (this.state.isUser.menu === 0) {

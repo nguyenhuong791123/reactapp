@@ -32,17 +32,8 @@ const isUserInit = (isUser) => {
       ,viewHeader: getJsonValue(isUser, 'info', 'viewHeader', false)
       ,path: getJsonValue(isUser, 'info', 'path', '/')
       ,action: getJsonValue(isUser, 'info', 'action', 'customer')
+      ,theme: getJsonValue(isUser, 'info', 'theme', 'yeti')
       ,logo: getJsonValue(isUser, 'info', 'logo', '')
-      // ,language: (isUser===null || isUser, 'info'===undefined)?'ja':isUser, 'info'.language
-      // ,uLid: (isUser===null || isUser, 'info'===undefined)?'':isUser, 'info'.uLid
-      // ,cId: (isUser===null || isUser, 'info'===undefined)?'':isUser, 'info'.cId
-      // ,gId: (isUser===null || isUser, 'info'===undefined)?'':isUser, 'info'.gId
-      // ,uId: (isUser===null || isUser, 'info'===undefined)?'':isUser, 'info'.uId
-      // ,uName: (isUser===null || isUser, 'info'===undefined)?'':isUser, 'info'.uName
-      // ,viewHeader: (isUser===null || isUser, 'info'===undefined)?false:isUser, 'info'.viewHeader
-      // ,path: (isUser===null || isUser, 'info'===undefined)?'/':isUser, 'info'.path
-      // ,action: (isUser===null || isUser, 'info'===undefined)?'customer':isUser, 'info'.action
-      // ,logo: (isUser===null || isUser, 'info'===undefined)?'':isUser, 'info'.logo
     }
     ,options: {
       customize: getJsonValue(isUser, 'options', 'customize', false)

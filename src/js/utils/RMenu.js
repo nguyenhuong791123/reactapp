@@ -12,7 +12,7 @@ var styles = {
   bmCross: { background: '#bdc3c7' },
   bmMenuWrap: { position: 'fixed', height: '100%' },
   // bmMenu: { background: '#373a47', padding: '2.5em 1.5em 0', fontSize: '1.15em' },
-  bmMenu: { background: '#373a47', padding: '0.5em' },
+  bmMenu: { padding: '0.5em' },
   bmMorphShape: { fill: '#373a47' },
   // bmItemList: { color: '#b8b7ad', padding: '0.8em' },
   bmItemList: { color: '#b8b7ad' },

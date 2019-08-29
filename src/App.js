@@ -6,7 +6,7 @@ import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import { sessionService, sessionReducer } from 'redux-react-session';
 import thunkMiddleware from 'redux-thunk';
 
-import { ACTION } from './js/utils/Types';
+import { ACTION, HTML_TAG } from './js/utils/Types';
 import Utils from './js/utils/Utils';
 
 /* eslint-disable import/first */
@@ -154,6 +154,12 @@ class App extends C {
 
     UNSAFE_componentWillMount() {
         this._loadAuthCookies(this.state.isUser, this._updateStateIsUser);
+        const css = document.createElement(HTML_TAG.CSS_LINK);
+        css.setAttribute('rel', 'stylesheet');
+        css.setAttribute('href', './dist/' + this.state.isUser.theme + '/bootstrap.min.css');
+        const head = document.getElementsByTagName(HTML_TAG.HEAD)[0];
+        console.log(head);
+        head.appendChild(css);
     }
 
     render() {

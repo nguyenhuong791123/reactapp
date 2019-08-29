@@ -1,5 +1,13 @@
 div.mr-auto {
-    margin-right: .5em;
+    margin-right: .5em !important;
+    border-bottom: 1px solid #dee2e6;
+}
+
+div.mr-auto a:first-child
+,div.mr-auto a:last-child {
+    border-top: 1px solid #dee2e6;
+    border-left: 1px solid #dee2e6;
+    border-right: 1px solid #dee2e6;
 }
 
 div.mr-auto-parent {
@@ -61,9 +69,9 @@ div.mr-auto nav.nav-tabs a.nav-link {
     color: #007bff;
 }
 
-div.mr-auto nav.nav-tabs a.nav-link.active {
+/* div.mr-auto nav.nav-tabs a.nav-link.active {
     background: none;
-}
+} */
 
 /* div.mr-auto nav.nav-tabs a.nav-link:first-child {
     position: absolute;

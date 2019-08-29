@@ -13,6 +13,11 @@ body {
     color: red;
 }
 
+a.nav-link {
+    display: block;
+    padding: 0.5rem 1rem;
+}
+
 form.rjsf > div.errors:first-child {
     display: none;
 }

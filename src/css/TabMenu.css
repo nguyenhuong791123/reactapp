@@ -1,5 +1,5 @@
 div.mr-auto {
-    margin-right: .5em !important;
+    /* margin-right: .5em !important; */
     border-bottom: 1px solid #dee2e6;
 }
 
@@ -14,16 +14,35 @@ div.mr-auto-parent {
     border-radius: 0.5em;
     padding: 0.2em;
     position: absolute;
-    max-width: 265px;
+    max-width: 275px;
     right: .2em;
     /* background: grey; */
     top: 3em;
     border: 1px solid #dee2e6;
 }
 
-div.mr-auto-parent-menu1 div:first-child {
+div#tab_menu_1 div:first-child {
     width: 100%;
     border: none;
+}
+
+div.tab-menu-1 {
+    max-width: 275px;
+    top: 3em;
+    position: absolute;
+    right: 0.5em;
+}
+
+div.tab-menu-1 form.form-inline input {
+    width: 100%;
+}
+
+div.tab-menu-1 a {
+    float: left;
+}
+
+div.tab-menu-1 div:last-child {
+    float: left;
 }
 
 div.mr-auto-parent form.form-inline input {

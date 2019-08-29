@@ -84,16 +84,7 @@ class Header extends C {
   }
 
   _onClick(e) {
-    this._onClickButtonToggle();
-    // var hBts = document.getElementById("basic-navbar-nav-toggle");
-    // if(!Utils.isEmpty(hBts) && window.innerWidth < WINDOWN_WIDTH) {
-    //   if(hBts.tagName === "BUTTON") hBts.click();
-    //   var btn = hBts.parentElement.childNodes[0];
-    //   if(!Utils.isEmpty(btn) && btn.tagName === "BUTTON") btn.click();
-    // }
-
     var obj = e.target;
-    // if(Utils.isEmpty(e.tagName) && e.tagName === 'A') obj = e;
     if(obj.tagName !== 'A') {
       if(obj.tagName === 'path') {
         obj = e.target.parentElement.parentElement;
@@ -103,6 +94,8 @@ class Header extends C {
       if(obj.tagName !== 'A') return;
     }
 
+    const mode = obj.getAttribute('mode');
+    if(mode !== 'menu-left') this._onClickButtonToggle();
     const action = obj.getAttribute('action');
     if(!Utils.isEmpty(action)) {
       if(!Utils.isEmpty(obj.id) && (obj.id === "a-chat-icon" || obj.id === "a-page-setting")) {
@@ -234,13 +227,13 @@ class Header extends C {
     w.location = href;
   }
 
-  UNSAFE_componentDidUpdate() {
-    this._loadButtonToggle();
-  }
+  // UNSAFE_componentDidUpdate() {
+  //   this._loadButtonToggle();
+  // }
 
-  UNSAFE_componentDidMount() {
-    this._loadButtonToggle();
-  }
+  // UNSAFE_componentDidMount() {
+  //   this._loadButtonToggle();
+  // }
 
   UNSAFE_componentWillReceiveProps(props) {
     console.log('HEADER componentWillReceiveProps');
@@ -248,22 +241,23 @@ class Header extends C {
     this.state.options = props.options;
   }
 
-  _loadButtonToggle() {
-    var btn = document.getElementById("basic-navbar-nav-toggle");
-    if(!Utils.isEmpty(btn) && !Utils.isEmpty(this.props.isUser)) {
-      if(this.state.isUser.menu === 1) {
-        btn.style.left = "1.5em";
-      } else {
-        btn.style.left = "0";  
-      }
-    }
-  }
+  // _loadButtonToggle() {
+  //   var btn = document.getElementById("basic-navbar-nav-toggle");
+  //   if(!Utils.isEmpty(btn) && !Utils.isEmpty(this.props.isUser)) {
+  //     if(this.state.isUser.menu === 1) {
+  //       btn.style.left = "1.5em";
+  //     } else {
+  //       btn.style.left = "0";  
+  //     }
+  //   }
+  // }
 
   render() {
     if(!this.state.isUser.viewHeader) return "";
-    this._loadButtonToggle();
+    // this._loadButtonToggle();
     const Msg = Messages[ this.props.isUser.language ];
     var menuType = (this.state.isUser.menu===1)?"tab_menu_1":"tab_menu_0";
+    var menuClass = (this.state.isUser.menu===0)?" mr-auto-parent":""
     const isCallClass = (this.state.dailer.isCall && this.state.dailer.register)?"blinking":"";
     const Dailer = (this.state.options.dailer)?(<DailerBox
                                                   dailer={ this.state.dailer }
@@ -278,27 +272,32 @@ class Header extends C {
       <div className="Headder">
         {(() => {
           if(this.state.isUser.menu === 1) {
-            return ( <LMenu isUser={ this.props.isUser } menus={ this.state.menus }/> );
+            return ( <LMenu isUser={ this.props.isUser } objs={ this.state.menus } onClick={ this._onClick.bind(this) }/> );
           }
         })()}
         <RMenu isUser={ this.props.isUser } title={ this.state.title }/>
         { Dailer }
         {/* <Navbar bg="dark" expand="lg" variant="dark"> */}
         <Navbar expand="lg">
-          <a href="#" page={ 'https://vnext.co.jp/company-info.html' } onClick={ this._newWindow.bind(this) } className={ 'header-image-icon' }>
+          <a href="#home-page" page={ 'https://vnext.co.jp/company-info.html' } onClick={ this._newWindow.bind(this) } className={ 'header-image-icon' }>
             <Image src={ 'favicon.ico' } rounded />
-            <span>SmartCRM</span>
+            <span>SmartCRM Ver0.1.0</span>
           </a>
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" id="basic-navbar-nav-toggle"/>
-          <Navbar.Collapse id={ menuType }>
-            <Nav className="mr-auto" id="div-nav-tab-menu">
-              {(() => {
-                if (this.state.isUser.menu === 0) {
-                  return (<TabMenu isUser={ this.state.isUser } objs={ this.state.menus } onClick={ this._onClick.bind(this) }/>);
-                }
-              })()}
-            </Nav>
+          <Navbar.Collapse id={ menuType } className={ menuClass }>    
+            {(() => {
+              if (this.state.isUser.menu === 0) {
+                return (
+                  <Nav className="mr-auto" id="div-nav-tab-menu">
+                    <TabMenu isUser={ this.state.isUser } objs={ this.state.menus } onClick={ this._onClick.bind(this) }/>
+                  </Nav>
+                );
+              }
+              if (this.state.isUser.menu !== 0) {
+                return (<div id="div-nav-tab-menu"></div>);
+              }
+            })()}
 
             <Form inline>
               <FormControl type="text" id="input_global_search" placeholder="Search" className="mr-sm-2" />

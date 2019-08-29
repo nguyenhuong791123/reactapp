@@ -1,6 +1,7 @@
 import React, { Component as C } from 'react';
 import { Alert, Form, FormControl, InputGroup, Button, Nav } from 'react-bootstrap';
-import { FaCogs, FaCheck, FaArrowLeft, FaListAlt, FaLanguage, FaPhone , FaVolumeUp, FaVolumeOff, FaTty, FaSignal, FaRandom, FaSpinner } from 'react-icons/fa';
+// import { FaCogs, FaCheck, FaArrowLeft, FaListAlt, FaLanguage, FaPhone , FaVolumeUp, FaVolumeOff, FaTty, FaSignal, FaRandom, FaSpinner } from 'react-icons/fa';
+import { FaCogs, FaArrowLeft, FaListAlt, FaLanguage, FaPhone , FaSignal, FaRandom } from 'react-icons/fa';
 import { TiTimes, TiVideo, TiVolumeMute, TiVolumeUp, TiArrowBack } from 'react-icons/ti';
 
 import Utils from './Utils';

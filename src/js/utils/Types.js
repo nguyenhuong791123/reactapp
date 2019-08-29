@@ -10,6 +10,7 @@ export const HTML_TAG = {
     ,PASSWORD: 'password'
     ,CSS_LINK: 'link'
     ,HEAD: 'head'
+    ,BUTTON: 'BUTTON'
 }
 
 export const VARIANT_TYPES = {

@@ -79,7 +79,7 @@ class TabMenu extends C {
             if(window.innerWidth < WINDOWN_WIDTH) {
                 isExistObj.style.top = (obj.offsetTop + (obj.offsetHeight + 5)) + 'px';
                 isExistObj.style.left = 'auto';
-                isExistObj.style.right ='270px';
+                isExistObj.style.right = '280px';
             } else {
                 isExistObj.style.top = (obj.offsetTop + obj.offsetHeight) + 'px';
                 isExistObj.style.left = (obj.offsetLeft) + 'px';    
@@ -172,8 +172,11 @@ class TabMenu extends C {
             if(!Utils.isEmpty(items) && items.length > 0) {
                 this._getMenuLinkBoxHTML(isExistObj, idx, items);
                 const objPos = ReactDOM.findDOMNode(obj).getBoundingClientRect();
+                isExistObj.style.right = 'auto';
                 if(window.innerWidth < WINDOWN_WIDTH) {
                     isExistObj.style.top = (objPos.top) + 'px';
+                    // console.log(objPos.x);
+                    // console.log(objPos.width);
                     isExistObj.style.left = (objPos.x - (objPos.width + 3)) + 'px';
                 } else {
                     isExistObj.style.top = (objPos.top) + 'px';
@@ -300,10 +303,17 @@ class TabMenu extends C {
         this._hideAllChildMenu(level);
     }
 
+    // UNSAFE_componentWillReceiveProps(props) {
+    //     this.state.isUser = props.isUser;
+    //     this.state.objs = props.objs;
+    // }
+
     componentDidMount() {
-        // console.log('TABMENU componentDidMount');
+        console.log('TABMENU componentDidMount');
         var div = document.getElementById('div-nav-tab-menu');
+        console.log(div);
         window.onresize = function(event) {
+            console.log(div);
             if(Utils.isEmpty(div)) return;
             const divContent = div.childNodes[0].childNodes[2];
             if(!Utils.isEmpty(divContent)
@@ -314,19 +324,17 @@ class TabMenu extends C {
                 const divP = div.parentElement;
                 const navParent = nav.parentElement.childNodes;
                 if(window.innerWidth < WINDOWN_WIDTH) {
-                    if(divP.id === 'tab_menu_0') {
-                        if(nav.className.indexOf(' nav-tabs-vertical') === -1) {
-                            nav.className = nav.className + ' nav-tabs-vertical';
-                            navParent[0].style.display = 'none';
-                            navParent[navParent.length-1].style.display = 'none';
-                        }
-                        if(divP.className.indexOf(' mr-auto-parent') === -1) {
-                            divP.className = divP.className + ' mr-auto-parent';
-                        }
+                    nav.childNodes[0].style.marginLeft = 0;
+                    if(nav.className.indexOf(' nav-tabs-vertical') === -1) {
+                        nav.className = nav.className + ' nav-tabs-vertical';
+                        navParent[0].style.display = 'none';
+                        navParent[navParent.length-1].style.display = 'none';
+                    }
+                    if(divP.className.indexOf(' mr-auto-parent') === -1) {
+                        divP.className = divP.className + ' mr-auto-parent';
                     }
                 } else {
-                    console.log(nav);
-                    nav.style.width = (window.innerWidth - 690) + 'px';
+                    nav.style.width = (window.innerWidth - 750) + 'px';
                     if(nav.className.indexOf(' nav-tabs-vertical') !== -1) {
                         nav.className = nav.className.replace(' nav-tabs-vertical', '');
                         navParent[0].style.display = 'block';
@@ -334,6 +342,19 @@ class TabMenu extends C {
                     }
                     if(divP.className.indexOf(' mr-auto-parent') !== -1) {
                         divP.className = divP.className.replace(' mr-auto-parent', '');
+                    }
+                }
+            } else {
+                console.log(div);
+                const divParent = div.parentElement;
+                if(divParent.id !== 'tab_menu_1') return;
+                if(window.innerWidth < WINDOWN_WIDTH) {
+                    if(divParent.className.indexOf(' tab-menu-1') === -1) {
+                        divParent.className = divParent.className + ' tab-menu-1';
+                    }
+                } else {
+                    if(divParent.indexOf(' tab-menu-1') !== -1) {
+                        divParent.className = divParent.className.replace(' tab-menu-1', '');
                     }
                 }
             }
@@ -355,6 +376,7 @@ class TabMenu extends C {
                 if(item.view === LINK) nObj.onclick = this._onClick.bind(this);
             }
         }
+        this.forceUpdate();
     }
   
     render() {

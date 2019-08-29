@@ -3,21 +3,21 @@ import { Nav } from 'react-bootstrap';
 import { FaBars } from 'react-icons/fa';
 import { slide as Menu } from "react-burger-menu";
 
-import { LINK, NOT_LINK } from './Types';
+import { LINK, NOT_LINK, HTML_TAG } from './Types';
 import Utils from './Utils';
 
 var styles = {
-  bmBurgerButton: { position: 'fixed', width: '36px', height: '30px', left: '10px', top: '10px', color: 'white' },
+  bmBurgerButton: { position: 'fixed', width: '36px', height: '30px', left: '205px', top: '10px' },
   bmBurgerBars: { background: '#373a47' },
   bmBurgerBarsHover: { background: '#a90000' },
   bmCrossButton: { height: '24px', width: '24px' },
-  bmCross: { background: '#bdc3c7' },
+  // bmCross: { background: '#bdc3c7' },
   bmMenuWrap: { position: 'fixed', height: '100%' },
   // bmMenu: { background: '#373a47', padding: '2.5em 1.5em 0', fontSize: '1.15em' },
-  bmMenu: { background: '#373a47' },
+  // bmMenu: { background: '#373a47' },
   bmMorphShape: { fill: '#373a47' },
   // bmItemList: { color: '#b8b7ad', padding: '0.8em' },
-  bmItemList: { color: '#b8b7ad' },
+  // bmItemList: { color: '#b8b7ad' },
   bmItem: { display: 'inline-block' },
   bmOverlay: { background: 'rgba(0, 0, 0, 0.3)' }
 }
@@ -30,7 +30,7 @@ class LMenu extends C {
 
     this.state = {
       isUser: this.props.isUser
-      ,menus: this.props.menus
+      ,objs: this.props.objs
     }
   }
 
@@ -43,24 +43,19 @@ class LMenu extends C {
       const childs = e.target.parentElement.parentElement.childNodes;
       if(Utils.isEmpty(childs) || childs.length < 2) return;
       var className = childs[1].className;
-      console.log(childs[1]);
-      console.log(childs[1].className);
-
       if(className.indexOf('-hide') === -1) {
         className = className.replace('-show', '-hide');
       } else {
         className = className.replace('-hide', '-show');
       }
-      console.log(className);
       childs[1].className = className;
-      console.log(childs[1]);
-      console.log(childs[1].className);
-
-      // console.log(e.target);
-      // console.log(e.target.parentElement);
-      // console.log(e.target.parentElement.parentElement.childNodes[1]);
     } else {
-      console.log(e);
+      const svg = document.getElementById('btn_menu_left');
+      const btn = svg.parentElement.childNodes[1];
+      console.log(btn.tagName);
+      if(Utils.isEmpty(btn) || btn.tagName !== HTML_TAG.BUTTON) return;
+      this.props.onClick(e);
+      btn.click();
     }
   }
 
@@ -72,6 +67,8 @@ class LMenu extends C {
           <Nav.Link
             key={ o.target }
             idx={ index }
+            mode={ 'menu-left' }
+            action={ o.target }
             onClick={ this._onClick.bind(this) }
             level={ o.level }
             view={ o.view }>{ o.label }</Nav.Link>);
@@ -103,9 +100,9 @@ class LMenu extends C {
           className="div-left-menu"
           width={ '20%' }
           { ...this.props }
-          customBurgerIcon={ <FaBars /> }
+          customBurgerIcon={ <FaBars id='btn_menu_left' /> }
           customCrossIcon={ false }>
-          { this._getMenu(this.state.menus) }
+          { this._getMenu(this.state.objs) }
         </Menu>
       </div>
     );

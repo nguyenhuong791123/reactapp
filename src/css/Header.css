@@ -7,15 +7,18 @@ nav.navbar form.form-inline {
 }
 
 nav.navbar a.header-image-icon {
-    margin: 0;
-    padding: 0;
     text-decoration: none;
-    display: contents;
+    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 nav.navbar a.header-image-icon img {
     width: 2em;
-    margin-left: -.5em;
+    /* margin-left: -.5em; */
 }
 
 nav.navbar a.header-image-icon span {

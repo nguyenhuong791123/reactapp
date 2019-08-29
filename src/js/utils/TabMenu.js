@@ -324,7 +324,7 @@ class TabMenu extends C {
                     }
                 } else {
                     console.log(nav);
-                    nav.style.width = (window.innerWidth - (nav.offsetLeft + 500)) + 'px';
+                    nav.style.width = (window.innerWidth - 700) + 'px';
                     if(nav.className.indexOf(' nav-tabs-vertical') !== -1) {
                         nav.className = nav.className.replace(' nav-tabs-vertical', '');
                         navParent[0].style.display = 'block';

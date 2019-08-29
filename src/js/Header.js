@@ -84,12 +84,13 @@ class Header extends C {
   }
 
   _onClick(e) {
-    var hBts = document.getElementById("basic-navbar-nav-toggle");
-    if(!Utils.isEmpty(hBts) && window.innerWidth < WINDOWN_WIDTH) {
-      if(hBts.tagName === "BUTTON") hBts.click();
-      var btn = hBts.parentElement.childNodes[0];
-      if(!Utils.isEmpty(btn) && btn.tagName === "BUTTON") btn.click();
-    }
+    this._onClickButtonToggle();
+    // var hBts = document.getElementById("basic-navbar-nav-toggle");
+    // if(!Utils.isEmpty(hBts) && window.innerWidth < WINDOWN_WIDTH) {
+    //   if(hBts.tagName === "BUTTON") hBts.click();
+    //   var btn = hBts.parentElement.childNodes[0];
+    //   if(!Utils.isEmpty(btn) && btn.tagName === "BUTTON") btn.click();
+    // }
 
     var obj = e.target;
     // if(Utils.isEmpty(e.tagName) && e.tagName === 'A') obj = e;
@@ -155,12 +156,27 @@ class Header extends C {
 
   _onOpenBoxPhone(e) {
     const obj = this.getLinkObj(e);
-    this.state.dailer.show = (!this.state.dailer.show);
     if(!Utils.isEmpty(obj)) {
-      this.state.dailer.top = ((obj.offsetTop + obj.offsetHeight) + 5);
-      this.state.dailer.left = ((obj.offsetLeft + obj.offsetWidth) - 245);  
+      if(window.innerWidth < WINDOWN_WIDTH) {
+        this._onClickButtonToggle();
+        this.state.dailer.top = '3em';
+        this.state.dailer.left = (window.innerWidth - 250);
+      } else {
+        this.state.dailer.top = ((obj.offsetTop + obj.offsetHeight) + 5);
+        this.state.dailer.left = ((obj.offsetLeft + obj.offsetWidth) - 245);  
+      }        
     }
+    this.state.dailer.show = (!this.state.dailer.show);
     this.forceUpdate();
+  }
+
+  _onClickButtonToggle() {
+    var hBts = document.getElementById("basic-navbar-nav-toggle");
+    if(!Utils.isEmpty(hBts) && window.innerWidth < WINDOWN_WIDTH) {
+      if(hBts.tagName === "BUTTON") hBts.click();
+      var btn = hBts.parentElement.childNodes[0];
+      if(!Utils.isEmpty(btn) && btn.tagName === "BUTTON") btn.click();
+    }
   }
 
   _onUpdateDailer(target) {
@@ -297,14 +313,6 @@ class Header extends C {
                   if(this.state.dailer.register) { return ( <FaPhone /> );
                 }
               })()}
-              {/* {(() => {
-                  if(!this.state.dailer.show) { return ( <FaTty /> );
-                }
-              })()}
-              {(() => {
-                  if(this.state.dailer.show) { return ( <FaPhone /> );
-                }
-              })()} */}
             </Nav.Link>
             <Nav.Link action={ PAGE.MAIL } onClick={ this._onClick.bind(this) }>{ <FaMailBulk /> }</Nav.Link>
             <Nav.Link action={ PAGE.CHAT } onClick={ this._onClick.bind(this) } id="a-chat-icon">{ <FaRocketchat /> }</Nav.Link>

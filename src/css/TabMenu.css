@@ -16,8 +16,9 @@ div.mr-auto-parent {
     position: absolute;
     max-width: 265px;
     right: .2em;
-    background: grey;
+    /* background: grey; */
     top: 3em;
+    border: 1px solid #dee2e6;
 }
 
 div.mr-auto-parent form.form-inline input {

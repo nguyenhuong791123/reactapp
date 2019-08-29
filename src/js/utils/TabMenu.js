@@ -15,7 +15,7 @@ class TabMenu extends C {
         this._onClickNextPrev = this._onClickNextPrev.bind(this);
         this._onClick = this._onClick.bind(this);
         // this._onShow = this._onShow.bind(this);
-        this._onMouseOver = this._onMouseOver.bind(this)
+        this._onMouseOver = this._onMouseOver.bind(this);
   
         this.state = {
             isUser: this.props.isUser
@@ -304,40 +304,37 @@ class TabMenu extends C {
         // console.log('TABMENU componentDidMount');
         var div = document.getElementById('div-nav-tab-menu');
         window.onresize = function(event) {
-            if(!Utils.isEmpty(div)) {
-                const divContent = div.childNodes[0].childNodes[2];
-                // console.log(divContent);
-                if(!Utils.isEmpty(divContent)
-                    && !Utils.isEmpty(divContent.className)
-                    && divContent.className === 'tab-content') divContent.remove();
-                const nav = div.childNodes[0].childNodes[1];
-                // console.log(div.offsetLeft);
-                if(!Utils.isEmpty(nav)) {
-                    console.log(window.innerWidth);
-                    const divP = div.parentElement;
-                    const navParent = nav.parentElement.childNodes;
-                    if(window.innerWidth < WINDOWN_WIDTH) {
-                        if(nav.className.indexOf(' nav-tabs-vertical') === -1) {
-                            nav.className = nav.className + ' nav-tabs-vertical';
-                            navParent[0].style.display = 'none';
-                            navParent[navParent.length-1].style.display = 'none';
-                        }
-                        if(divP.className.indexOf(' mr-auto-parent') === -1) {
-                            divP.className = divP.className + ' mr-auto-parent';
-                        }
-                    } else {
-                        nav.style.width = (window.innerWidth - 660) + 'px';
-                        if(nav.className.indexOf(' nav-tabs-vertical') !== -1) {
-                            nav.className = nav.className.replace(' nav-tabs-vertical', '');
-                            navParent[0].style.display = 'block';
-                            navParent[navParent.length-1].style.display = 'block';
-                        }
-                        if(divP.className.indexOf(' mr-auto-parent') !== -1) {
-                            divP.className = divP.className.replace(' mr-auto-parent', '');
-                        }
+            if(Utils.isEmpty(div)) return;
+            const divContent = div.childNodes[0].childNodes[2];
+            if(!Utils.isEmpty(divContent)
+                && !Utils.isEmpty(divContent.className)
+                && divContent.className === 'tab-content') divContent.remove();
+            const nav = div.childNodes[0].childNodes[1];
+            if(!Utils.isEmpty(nav)) {
+                const divP = div.parentElement;
+                const navParent = nav.parentElement.childNodes;
+                if(window.innerWidth < WINDOWN_WIDTH) {
+                    if(nav.className.indexOf(' nav-tabs-vertical') === -1) {
+                        nav.className = nav.className + ' nav-tabs-vertical';
+                        navParent[0].style.display = 'none';
+                        navParent[navParent.length-1].style.display = 'none';
+                    }
+                    if(divP.className.indexOf(' mr-auto-parent') === -1) {
+                        divP.className = divP.className + ' mr-auto-parent';
+                    }
+                } else {
+                    console.log(nav);
+                    nav.style.width = (window.innerWidth - (nav.offsetLeft + 500)) + 'px';
+                    if(nav.className.indexOf(' nav-tabs-vertical') !== -1) {
+                        nav.className = nav.className.replace(' nav-tabs-vertical', '');
+                        navParent[0].style.display = 'block';
+                        navParent[navParent.length-1].style.display = 'block';
+                    }
+                    if(divP.className.indexOf(' mr-auto-parent') !== -1) {
+                        divP.className = divP.className.replace(' mr-auto-parent', '');
                     }
                 }
-            }    
+            }
         };
         window.onresize();
 

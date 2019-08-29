@@ -63,10 +63,10 @@ div.mr-auto div:first-child {
 }
 
 div.mr-auto nav.nav-tabs a.nav-link {
-    border-color: #dee2e6 #dee2e6 #fff;
+    border-color: #dee2e6;
     border-bottom: none;
     white-space: nowrap;
-    color: #007bff;
+    /* color: #007bff; */
 }
 
 /* div.mr-auto nav.nav-tabs a.nav-link.active {

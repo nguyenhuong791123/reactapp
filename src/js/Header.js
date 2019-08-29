@@ -268,7 +268,7 @@ class Header extends C {
         { Dailer }
         {/* <Navbar bg="dark" expand="lg" variant="dark"> */}
         <Navbar expand="lg">
-          <a href='#home-page' page={ 'https://vnext.co.jp/company-info.html' } onClick={ this._newWindow.bind(this) } className={ 'header-image-icon' }>
+          <a href="#" page={ 'https://vnext.co.jp/company-info.html' } onClick={ this._newWindow.bind(this) } className={ 'header-image-icon' }>
             <Image src={ 'favicon.ico' } rounded />
             <span>SmartCRM</span>
           </a>
@@ -284,7 +284,7 @@ class Header extends C {
             </Nav>
 
             <Form inline>
-              <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+              <FormControl type="text" id="input_global_search" placeholder="Search" className="mr-sm-2" />
               <Nav.Link href="#search" className="global-search"><FaSearch /></Nav.Link>
             </Form>
     

@@ -23,7 +23,7 @@ const isUserInit = (isUser) => {
     info: {
       device: getJsonValue(isUser, 'info', 'device', 'pc')
       ,language: getJsonValue(isUser, 'info', 'language', 'ja')
-      ,menu: getJsonValue(isUser, 'info', 'menu', 0)
+      ,menu: getJsonValue(isUser, 'info', 'menu', 1)
       ,uLid: getJsonValue(isUser, 'info', 'uLid', '')
       ,cId:  getJsonValue(isUser, 'info', 'cId', '')
       ,gId:  getJsonValue(isUser, 'info', 'gId', '')
@@ -32,7 +32,7 @@ const isUserInit = (isUser) => {
       ,viewHeader: getJsonValue(isUser, 'info', 'viewHeader', false)
       ,path: getJsonValue(isUser, 'info', 'path', '/')
       ,action: getJsonValue(isUser, 'info', 'action', 'customer')
-      ,theme: getJsonValue(isUser, 'info', 'theme', 'cerulean')
+      ,theme: getJsonValue(isUser, 'info', 'theme', 'journal')
       ,logo: getJsonValue(isUser, 'info', 'logo', '')
     }
     ,options: {

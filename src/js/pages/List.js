@@ -39,17 +39,17 @@ class List extends C {
     console.log(e);
   }
 
-  UNSAFE_componentWillMount(){
-    console.log('LIST UNSAFE_componentWillMount');
-  }
+  // UNSAFE_componentWillMount(){
+  //   console.log('LIST UNSAFE_componentWillMount');
+  // }
 
-  UNSAFE_componentDidUpdate() {
-    console.log('LIST UNSAFE_componentDidUpdate');
-  }
+  // UNSAFE_componentDidUpdate() {
+  //   console.log('LIST UNSAFE_componentDidUpdate');
+  // }
 
-  UNSAFE_componentDidMount(){
-    console.log('LIST UNSAFE_componentDidMount');
-  }
+  // UNSAFE_componentDidMount(){
+  //   console.log('LIST UNSAFE_componentDidMount');
+  // }
 
   UNSAFE_componentWillReceiveProps(props) {
     console.log('LIST componentWillReceiveProps');

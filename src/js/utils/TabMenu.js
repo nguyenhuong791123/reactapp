@@ -314,17 +314,19 @@ class TabMenu extends C {
                 const divP = div.parentElement;
                 const navParent = nav.parentElement.childNodes;
                 if(window.innerWidth < WINDOWN_WIDTH) {
-                    if(nav.className.indexOf(' nav-tabs-vertical') === -1) {
-                        nav.className = nav.className + ' nav-tabs-vertical';
-                        navParent[0].style.display = 'none';
-                        navParent[navParent.length-1].style.display = 'none';
-                    }
-                    if(divP.className.indexOf(' mr-auto-parent') === -1) {
-                        divP.className = divP.className + ' mr-auto-parent';
+                    if(divP.id === 'tab_menu_0') {
+                        if(nav.className.indexOf(' nav-tabs-vertical') === -1) {
+                            nav.className = nav.className + ' nav-tabs-vertical';
+                            navParent[0].style.display = 'none';
+                            navParent[navParent.length-1].style.display = 'none';
+                        }
+                        if(divP.className.indexOf(' mr-auto-parent') === -1) {
+                            divP.className = divP.className + ' mr-auto-parent';
+                        }
                     }
                 } else {
                     console.log(nav);
-                    nav.style.width = (window.innerWidth - 700) + 'px';
+                    nav.style.width = (window.innerWidth - 690) + 'px';
                     if(nav.className.indexOf(' nav-tabs-vertical') !== -1) {
                         nav.className = nav.className.replace(' nav-tabs-vertical', '');
                         navParent[0].style.display = 'block';

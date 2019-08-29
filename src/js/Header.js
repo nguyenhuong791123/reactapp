@@ -263,6 +263,7 @@ class Header extends C {
     if(!this.state.isUser.viewHeader) return "";
     this._loadButtonToggle();
     const Msg = Messages[ this.props.isUser.language ];
+    var menuType = (this.state.isUser.menu===1)?"tab_menu_1":"tab_menu_0";
     const isCallClass = (this.state.dailer.isCall && this.state.dailer.register)?"blinking":"";
     const Dailer = (this.state.options.dailer)?(<DailerBox
                                                   dailer={ this.state.dailer }
@@ -290,7 +291,7 @@ class Header extends C {
           </a>
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" id="basic-navbar-nav-toggle"/>
-          <Navbar.Collapse className=" mr-auto-parent">
+          <Navbar.Collapse id={ menuType }>
             <Nav className="mr-auto" id="div-nav-tab-menu">
               {(() => {
                 if (this.state.isUser.menu === 0) {

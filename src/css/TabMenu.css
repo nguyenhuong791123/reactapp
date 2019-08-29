@@ -21,6 +21,11 @@ div.mr-auto-parent {
     border: 1px solid #dee2e6;
 }
 
+div.mr-auto-parent-menu1 div:first-child {
+    width: 100%;
+    border: none;
+}
+
 div.mr-auto-parent form.form-inline input {
     width: 100%;
 }

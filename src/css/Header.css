@@ -2,6 +2,13 @@ nav ul li{
     display: inline;
 }
 
+nav.navbar {
+    /* height: 45px;
+    min-height: 45px; */
+    padding: .2em;
+    /* border-bottom: 1px solid #dee2e6; */
+}
+
 nav.navbar form.form-inline {
     display: contents !important;
 }
@@ -14,6 +21,7 @@ nav.navbar a.header-image-icon {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    padding-right: .5em;
 }
 
 nav.navbar a.header-image-icon img {
@@ -24,13 +32,6 @@ nav.navbar a.header-image-icon img {
 nav.navbar a.header-image-icon span {
     margin-left: .5em;
     margin-right: .5em;
-}
-
-nav.navbar {
-    /* height: 45px;
-    min-height: 45px; */
-    padding-right: 0;
-    /* border-bottom: 1px solid #dee2e6; */
 }
 
 nav.navbar div.navbar-collapse {

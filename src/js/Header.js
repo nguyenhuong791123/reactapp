@@ -237,12 +237,15 @@ class Header extends C {
   }
 
   UNSAFE_componentWillMount() {
-    const script = document.createElement(HTML_TAG.SCRIPT);
-    script.setAttribute('type', 'text/javascript');
-    script.setAttribute('src', 'SIPml-api.js');
+    const Sipml5 = document.createElement(HTML_TAG.SCRIPT);
+    Sipml5.setAttribute('type', 'text/javascript');
+    Sipml5.setAttribute('src', 'SIPml-api.js');
+    const webRtc = document.createElement(HTML_TAG.SCRIPT);
+    webRtc.setAttribute('type', 'text/javascript');
+    webRtc.setAttribute('src', 'WebRTC.js');
     const head = document.getElementsByTagName(HTML_TAG.HEAD)[0];
-    console.log(head);
-    head.appendChild(script);
+    head.appendChild(Sipml5);
+    head.appendChild(webRtc);
   }
 
   // UNSAFE_componentDidMount() {

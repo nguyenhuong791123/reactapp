@@ -64,10 +64,11 @@ div.div-alert-dailer div:first-child {
 div.div-alert-dailer div:first-child span.span-dailer-title {
     margin-right: 1em;
     font-weight: bold;
-    /* width: 80%;
-    margin-bottom: .5em;
-    text-align: right;
-    font-weight: bold; */
+}
+
+div.div-alert-dailer div:first-child label {
+    width: 100%;
+    margin-bottom: 0;
 }
 
 div.div-alert-dailer div:first-child span.span-dailer-title svg {

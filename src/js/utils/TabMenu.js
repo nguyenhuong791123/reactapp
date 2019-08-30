@@ -186,7 +186,7 @@ class TabMenu extends C {
                 var header = document.getElementById('div_header');
                 header.appendChild(isExistObj);
                 this.setState({ level: (level+1) });
-                console.log(this.state.level);
+                // console.log(this.state.level);
             }
         
             this._hideAllChildMenu((level+1));
@@ -228,6 +228,7 @@ class TabMenu extends C {
     }    
 
     _onSelect(tabIdx) {
+        console.log(tabIdx);
         if(Utils.isEmpty(tabIdx)) return;
         const obj = this.state.objs[tabIdx];
         if(Utils.isEmpty(obj)) return;
@@ -236,6 +237,7 @@ class TabMenu extends C {
         const nav = div.childNodes[0].childNodes[1];
         if(Utils.isEmpty(nav)) return;
         const navChilds = nav.childNodes;
+        console.log(navChilds);
         if(Utils.isEmpty(navChilds) || Utils.isEmpty(navChilds[this.state.isActive])) return;
         this._onWriteDropDownMenu(tabIdx, navChilds[this.state.isActive], obj);
         // this._onShow();
@@ -324,6 +326,7 @@ class TabMenu extends C {
                 const divP = div.parentElement;
                 const navParent = nav.parentElement.childNodes;
                 if(window.innerWidth < WINDOWN_WIDTH) {
+                    nav.style.width = '100%';
                     nav.childNodes[0].style.marginLeft = 0;
                     if(nav.className.indexOf(' nav-tabs-vertical') === -1) {
                         nav.className = nav.className + ' nav-tabs-vertical';

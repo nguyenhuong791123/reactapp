@@ -368,7 +368,7 @@ class DailerBox extends C {
                             placeholder={ 'Udpproxy' }/>
                     </Form.Group>
                     <Button id='bt_register' className='btn-register' variant={ VARIANT_TYPES.SUCCESS } onClick={ this._onClickRegister.bind(this) }>
-                        認証
+                        レジスター
                     </Button>
                 </Form>
             </div>

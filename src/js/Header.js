@@ -50,32 +50,41 @@ class Header extends C {
             }
           ]
         }
-        ,{ id: 6, view: NOT_LINK, target: 'target_06', label: 'label_06', level: 0, items: 
-          [
-            { id: 7, view: LINK, target: 'target_003', level: 1, label: 'label_003' }
-            ,{ id: 8, view: NOT_LINK, target: 'target_0003', level: 1, label: 'label_0003', items: 
-              [
-                { id: 9, view: LINK, target: 'target_00003', level: 2, label: 'label_00003' }
-              ]
-            }
-          ]
-        }
-        ,{ id: 10, view: LINK, target: 'target_10', label: 'label_10-label_10', level: 0, items: [] }
-        ,{ id: 11, view: LINK, target: 'target_11', label: 'label_11', level: 0, items: [] }
-        ,{ id: 12, view: LINK, target: 'target_12', label: 'label_12', level: 0, items: [] }
-        ,{ id: 13, view: LINK, target: 'target_13', label: 'label_13', level: 0, items: [] }
-        ,{ id: 14, view: LINK, target: 'target_14', label: 'label_14-label_14', level: 0, items: [] }
-        ,{ id: 15, view: LINK, target: 'target_15', label: 'label_15', level: 0, items: [] }
-        ,{ id: 16, view: LINK, target: 'target_16', label: 'label_16', level: 0, items: [] }
-        ,{ id: 17, view: LINK, target: 'target_17', label: 'label_17', level: 0, items: [] }
-        ,{ id: 18, view: LINK, target: 'target_18', label: 'label_18-label_18', level: 0, items: [] }
-        ,{ id: 19, view: LINK, target: 'target_19', label: 'label_19', level: 0, items: [] }
-        ,{ id: 20, view: LINK, target: 'target_20', label: 'label_20', level: 0, items: [] }
-        ,{ id: 21, view: LINK, target: 'target_21', label: 'label_21', level: 0, items: [] }
-        ,{ id: 22, view: LINK, target: 'target_22', label: 'label_22', level: 0, items: [] }
-        ,{ id: 23, view: LINK, target: 'target_23', label: 'label_23', level: 0, items: [] }
-        ,{ id: 24, view: LINK, target: 'target_24', label: 'label_24', level: 0, items: [] }
-        ,{ id: 25, view: LINK, target: 'target_25', label: 'label_25', level: 0, items: [] }
+        // ,{ id: 6, view: NOT_LINK, target: 'target_06', label: 'label_06', level: 0, items: 
+        //   [
+        //     { id: 7, view: LINK, target: 'target_003', level: 1, label: 'label_003' }
+        //     ,{ id: 8, view: NOT_LINK, target: 'target_0003', level: 1, label: 'label_0003', items: 
+        //       [
+        //         { id: 9, view: NOT_LINK, target: 'target_00003', level: 2, label: 'label_00003', items: 
+        //           [
+        //             { id: 91, view: NOT_LINK, target: 'target_000003', level: 3, label: 'label_000003', items: 
+        //               [
+        //                 { id: 911, view: LINK, target: 'target_0000003', level: 4, label: 'label_0000003' }
+        //               ]
+        //             }
+        //           ]
+        //         }
+        //         ,{ id: 10, view: LINK, target: 'target_0000031', label: 'target_0000031', level: 2 }
+        //       ]
+        //     }
+        //   ]
+        // }
+        // ,{ id: 10, view: LINK, target: 'target_10', label: 'label_10-label_10', level: 0, items: [] }
+        // ,{ id: 11, view: LINK, target: 'target_11', label: 'label_11', level: 0, items: [] }
+        // ,{ id: 12, view: LINK, target: 'target_12', label: 'label_12', level: 0, items: [] }
+        // ,{ id: 13, view: LINK, target: 'target_13', label: 'label_13', level: 0, items: [] }
+        // ,{ id: 14, view: LINK, target: 'target_14', label: 'label_14-label_14', level: 0, items: [] }
+        // ,{ id: 15, view: LINK, target: 'target_15', label: 'label_15', level: 0, items: [] }
+        // ,{ id: 16, view: LINK, target: 'target_16', label: 'label_16', level: 0, items: [] }
+        // ,{ id: 17, view: LINK, target: 'target_17', label: 'label_17', level: 0, items: [] }
+        // ,{ id: 18, view: LINK, target: 'target_18', label: 'label_18-label_18', level: 0, items: [] }
+        // ,{ id: 19, view: LINK, target: 'target_19', label: 'label_19', level: 0, items: [] }
+        // ,{ id: 20, view: LINK, target: 'target_20', label: 'label_20', level: 0, items: [] }
+        // ,{ id: 21, view: LINK, target: 'target_21', label: 'label_21', level: 0, items: [] }
+        // ,{ id: 22, view: LINK, target: 'target_22', label: 'label_22', level: 0, items: [] }
+        // ,{ id: 23, view: LINK, target: 'target_23', label: 'label_23', level: 0, items: [] }
+        // ,{ id: 24, view: LINK, target: 'target_24', label: 'label_24', level: 0, items: [] }
+        // ,{ id: 25, view: LINK, target: 'target_25', label: 'label_25', level: 0, items: [] }
       ]
       ,title: ''
       ,dailer: { register: false, isCall: false, audio: true, sound: true, show: false, top: 50, left: 0 }
@@ -263,29 +272,30 @@ class Header extends C {
                                                   dailer={ this.state.dailer }
                                                   isUser={ this.props.isUser }
                                                   onOpenBoxPhone={ this._onOpenBoxPhone.bind(this) }
-                                                  // onVideo={ this._onVideo.bind(this) }
-                                                  // onSound={ this._onSound.bind(this) }
-                                                  // onRegister={ this._onRegister.bind(this) }
                                                   onUpdateDailer={ this._onUpdateDailer.bind(this) }/>):"";
 
     return (
       <div className="Headder">
+        {/* 縦左メニュー */}
         {(() => {
           if(this.state.isUser.menu === 1) {
             return ( <LMenu isUser={ this.props.isUser } objs={ this.state.menus } onClick={ this._onClick.bind(this) }/> );
           }
         })()}
+        {/* 「チャット、頁設定」を使用するときボックス */}
         <RMenu isUser={ this.props.isUser } title={ this.state.title }/>
         { Dailer }
         {/* <Navbar bg="dark" expand="lg" variant="dark"> */}
         <Navbar expand="lg">
+          {/* アイコン、会社名（ホームページリンク） */}
           <a href="#home-page" page={ 'https://vnext.co.jp/company-info.html' } onClick={ this._newWindow.bind(this) } className={ 'header-image-icon' }>
             <Image src={ 'favicon.ico' } rounded />
             <span>SmartCRM Ver0.1.0</span>
           </a>
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" id="basic-navbar-nav-toggle"/>
-          <Navbar.Collapse id={ menuType } className={ menuClass }>    
+          {/* TOP横メニュー */}
+          <Navbar.Collapse id={ menuType } className={ menuClass }>
             {(() => {
               if (this.state.isUser.menu === 0) {
                 return (
@@ -299,37 +309,64 @@ class Header extends C {
               }
             })()}
 
+            {/* グローバル検索 */}
             <Form inline>
               <FormControl type="text" id="input_global_search" placeholder="Search" className="mr-sm-2" />
               <Nav.Link href="#search" className="global-search"><FaSearch /></Nav.Link>
             </Form>
-    
-            <Nav.Link onClick={ this._onOpenBoxPhone.bind(this) } className={ isCallClass }>
-              {(() => {
-                  if(!this.state.dailer.register) { return ( <FaTty /> );
-                }
-              })()}
-              {(() => {
-                  if(this.state.dailer.register) { return ( <FaPhone /> );
-                }
-              })()}
-            </Nav.Link>
-            <Nav.Link action={ PAGE.MAIL } onClick={ this._onClick.bind(this) }>{ <FaMailBulk /> }</Nav.Link>
-            <Nav.Link action={ PAGE.CHAT } onClick={ this._onClick.bind(this) } id="a-chat-icon">{ <FaRocketchat /> }</Nav.Link>
+
+            {/* 電話オプション */}
+            {(() => {
+              if(this.state.options.dailer) {
+                return(
+                  <Nav.Link onClick={ this._onOpenBoxPhone.bind(this) } className={ isCallClass }>
+                    {(() => {
+                        if(!this.state.dailer.register) { return ( <FaTty /> );
+                      }
+                    })()}
+                    {(() => {
+                        if(this.state.dailer.register) { return ( <FaPhone /> );
+                      }
+                    })()}
+                  </Nav.Link>
+                );
+              }
+            })()}
+            {/* メールオプション */}
+            {(() => {
+              if(this.state.options.mail) {
+                return(
+                  <Nav.Link action={ PAGE.MAIL } onClick={ this._onClick.bind(this) }>{ <FaMailBulk /> }</Nav.Link>
+                  );
+              }
+            })()}
+            {/* チャットオプション */}
+            {(() => {
+              if(this.state.options.chat) {
+                return(
+                  <Nav.Link action={ PAGE.CHAT } onClick={ this._onClick.bind(this) } id="a-chat-icon">{ <FaRocketchat /> }</Nav.Link>
+                );
+              }
+            })()}
+            {/* ユーザーDropDown */}
             <NavDropdown title={<FaUser />} id="basic-nav-dropdown-right" alignRight>
+              {/* ユーザー情報 */}
               <NavDropdown.Item action={ PAGE.USER } onClick={ this._onClick.bind(this) }>
                 { <FaUserCog /> }
                 <span>{ Utils.getJsonValue(Msg, 'bt_profile') }</span>
               </NavDropdown.Item>
+              {/* 現頁設定 */}
               <NavDropdown.Item action={ PAGE.SETTING } onClick={ this._onClick.bind(this) } id="a-page-setting">
                 { <FaSitemap /> }
                 <span>{ Utils.getJsonValue(Msg, 'page_setting') }</span>
               </NavDropdown.Item>
+              {/* システム設定（管理者のみ表示） */}
               <NavDropdown.Item action={ PAGE.SYSTEM } onClick={ this._onClick.bind(this) }>
                 { <FaLink /> }
                 <span>{ Utils.getJsonValue(Msg, 'system_setting') }</span>
               </NavDropdown.Item>
               <NavDropdown.Divider />
+              {/* ログアウト */}
               <Link to={ ACTION.SLASH } className="dropdown-item" onClick={ this._onLogout.bind(this) }>
                 { <FaKey /> }
                 <span>{ Utils.getJsonValue(Msg, 'bt_logout') }</span>

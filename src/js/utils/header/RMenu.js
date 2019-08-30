@@ -2,7 +2,7 @@ import React, { Component as C } from "react";
 import { FaRocketchat } from 'react-icons/fa';
 import { slide as Menu } from "react-burger-menu";
 
-import { isEmpty } from './Utils';
+import { isEmpty } from '../Utils';
 
 var styles = {
   bmBurgerButton: { position: 'fixed', width: '20px', height: '30px', right: '80px', top: '16px', color: 'white' },

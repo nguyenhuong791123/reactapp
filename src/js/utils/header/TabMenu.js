@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import onClickOutside from 'react-onclickoutside';
 import { Nav, Tabs, Tab } from 'react-bootstrap';
 
-import { LINK, NOT_LINK, WINDOWN_WIDTH } from './Types';
-import Utils from './Utils';
-import "../../css/TabMenu.css";
+import { LINK, NOT_LINK, WINDOWN_WIDTH } from '../Types';
+import Utils from '../Utils';
+import "../../../css/TabMenu.css";
 
 class TabMenu extends C {
     constructor(props) {

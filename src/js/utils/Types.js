@@ -1,4 +1,6 @@
 export const WINDOWN_WIDTH = 992;
+export const PAGIN_PER = 20;
+export const PAGIN_PER_LIST = 5;
 export const LINK = 0;
 export const NOT_LINK = 1;
 
@@ -11,6 +13,7 @@ export const HTML_TAG = {
     ,SELECT: 'select'
     ,TEXT: 'text'
     ,PASSWORD: 'password'
+    ,SPAN: 'SPAN'
     ,BUTTON: 'BUTTON'
 }
 
@@ -51,6 +54,13 @@ export const PAGE = {
     ,CHAT: 'chat'
 };
 
+export const PAGIN = {
+    PRE: 'pre'
+    ,PREALL: 'pre_all'
+    ,NEXT: 'next'
+    ,NEXTALL: 'next_all'
+};
+
 export const DAILER = {
     REGISTER: 'register'
     ,CLEAR: 'clear'
@@ -62,6 +72,7 @@ export const DAILER = {
     ,CALL: 'call'
     ,SOUND: 'sound'
     ,VIDEO: 'video'
+    ,FULLSREEN: 'fullsreen'
 };
 
 export const NUMBER = {

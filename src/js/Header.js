@@ -5,12 +5,12 @@ import { FaUser, FaSearch, FaTty, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaK
 
 import { ACTION , LINK, NOT_LINK, PAGE, WINDOWN_WIDTH, DAILER, HTML_TAG } from './utils/Types';
 import Utils from './utils/Utils';
-import LMenu from "./utils/LMenu";
-import RMenu from "./utils/RMenu";
-import TabMenu from './utils/TabMenu';
+import LMenu from "./utils/header/LMenu";
+import RMenu from "./utils/header/RMenu";
+import TabMenu from './utils/header/TabMenu';
 import DailerBox from "./utils/DailerBox";
 
-import Messages from '../msg/Msg';
+import GetMsg from '../msg/Msg';
 import "../css/Index.css";
 import "../css/SMenu.css";
 import '../css/Header.css';
@@ -274,7 +274,7 @@ class Header extends C {
   render() {
     if(!this.state.isUser.viewHeader) return "";
     // this._loadButtonToggle();
-    const Msg = Messages[ this.props.isUser.language ];
+    // const Msg = Messages[ this.props.isUser.language ];
     var menuType = (this.state.isUser.menu===1)?"tab_menu_1":"tab_menu_0";
     var menuClass = (this.state.isUser.menu===0)?" mr-auto-parent":""
     const isCallClass = (this.state.dailer.isCall && this.state.dailer.register)?"blinking":"";
@@ -363,23 +363,23 @@ class Header extends C {
               {/* ユーザー情報 */}
               <NavDropdown.Item action={ PAGE.USER } onClick={ this._onClick.bind(this) }>
                 { <FaUserCog /> }
-                <span>{ Utils.getJsonValue(Msg, 'bt_profile') }</span>
+                <span>{ GetMsg(null, this.state.isUser.language, 'bt_profile') }</span>
               </NavDropdown.Item>
               {/* 現頁設定 */}
               <NavDropdown.Item action={ PAGE.SETTING } onClick={ this._onClick.bind(this) } id="a-page-setting">
                 { <FaSitemap /> }
-                <span>{ Utils.getJsonValue(Msg, 'page_setting') }</span>
+                <span>{ GetMsg(null, this.state.isUser.language, 'page_setting') }</span>
               </NavDropdown.Item>
               {/* システム設定（管理者のみ表示） */}
               <NavDropdown.Item action={ PAGE.SYSTEM } onClick={ this._onClick.bind(this) }>
                 { <FaLink /> }
-                <span>{ Utils.getJsonValue(Msg, 'system_setting') }</span>
+                <span>{ GetMsg(null, this.state.isUser.language, 'system_setting') }</span>
               </NavDropdown.Item>
               <NavDropdown.Divider />
               {/* ログアウト */}
               <Link to={ ACTION.SLASH } className="dropdown-item" onClick={ this._onLogout.bind(this) }>
                 { <FaKey /> }
-                <span>{ Utils.getJsonValue(Msg, 'bt_logout') }</span>
+                <span>{ GetMsg(null, this.state.isUser.language, 'bt_logout') }</span>
               </Link>
             </NavDropdown>
           </Navbar.Collapse>

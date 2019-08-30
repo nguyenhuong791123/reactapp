@@ -3,8 +3,8 @@ import { Nav } from 'react-bootstrap';
 import { FaBars } from 'react-icons/fa';
 import { slide as Menu } from "react-burger-menu";
 
-import { LINK, NOT_LINK, HTML_TAG } from './Types';
-import Utils from './Utils';
+import { LINK, NOT_LINK, HTML_TAG } from '../Types';
+import Utils from '../Utils';
 
 var styles = {
   bmBurgerButton: { position: 'fixed', width: '36px', height: '30px', left: '205px', top: '10px' },

@@ -6,9 +6,9 @@ import { FaSignInAlt } from 'react-icons/fa';
 import StringUtil from 'util';
 
 import { ACTION, MSG_TYPE } from './utils/Types';
-import { isEmpty, getJsonValue } from './utils/Utils';
+import { isEmpty } from './utils/Utils';
 
-import Messages from '../msg/Msg';
+import GetMsg from '../msg/Msg';
 import "../css/Index.css";
 import '../css/Login.css';
 
@@ -98,15 +98,15 @@ class Login extends C {
     }
   }
 
-  _getMsg(page, key) {
-    const Msg = Messages[ this.state.isUser.language ];
-    const MsgError = Messages[ MSG_TYPE.ERROR + '/' + this.state.isUser.language ]
-    const MsgLogin = Messages[ MSG_TYPE.LOGIN + '/' + this.state.isUser.language ]    
-    if(isEmpty(page)) return getJsonValue(Msg, key);
-    if(!isEmpty(page) && page === MSG_TYPE.ERROR) return getJsonValue(MsgError, key);
-    if(!isEmpty(page) && page === MSG_TYPE.LOGIN) return getJsonValue(MsgLogin, key);
-    return page + '/' + key;
-  }
+  // _getMsg(page, key) {
+  //   const Msg = Messages[ this.state.isUser.language ];
+  //   const MsgError = Messages[ MSG_TYPE.ERROR + '/' + this.state.isUser.language ]
+  //   const MsgLogin = Messages[ MSG_TYPE.LOGIN + '/' + this.state.isUser.language ]    
+  //   if(isEmpty(page)) return getJsonValue(Msg, key);
+  //   if(!isEmpty(page) && page === MSG_TYPE.ERROR) return getJsonValue(MsgError, key);
+  //   if(!isEmpty(page) && page === MSG_TYPE.LOGIN) return getJsonValue(MsgLogin, key);
+  //   return page + '/' + key;
+  // }
 
   // UNSAFE_componentWillReceiveProps(props) {
   //   console.log('Login componentWillReceiveProps');
@@ -126,7 +126,7 @@ class Login extends C {
       <div>
         <Alert id="div_alert_login" variant="success" className="div-center">
           {/* <Alert.Heading>{ <FaUnlockAlt /> }System Authorization{ <FaUnlockAlt /> }</Alert.Heading> */}
-          <Alert.Heading>{ this._getMsg(MSG_TYPE.LOGIN, 'system_auth') }</Alert.Heading>
+          <Alert.Heading>{ GetMsg(MSG_TYPE.LOGIN, this.state.isUser.language, 'system_auth') }</Alert.Heading>
           <hr />
           <Form noValidate validated={ this.state.validated } onSubmit={ this._onLogin.bind(this) }>
             <Form.Group>
@@ -134,10 +134,10 @@ class Login extends C {
                 type="text"
                 name="uLid"
                 onChange={ this._onChange.bind(this) }
-                placeholder={ this._getMsg(MSG_TYPE.LOGIN, 'login_id') }
+                placeholder={ GetMsg(MSG_TYPE.LOGIN, this.state.isUser.language, 'login_id') }
                 required />
               <Form.Control.Feedback type="invalid">
-                { this._getMsg(MSG_TYPE.LOGIN, 'login_id') }{ this._getMsg(MSG_TYPE.ERROR, 'required') }
+                { GetMsg(MSG_TYPE.LOGIN, this.state.isUser.language, 'login_id') }{ GetMsg(MSG_TYPE.ERROR, this.state.isUser.language, 'required') }
               </Form.Control.Feedback>
             </Form.Group>
             <Form.Group>
@@ -145,22 +145,22 @@ class Login extends C {
                 type="password"
                 name="pw"
                 onChange={ this._onChange.bind(this) }
-                placeholder={ this._getMsg(MSG_TYPE.LOGIN, 'password') }
+                placeholder={ GetMsg(MSG_TYPE.LOGIN, this.state.isUser.language, 'password') }
                 required />
               <Form.Control.Feedback type="invalid">
-                { this._getMsg(MSG_TYPE.LOGIN, 'password') }{ this._getMsg(MSG_TYPE.ERROR, 'required') }
+                { GetMsg(MSG_TYPE.LOGIN, this.state.isUser.language, 'password') }{ GetMsg(MSG_TYPE.ERROR, 'required') }
               </Form.Control.Feedback>
             </Form.Group>
             <Form.Group>
               <Form.Control as="select" onChange={ this._onChangeSelect.bind(this) } value={ this.state.isUser.language }>
-                <option value="ja">{ this._getMsg(null, 'ja') }</option>
-                <option value="en">{ this._getMsg(null, 'en') }</option>
-                <option value="vn">{ this._getMsg(null, 'vn') }</option>
+                <option value="ja">{ GetMsg(null, this.state.isUser.language, 'ja') }</option>
+                <option value="en">{ GetMsg(null, this.state.isUser.language, 'en') }</option>
+                <option value="vn">{ GetMsg(null, this.state.isUser.language, 'vn') }</option>
               </Form.Control>
             </Form.Group>
 
             <Form.Group>
-              <Button type="submit">{ this._getMsg(null, 'bt_login') }{ <FaSignInAlt /> }</Button>              
+              <Button type="submit">{ GetMsg(null, this.state.isUser.language, 'bt_login') }{ <FaSignInAlt /> }</Button>              
             </Form.Group>
           </Form>
         </Alert>

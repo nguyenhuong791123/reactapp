@@ -13,6 +13,11 @@ body {
     color: red;
 }
 
+/* button svg {
+    margin-right: .3em;
+    vertical-align: text-top;
+} */
+
 a.nav-link {
     display: block;
     padding: 0.5rem 1rem;
@@ -150,17 +155,10 @@ div.dropdown-menu a.dropdown-item svg {
     margin-right: 0.3em;
 }
 
-/* button svg:first-child {
-    margin-right: 0.3em;
-}
-
-button svg:last-child {
-    margin-left: 0.3em;
-} */
-
 div.div-actions-box {
     padding: 0.2em;
-    bottom: 20%;
+    top: 20%;
+    /* bottom: 20%; */
     float: right;
     right: -5em;
     position: absolute;

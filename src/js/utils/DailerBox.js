@@ -1,8 +1,9 @@
 import React, { Component as C } from 'react';
 import { Alert, Form, FormControl, InputGroup, Button, Nav } from 'react-bootstrap';
+import Draggable from 'react-draggable';
 // import { FaCogs, FaCheck, FaArrowLeft, FaListAlt, FaLanguage, FaPhone , FaVolumeUp, FaVolumeOff, FaTty, FaSignal, FaRandom, FaSpinner } from 'react-icons/fa';
-import { FaCogs, FaArrowLeft, FaListAlt, FaLanguage, FaPhone , FaSignal, FaRandom } from 'react-icons/fa';
-import { TiTimes, TiVideo, TiVolumeMute, TiVolumeUp, TiArrowBack } from 'react-icons/ti';
+import { FaCogs, FaArrowLeft, FaListAlt, FaPhone , FaSignal, FaRandom, FaDesktop, FaMicrophoneSlash, FaVolumeUp, FaVolumeOff } from 'react-icons/fa';
+import { TiTimes, TiVideo, TiArrowBack } from 'react-icons/ti';
 
 import Utils from './Utils';
 import { DAILER, NUMBER, VARIANT_TYPES, HTML_TAG } from './Types';
@@ -58,7 +59,7 @@ class DailerBox extends C {
                     ,{ id: DAILER.CONTRACT, variant: VARIANT_TYPES.SUCCESS }
                 ]
                 ,[
-                    { id: DAILER.CODE, variant: VARIANT_TYPES.INFO }
+                    { id: DAILER.FULLSREEN, variant: VARIANT_TYPES.INFO }
                     ,{ id: DAILER.CALL, variant: VARIANT_TYPES.SUCCESS }
                     ,{ id: DAILER.HOLD, variant: VARIANT_TYPES.PRIMARY }
                     ,{ id: DAILER.TRANFER, variant: VARIANT_TYPES.WARNING }
@@ -271,7 +272,8 @@ class DailerBox extends C {
             var variant = o.variant;
             if(o.id === DAILER.CLEARALL) icon =(<TiTimes />);
             if(o.id === DAILER.CONTRACT) icon = (<FaListAlt />);
-            if(o.id === DAILER.CODE) icon = (<FaLanguage />);
+            if(o.id === DAILER.FULLSREEN) icon = (<FaDesktop />);
+            if(o.id === DAILER.HOLD) icon = (<FaMicrophoneSlash />);
             // if(o.id === 'end') icon = (<FaTty />);
             if(o.id === DAILER.TRANFER) icon = (<FaRandom />);
             if(o.id === DAILER.CALL) {
@@ -285,9 +287,9 @@ class DailerBox extends C {
             }
             if(o.id === DAILER.SOUND) {
                 if(this.state.dailer.sound) {
-                    icon = (<TiVolumeUp />);
+                    icon = (<FaVolumeUp />);
                 } else {
-                    icon = (<TiVolumeMute />);
+                    icon = (<FaVolumeOff />);
                 }
             }
             if(o.id === DAILER.VIDEO) {
@@ -443,34 +445,36 @@ class DailerBox extends C {
     render() {
         var styles = { top: this.state.dailer.top, left: this.state.dailer.left };
         return (
-            <Alert style={ styles }
-                id="div_alert_dailer"
-                className="div-alert-dailer"
-                variant={ 'secondary ' }
-                show={ this.state.dailer.show }>
-                { this._getDailerHeaderTitle() }
-                {(() => {
-                    if(!this.state.setting && !this.state.group) {
-                        return( this._getSettingBox() );
-                    }
-                })()}
-                {(() => {
-                    if(this.state.group) {
-                        return( this._getGroupUsers() );
-                    }
-                })()}
-                {(() => {
-                    if(this.state.setting && !this.state.group) {
-                        return(
-                            <div>
-                                { this._getDailerHeader() }
-                                { this._getInputPhone() }
-                                { this._getDailerBody(this.state.objs) }
-                            </div>
-                        );
-                    }
-                })()}
-            </Alert>
+            <Draggable>
+                <Alert style={ styles }
+                    id="div_alert_dailer"
+                    className="div-alert-dailer"
+                    variant={ 'secondary ' }
+                    show={ this.state.dailer.show }>
+                    { this._getDailerHeaderTitle() }
+                    {(() => {
+                        if(!this.state.setting && !this.state.group) {
+                            return( this._getSettingBox() );
+                        }
+                    })()}
+                    {(() => {
+                        if(this.state.group) {
+                            return( this._getGroupUsers() );
+                        }
+                    })()}
+                    {(() => {
+                        if(this.state.setting && !this.state.group) {
+                            return(
+                                <div>
+                                    { this._getDailerHeader() }
+                                    { this._getInputPhone() }
+                                    { this._getDailerBody(this.state.objs) }
+                                </div>
+                            );
+                        }
+                    })()}
+                </Alert>
+            </Draggable>
         );
     };
 };

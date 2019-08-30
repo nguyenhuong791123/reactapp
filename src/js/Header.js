@@ -237,13 +237,13 @@ class Header extends C {
   }
 
   UNSAFE_componentWillMount() {
-    if(this.state.isUser.dailer) {
+    if(this.state.options.dailer) {
       const Sipml5 = document.createElement(HTML_TAG.SCRIPT);
       Sipml5.setAttribute('type', 'text/javascript');
-      Sipml5.setAttribute('src', 'SIPml-api.js');
+      Sipml5.setAttribute('src', 'src/SIPml-api.js');
       const webRtc = document.createElement(HTML_TAG.SCRIPT);
       webRtc.setAttribute('type', 'text/javascript');
-      webRtc.setAttribute('src', 'WebRTC.js');
+      webRtc.setAttribute('src', 'src/WebRTC.js');
       const head = document.getElementsByTagName(HTML_TAG.HEAD)[0];
       head.appendChild(Sipml5);
       head.appendChild(webRtc);  

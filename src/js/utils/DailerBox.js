@@ -185,7 +185,7 @@ class DailerBox extends C {
                         }
                     })()}
                 </span>
-                <label id="txtCallStatus"></label>
+                <label id="txtCallStatus">アカウント情報</label>
             </div>
         );
     }

@@ -58,6 +58,7 @@ export const DAILER = {
     ,CONTRACT: 'contract'
     ,CODE: 'code'
     ,TRANFER: 'tranfer'
+    ,HOLD: 'hold'
     ,CALL: 'call'
     ,SOUND: 'sound'
     ,VIDEO: 'video'

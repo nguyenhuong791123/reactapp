@@ -60,6 +60,7 @@ class DailerBox extends C {
                 ,[
                     { id: DAILER.CODE, variant: VARIANT_TYPES.INFO }
                     ,{ id: DAILER.CALL, variant: VARIANT_TYPES.SUCCESS }
+                    ,{ id: DAILER.HOLD, variant: VARIANT_TYPES.PRIMARY }
                     ,{ id: DAILER.TRANFER, variant: VARIANT_TYPES.WARNING }
                 ]
             ]

@@ -2,6 +2,8 @@ import React, { Component as C } from 'react';
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 
+import Pagination from '../utils/Pagin';
+
 import { ACTION } from '../utils/Types';
 // import Utils from '../utils/Utils';
 // import View from './View';
@@ -27,6 +29,32 @@ class List extends C {
           ,{ type: ACTION.DOWNLOAD, label: 'ダウロード'}
         ]
       }
+      ,per: 3
+      ,list: [
+        { item1: "" }
+        ,{ item1: "" }
+        ,{ item1: "" }
+        ,{ item1: "" }
+        ,{ item1: "" }
+        ,{ item1: "" }
+        ,{ item1: "" }
+        ,{ item1: "" }
+        ,{ item1: "" }
+        ,{ item1: "" }
+        ,{ item1: "" }
+        ,{ item1: "" }
+        ,{ item1: "" }
+        ,{ item1: "" }
+        ,{ item1: "" }
+        ,{ item1: "" }
+        ,{ item1: "" }
+        ,{ item1: "" }
+        ,{ item1: "" }
+        ,{ item1: "" }
+        ,{ item1: "" }
+        ,{ item1: "" }
+        ,{ item1: "" }
+      ]
     }
   };
 
@@ -66,6 +94,7 @@ class List extends C {
     // const styles = { 'height': (window.innerHeight - 100 ) + 'px' };
     return (
       <div>
+        <Pagination objs={ this.state.list } per={ this.state.per } />
         { this.state.isUser.path + '/' + this.state.isUser.action }
       </div>
     )

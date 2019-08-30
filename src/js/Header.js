@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown, Form, FormControl, Image } from 'react-bootstrap';
 import { FaUser, FaSearch, FaTty, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaKey, FaLink, FaRocketchat } from 'react-icons/fa';
 
-import { ACTION , LINK, NOT_LINK, PAGE, WINDOWN_WIDTH, DAILER } from './utils/Types';
+import { ACTION , LINK, NOT_LINK, PAGE, WINDOWN_WIDTH, DAILER, HTML_TAG } from './utils/Types';
 import Utils from './utils/Utils';
 import LMenu from "./utils/LMenu";
 import RMenu from "./utils/RMenu";
@@ -236,9 +236,14 @@ class Header extends C {
     w.location = href;
   }
 
-  // UNSAFE_componentDidUpdate() {
-  //   this._loadButtonToggle();
-  // }
+  UNSAFE_componentWillMount() {
+    const script = document.createElement(HTML_TAG.SCRIPT);
+    script.setAttribute('type', 'text/javascript');
+    script.setAttribute('src', 'SIPml-api.js');
+    const head = document.getElementsByTagName(HTML_TAG.HEAD)[0];
+    console.log(head);
+    head.appendChild(script);
+  }
 
   // UNSAFE_componentDidMount() {
   //   this._loadButtonToggle();

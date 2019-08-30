@@ -3,13 +3,14 @@ export const LINK = 0;
 export const NOT_LINK = 1;
 
 export const HTML_TAG = {
-    CHECKBOX: 'checkbox'
+    CSS_LINK: 'link'
+    ,HEAD: 'head'
+    ,SCRIPT: 'script'
+    ,CHECKBOX: 'checkbox'
     ,RADIO: 'radio'
     ,SELECT: 'select'
     ,TEXT: 'text'
     ,PASSWORD: 'password'
-    ,CSS_LINK: 'link'
-    ,HEAD: 'head'
     ,BUTTON: 'BUTTON'
 }
 

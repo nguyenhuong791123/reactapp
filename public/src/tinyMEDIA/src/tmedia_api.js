@@ -14,13 +14,13 @@ function tmedia_api_add_js_scripts(s_elt) {
 };
 
 tmedia_api_add_js_scripts('head',
-'sipml5/tinyMEDIA/src/tmedia_common.js',
-//'sipml5/tinyMEDIA/src/tmedia_defaults.js', #include_in<tmedia_common.js>
-'sipml5/tinyMEDIA/src/tmedia_param.js',
-'sipml5/tinyMEDIA/src/tmedia_qos.js'
-//'sipml5/tinyMEDIA/src/tmedia_session.js', #include_in<tmedia_common.js>
-//'sipml5/tinyMEDIA/src/tmedia_session_jsep.js', #include_in<tmedia_session.js>
-//'sipml5/tinyMEDIA/src/tmedia_session_roap.js', #include_in<tmedia_session.js>
-//'sipml5/tinyMEDIA/src/tmedia_session_ghost.js' #include_in<tmedia_session.js>
-// 'sipml5/tinyMEDIA/src/tmedia_webrtc4all.js' // #include_in<tmedia_common.js>
+'src/tinyMEDIA/src/tmedia_common.js',
+//'src/tinyMEDIA/src/tmedia_defaults.js', #include_in<tmedia_common.js>
+'src/tinyMEDIA/src/tmedia_param.js',
+'src/tinyMEDIA/src/tmedia_qos.js'
+//'src/tinyMEDIA/src/tmedia_session.js', #include_in<tmedia_common.js>
+//'src/tinyMEDIA/src/tmedia_session_jsep.js', #include_in<tmedia_session.js>
+//'src/tinyMEDIA/src/tmedia_session_roap.js', #include_in<tmedia_session.js>
+//'src/tinyMEDIA/src/tmedia_session_ghost.js' #include_in<tmedia_session.js>
+// 'src/tinyMEDIA/src/tmedia_webrtc4all.js' // #include_in<tmedia_common.js>
 );

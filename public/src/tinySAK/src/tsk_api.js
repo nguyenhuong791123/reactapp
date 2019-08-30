@@ -15,14 +15,14 @@ function tsk_api_add_js_script(s_elt) {
 };
 
 tsk_api_add_js_script('head',
-    './sipml5/adapter.js',
+    'src/adapter.js',
 
-    './sipml5/tinySAK/src/tsk_base64.js',
-    './sipml5/tinySAK/src/tsk_buff.js',
-    './sipml5/tinySAK/src/tsk_fsm.js',
-    './sipml5/tinySAK/src/tsk_md5.js',
-    './sipml5/tinySAK/src/tsk_param.js',
-    './sipml5/tinySAK/src/tsk_ragel.js',
-    './sipml5/tinySAK/src/tsk_string.js',
-    './sipml5/tinySAK/src/tsk_utils.js'
+    'src/tinySAK/src/tsk_base64.js',
+    'src/tinySAK/src/tsk_buff.js',
+    'src/tinySAK/src/tsk_fsm.js',
+    'src/tinySAK/src/tsk_md5.js',
+    'src/tinySAK/src/tsk_param.js',
+    'src/tinySAK/src/tsk_ragel.js',
+    'src/tinySAK/src/tsk_string.js',
+    'src/tinySAK/src/tsk_utils.js'
 );

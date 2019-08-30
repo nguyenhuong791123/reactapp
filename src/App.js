@@ -158,7 +158,7 @@ class App extends C {
         css.setAttribute('rel', 'stylesheet');
         css.setAttribute('href', './dist/' + this.state.isUser.theme + '/bootstrap.min.css');
         const head = document.getElementsByTagName(HTML_TAG.HEAD)[0];
-        console.log(head);
+        // console.log(head);
         head.appendChild(css);
     }
 

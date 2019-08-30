@@ -29,7 +29,7 @@ class List extends C {
           ,{ type: ACTION.DOWNLOAD, label: 'ダウロード'}
         ]
       }
-      ,per: 3
+      ,per: 2
       ,list: [
         { item1: "" }
         ,{ item1: "" }

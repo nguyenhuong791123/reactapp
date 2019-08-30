@@ -3,12 +3,13 @@ import { Link } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown, Form, FormControl, Image } from 'react-bootstrap';
 import { FaUser, FaSearch, FaTty, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaKey, FaLink, FaRocketchat } from 'react-icons/fa';
 
-import { ACTION , LINK, NOT_LINK, PAGE, WINDOWN_WIDTH, DAILER, HTML_TAG } from './utils/Types';
+import { ACTION , LINK, NOT_LINK, PAGE, WINDOWN_WIDTH, DAILER, HTML_TAG, VARIANT_TYPES } from './utils/Types';
 import Utils from './utils/Utils';
 import LMenu from "./utils/header/LMenu";
 import RMenu from "./utils/header/RMenu";
 import TabMenu from './utils/header/TabMenu';
 import DailerBox from "./utils/DailerBox";
+import AlertMsg from "./utils/Alert";
 
 import GetMsg from '../msg/Msg';
 import "../css/Index.css";
@@ -37,6 +38,8 @@ class Header extends C {
     this.state = {
       isUser: this.props.isUser
       ,options: this.props.options
+      ,showError: true
+      ,variantError: VARIANT_TYPES.WARNING
       ,right: ''
       ,menus: [
         { id: 1, view: LINK, target: 'target_00', label: 'label_00', level: 0, items: [] }
@@ -286,6 +289,7 @@ class Header extends C {
 
     return (
       <div className="Headder">
+        <AlertMsg show={ this.state.showError } variant={ this.state.variantError } errors={ [ 'エラーメッセージ00', 'エラーメッセージ01' ] }/>
         {/* 縦左メニュー */}
         {(() => {
           if(this.state.isUser.menu === 1) {

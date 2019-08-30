@@ -1,52 +1,42 @@
 import React, { Component as C } from 'react';
-import { browserHistory } from '@version/react-router-v3';
-import { Nav, Alert } from 'react-bootstrap';
-import { FaEdit, FaTrash, FaCloudDownloadAlt } from 'react-icons/fa';
+import { Alert } from 'react-bootstrap';
+import onClickOutside from 'react-onclickoutside';
 
-import '../../../css/Alert.css';
+import { isEmpty } from './Utils';
+import '../../css/Alert.css';
 
 class AlertBox extends C {
     constructor(props) {
         super(props);
 
-        this._onClick = this._onClick.bind(this);
         this.state = {
             show: this.props.show
-            ,top: this.props.top
-            ,left: this.props.left
-            ,objs: this.props.objs
+            ,variant: this.props.variant
+            ,errors: this.props.errors
         };
     };
 
-    _onClick(e) {
-        this.props.onClick(e);
-        // console.log(this.state.objs);
-        // browserHistory.push({ pathname: '/list', params: { objs: this.state.objs }});
+    handleClickOutside = () => {
+        this.state.show = false;
+        this.forceUpdate();
     }
 
-    getLinkByType() {
-        if(this.state.objs === undefined || this.state.objs === null || this.state.objs.length === 0) return "";
-        return this.state.objs.map(o => {
-            return (
-                <div key={ o.target }>
-                    <Nav.Link target={ o.target } view={ o.view } onClick={ this._onClick.bind(this) }>
-                        { <FaEdit /> }{ o.label }
-                    </Nav.Link>
-                </div>
-            );
-        });
+    _getMsg() {
+        const style = { marginBottom: '0' }
+        return( this.state.errors.map((error) => (<p style={ style }>{ error }</p>)) );
     }
 
     render() {
-        var styles = { top: this.state.top, left: this.state.left };
+        if(isEmpty(this.state.errors) || this.state.errors.length <= 0) return "";
+        var styles = { right: '1em', top: '3em', position: 'absolute', zIndex: '20' };
         return (
-            <div className="div-alert-menu" style={ styles }>
-                <Alert show={this.state.show}>
-                    { this.getLinkByType() }
+            <div className="div-context-menu" style={ styles }>
+                <Alert show={ this.state.show } variant={ this.state.variant }>
+                    { this._getMsg() }
                 </Alert>
             </div>
         )
     };
 };
 
-export default AlertBox;
+export default onClickOutside(AlertBox);

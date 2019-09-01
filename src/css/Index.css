@@ -5,8 +5,38 @@
     transition: all .5s;
 }
 
+div.drag-and-drop {
+    position: absolute;
+    z-index: 1000;
+    display: none;
+}
+
+div.drag-and-drop object {
+    width: 255px;
+    height: 372px;
+    position: absolute;
+}
+
+div.drag-and-drop button {
+    cursor: move;
+    /* position: absolute; */
+    margin-left: -.5em;
+}
+
+div.drag-and-drop button:hover {
+    margin-left: -2em;
+}
+
 body {
     overflow: hidden;
+}
+
+object {
+    /* width: 240px; */
+    height: 100%;
+    /* position: absolute;
+    z-index: 15;
+    display: none; */
 }
 
 .required {

@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown, Form, FormControl, Image } from 'react-bootstrap';
 import { FaUser, FaSearch, FaTty, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaKey, FaLink, FaRocketchat } from 'react-icons/fa';
 
-import { ACTION , LINK, NOT_LINK, PAGE, WINDOWN_WIDTH, DAILER, HTML_TAG, VARIANT_TYPES } from './utils/Types';
+import { ACTION , LINK, NOT_LINK, PAGE, WINDOWN_WIDTH, DAILER, HTML_TAG, VARIANT_TYPES, THEME } from './utils/Types';
 import Utils from './utils/Utils';
 import LMenu from "./utils/header/LMenu";
 import RMenu from "./utils/header/RMenu";
 import TabMenu from './utils/header/TabMenu';
-import DailerBox from "./utils/DailerBox";
+// import DailerBox from "./utils/DailerBox";
 import AlertMsg from "./utils/Alert";
 
 import GetMsg from '../msg/Msg';
@@ -25,7 +25,7 @@ class Header extends C {
     this._onSelect = this._onSelect.bind(this);
     this._onLogout = this._onLogout.bind(this);
     this._onOpenBoxPhone = this._onOpenBoxPhone.bind(this);
-    this._onUpdateDailer = this._onUpdateDailer.bind(this);
+    // this._onUpdateDailer = this._onUpdateDailer.bind(this);
     this._newWindow = this._newWindow.bind(this);
     // console.log(props.ua.device);
     // console.log(props.ua.language);
@@ -161,17 +161,21 @@ class Header extends C {
 
   _onOpenBoxPhone(e) {
     const obj = this.getLinkObj(e);
-    if(!Utils.isEmpty(obj)) {
+    const webRtc = document.getElementById('div_dailer_box');
+    // const webRtc = document.getElementById('object_dailer_box');
+    this.state.dailer.show = (!this.state.dailer.show);
+    if(!Utils.isEmpty(obj) && !Utils.isEmpty(webRtc)) {
+      webRtc.style.display = (this.state.dailer.show)?'block':'none';
       if(window.innerWidth < WINDOWN_WIDTH) {
         this._onClickButtonToggle();
-        this.state.dailer.top = '3em';
-        this.state.dailer.left = (window.innerWidth - 250);
+        webRtc.style.top = '3em';
+        webRtc.style.left = (window.innerWidth - 250) + 'px';
       } else {
-        this.state.dailer.top = ((obj.offsetTop + obj.offsetHeight) + 5);
-        this.state.dailer.left = ((obj.offsetLeft + obj.offsetWidth) - 245);  
+        webRtc.style.top = ((obj.offsetTop + obj.offsetHeight) + 5) + 'px';
+        webRtc.style.left = ((obj.offsetLeft + obj.offsetWidth) - 245) + 'px';  
       }        
     }
-    this.state.dailer.show = (!this.state.dailer.show);
+    // console.log(document.getElementById('div_alert_dailer'));
     this.forceUpdate();
   }
 
@@ -184,33 +188,13 @@ class Header extends C {
     }
   }
 
-  _onUpdateDailer(target) {
-    if(Utils.isEmpty(target)) return;
-    if(target === DAILER.REGISTER) this.state.dailer.register = !this.state.dailer.register;
-    if(target === DAILER.CALL) this.state.dailer.isCall = !this.state.dailer.isCall;
-    if(target === DAILER.SOUND) this.state.dailer.sound = !this.state.dailer.sound;
-    if(target === DAILER.VIDEO) this.state.dailer.video = !this.state.dailer.video;
-    this.forceUpdate();
-  }
-
-  // _onRegister() {
-  //   this.state.dailer.register = !this.state.dailer.register;
+  // _onUpdateDailer(target) {
+  //   if(Utils.isEmpty(target)) return;
+  //   if(target === DAILER.REGISTER) this.state.dailer.register = !this.state.dailer.register;
+  //   if(target === DAILER.CALL) this.state.dailer.isCall = !this.state.dailer.isCall;
+  //   if(target === DAILER.SOUND) this.state.dailer.sound = !this.state.dailer.sound;
+  //   if(target === DAILER.VIDEO) this.state.dailer.video = !this.state.dailer.video;
   //   this.forceUpdate();
-  // }
-
-  // _onIsCall() {
-  //   this.state.dailer.isCall = !this.state.dailer.isCall;
-  //   this.forceUpdate();
-  // }
-
-  // _onSound(e) {
-  //   this.state.dailer.sound = !this.state.dailer.sound;
-  //   this.forceUpdate();
-  // }
-
-  // _onVideo(e) {
-  //     this.state.dailer.video = !this.state.dailer.video;
-  //     this.forceUpdate();
   // }
 
   getLinkObj(e) {
@@ -241,21 +225,50 @@ class Header extends C {
 
   UNSAFE_componentWillMount() {
     if(this.state.options.dailer) {
-      const Sipml5 = document.createElement(HTML_TAG.SCRIPT);
-      Sipml5.setAttribute('type', 'text/javascript');
-      Sipml5.setAttribute('src', 'src/SIPml-api.js');
-      const webRtc = document.createElement(HTML_TAG.SCRIPT);
-      webRtc.setAttribute('type', 'text/javascript');
-      webRtc.setAttribute('src', 'src/WebRTC.js');
-      const head = document.getElementsByTagName(HTML_TAG.HEAD)[0];
-      head.appendChild(Sipml5);
-      head.appendChild(webRtc);  
+      const btn = document.createElement(HTML_TAG.BUTTON);
+      btn.setAttribute('class', 'btn btn-warning');
+      btn.innerText = '移';
+      const div = document.createElement(HTML_TAG.DIV);
+      div.setAttribute('id', 'div_dailer_box');
+      div.setAttribute('class', 'drag-and-drop');
+      // var iframe = document.createElement(HTML_TAG.IFRAME);
+      // iframe.src = "dailer.html'";
+      // div.appendChild(iframe);
+      const webRtc = document.createElement(HTML_TAG.OBJECT);
+      webRtc.setAttribute('data', 'dailer.html');
+      webRtc.setAttribute('type', 'text/html');
+      div.appendChild(webRtc);
+      div.appendChild(btn);
+      this._onDraggable(div, btn);
+      document.body.prepend(div);
+      const css_path = THEME.getTheme(this.state.isUser.theme);
+      window.localStorage.setItem('smart.crm.ipbbx.css_path', css_path);
     }
   }
 
-  // UNSAFE_componentDidMount() {
-  //   this._loadButtonToggle();
-  // }
+  _onDraggable(div, obj) {
+    var offset = [ 0, 0 ];
+    var isDown = false;
+    obj.addEventListener('mousedown', function(e) {
+      if(e.target.tagName !== HTML_TAG.BUTTON) {
+        isDown = false;
+        return;
+      }
+      isDown = true;
+      offset = [ div.offsetLeft - e.clientX, div.offsetTop - e.clientY ];
+    }, true);
+
+    document.addEventListener('mouseup', function(e) {
+      isDown = false;
+    }, true);
+
+    document.addEventListener('mousemove', function(e) {
+      e.preventDefault();
+      if (!isDown) return;
+      div.style.left = (e.clientX + offset[0]) + 'px';
+      div.style.top  = (e.clientY + offset[1]) + 'px';
+    }, true);
+  }
 
   UNSAFE_componentWillReceiveProps(props) {
     console.log('HEADER componentWillReceiveProps');
@@ -281,11 +294,11 @@ class Header extends C {
     var menuType = (this.state.isUser.menu===1)?"tab_menu_1":"tab_menu_0";
     var menuClass = (this.state.isUser.menu===0)?" mr-auto-parent":""
     const isCallClass = (this.state.dailer.isCall && this.state.dailer.register)?"blinking":"";
-    const Dailer = (this.state.options.dailer)?(<DailerBox
-                                                  dailer={ this.state.dailer }
-                                                  isUser={ this.props.isUser }
-                                                  onOpenBoxPhone={ this._onOpenBoxPhone.bind(this) }
-                                                  onUpdateDailer={ this._onUpdateDailer.bind(this) }/>):"";
+    // const Dailer = (this.state.options.dailer)?(<DailerBox
+    //                                               dailer={ this.state.dailer }
+    //                                               isUser={ this.props.isUser }
+    //                                               onOpenBoxPhone={ this._onOpenBoxPhone.bind(this) }
+    //                                               onUpdateDailer={ this._onUpdateDailer.bind(this) }/>):"";
 
     return (
       <div className="Headder">
@@ -298,7 +311,7 @@ class Header extends C {
         })()}
         {/* 「チャット、頁設定」を使用するときボックス */}
         <RMenu isUser={ this.props.isUser } title={ this.state.title }/>
-        { Dailer }
+        {/* { Dailer } */}
         {/* <Navbar bg="dark" expand="lg" variant="dark"> */}
         <Navbar expand="lg">
           {/* アイコン、会社名（ホームページリンク） */}
@@ -333,7 +346,7 @@ class Header extends C {
             {(() => {
               if(this.state.options.dailer) {
                 return(
-                  <Nav.Link onClick={ this._onOpenBoxPhone.bind(this) } className={ isCallClass }>
+                  <Nav.Link id="a_dailer_box" onClick={ this._onOpenBoxPhone.bind(this) } className={ isCallClass }>
                     {(() => {
                         if(!this.state.dailer.register) { return ( <FaTty /> );
                       }

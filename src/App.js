@@ -6,7 +6,7 @@ import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import { sessionService, sessionReducer } from 'redux-react-session';
 import thunkMiddleware from 'redux-thunk';
 
-import { ACTION, HTML_TAG } from './js/utils/Types';
+import { ACTION, HTML_TAG, THEME } from './js/utils/Types';
 import Utils from './js/utils/Utils';
 
 /* eslint-disable import/first */
@@ -40,7 +40,7 @@ class App extends C {
         this._updateStateIsUser = this._updateStateIsUser.bind(this);
 
         this.state = {
-            copyright: "Copyright ©2018 VNEXT All Rights Reserved."
+            copyright: 'Copyright ©2018 VNEXT All Rights Reserved.'
             ,isUser: AuthSession.isUserInit(null).info
             // ,isUser: { device: this.props.ua.device, language: this.props.ua.language, viewHeader: false }
             ,options: AuthSession.isUserInit(null).options
@@ -155,12 +155,21 @@ class App extends C {
     UNSAFE_componentWillMount() {
         this._loadAuthCookies(this.state.isUser, this._updateStateIsUser);
         const css = document.createElement(HTML_TAG.CSS_LINK);
+        const css_path = THEME.getTheme(this.state.isUser.theme);
         css.setAttribute('rel', 'stylesheet');
-        css.setAttribute('href', './dist/' + this.state.isUser.theme + '/bootstrap.min.css');
+        css.setAttribute('href', css_path);
         const head = document.getElementsByTagName(HTML_TAG.HEAD)[0];
-        // console.log(head);
         head.appendChild(css);
     }
+
+    // UNSAFE_componentDidMount() {
+    //     const css = document.createElement(HTML_TAG.CSS_LINK);
+    //     css.setAttribute('rel', 'stylesheet');
+    //     css.setAttribute('href', './dist/' + this.state.isUser.theme + '/bootstrap.min.css');
+    //     const webRtc = document.getElementById('object_dailer_box');
+    //     console.log(webRtc);
+    //     console.log(webRtc.childNodes);
+    // }
 
     render() {
         // console.log('APP Render !!!');
@@ -169,7 +178,7 @@ class App extends C {
             <div>
                 <Provider store={ store }>
                     <Router history={ history }>
-                        <div id="div_header">
+                        <div id='div_header'>
                             <Header
                                 isUser={ this.state.isUser }
                                 options={ this.state.options }
@@ -177,7 +186,7 @@ class App extends C {
                                 onUpdateIsUserCallBack={ this._onUpdateIsUserCallBack.bind(this) }
                                 onLogout={ this._doLogout.bind(this) } />
                         </div>
-                        <div id="div_body">
+                        <div id='div_body'>
                             <Switch>
                                 <Route
                                     exact path={ ACTION.SLASH }
@@ -209,7 +218,7 @@ class App extends C {
                     </Router>
                 </Provider>
 
-                <div id="div_footer" className="bg-light div-footer">
+                <div id='div_footer' className='bg-light div-footer'>
                     <Footer copyright={ this.state.copyright } viewFooter={ !this.state.isUser.viewHeader } />
                 </div>
             </div>

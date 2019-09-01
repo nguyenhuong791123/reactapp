@@ -12,6 +12,12 @@ export const HTML_TAG = {
     ,RADIO: 'radio'
     ,SELECT: 'select'
     ,TEXT: 'text'
+    ,OBJECT: 'object'
+    ,IFRAME: 'iframe'
+    ,BODY: 'body'
+    ,DIV: 'div'
+    ,SVG: 'svg'
+    ,PATH: 'path'
     ,PASSWORD: 'password'
     ,SPAN: 'SPAN'
     ,BUTTON: 'BUTTON'
@@ -90,3 +96,11 @@ export const NUMBER = {
     ,ASTERISK: '*'
     ,SHARP: '#'
 };
+
+export const THEME = {
+    PATH: './dist/'
+    ,FILE: '/bootstrap.min.css'
+    ,getTheme: (theme) => {
+        return THEME.PATH + theme + THEME.FILE;
+    }
+}

@@ -7,7 +7,8 @@ req.keys().forEach(function (file) {
 });
 
 function getJsonValue(json, key) {
-    if(json === undefined || json === null || key === undefined || key === null) return '';
+    if(key === undefined || key === null) return '';
+    if(json === undefined || json === null) return key;
     if(key in json) return json[key];
     return key;
 }

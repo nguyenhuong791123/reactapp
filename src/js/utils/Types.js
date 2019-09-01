@@ -20,6 +20,7 @@ export const HTML_TAG = {
     ,PATH: 'path'
     ,PASSWORD: 'password'
     ,SPAN: 'SPAN'
+    ,TD: 'TD'
     ,BUTTON: 'BUTTON'
 }
 

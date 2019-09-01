@@ -23,7 +23,7 @@ class AlertBox extends C {
 
     _getMsg() {
         const style = { marginBottom: '0' }
-        return( this.state.errors.map((error) => (<p style={ style }>{ error }</p>)) );
+        return( this.state.errors.map((error, index) => (<p key={ index } style={ style }>{ error }</p>)) );
     }
 
     render() {

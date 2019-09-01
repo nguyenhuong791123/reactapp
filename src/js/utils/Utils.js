@@ -23,7 +23,22 @@ function isEmpty(val) {
     if(val === undefined || val === null || val === 'null' || val === 'NULL' || val === '') return true;
     return false;
 }
-  
+
+function inJson(json, key) {
+    if(isEmpty(json) || isEmpty(key)) return '';
+    if(key in json) return true;
+    return false;
+}
+
+function inArray(array, key) {
+    if(isEmpty(array) || array.length <= 0 || isEmpty(key)) return '';
+    for(var i=0; i<array.length; i++) {
+        if(array[i] !== key) continue;
+        return true;
+    }
+    return false;
+}
+
 function getJsonValue(json, key) {
     if(isEmpty(json) || isEmpty(key)) return '';
     if(key in json) return json[key];
@@ -53,5 +68,7 @@ module.exports.isReplace = isReplace;
 module.exports.isNumber = isNumber;
 module.exports.isTelNumber = isTelNumber;
 module.exports.getLocale = getLocale;
+module.exports.inArray = inArray;
+module.exports.inJson = inJson;
 module.exports.getJsonValue = getJsonValue;
 module.exports.getQueryLocale = getQueryLocale;

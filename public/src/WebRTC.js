@@ -5,15 +5,12 @@ var videoRemote, videoLocal, audioRemote;
 var bFullScreen = false;
 var oNotifICall;
 var bDisableVideo = false;
+var vMode = true;
+var sRegistered = false;
 var viewVideoLocal, viewVideoRemote, viewLocalScreencast; // <video> (webrtc) or <div> (webrtc4all)
 var oConfigCall;
 var oReadyStateTimer;
-
-C =
-{
-    divKeyPadWidth: 220
-};
-
+C = { divKeyPadWidth: 220 };
 window.onload = function () {
     window.console && window.console.info && window.console.info("location=" + window.location);
 
@@ -26,10 +23,12 @@ window.onload = function () {
     divCallCtrl.onmousemove = onDivCallCtrlMouseMove;
 
     // set debug level
-    SIPml.setDebugLevel((window.localStorage && window.localStorage.getItem('org.doubango.expert.disable_debug') == "true") ? "error" : "info");
+    SIPml.setDebugLevel((window.localStorage && window.localStorage.getItem('smart.ippbx.disable_debug') == "true") ? "error" : "info");
 
     loadCredentials();
-    loadCallOptions();
+    loadCallMode();
+    // loadDivKeyPad();
+    // loadCallOptions();
 
     // Initialize call button
     uiBtnCallSetText("Call");
@@ -102,13 +101,11 @@ function postInit() {
         if (SIPml.getNavigatorFriendlyName() == 'chrome') {
             if (confirm("You're using an old Chrome version or WebRTC is not enabled.\nDo you want to see how to enable WebRTC?")) {
                 window.location = 'http://www.webrtc.org/running-the-demos';
-            }
-            else {
+            } else {
                 window.location = "index.html";
             }
             return;
-        }
-        else {
+        } else {
             if (confirm("webrtc-everywhere extension is not installed. Do you want to install it?\nIMPORTANT: You must restart your browser after the installation.")) {
                 window.location = 'https://github.com/sarandogou/webrtc-everywhere';
             }
@@ -157,53 +154,178 @@ function postInit() {
     };
 }
 
+function loadCallMode() {
+  if (window.localStorage) {
+    loadCallOptions();
+    // window.localStorage.setItem('smart.ippbx.disable_video', chkCallMode.checked);
+  }
+  // chkCallMode.onclick = function() {
+  //   if(chkCallMode.checked) {
+  //     divCallVideo.style.display = 'none';
+  //     divCallAudio.style.display = 'block';
+  //     buttonCallVideo.disabled = true;
+  //     buttondivCallAudio.disabled = false;
+  //   } else {
+  //     divCallVideo.style.display = 'block';
+  //     divCallAudio.style.display = 'none';
+  //     buttonCallVideo.disabled = false;
+  //     buttondivCallAudio.disabled = true;
+  //   }
+  //   // chkCallModeText.innerHTML = (!chkCallMode.checked ? 'Video' : 'Audio');
+  //   window.localStorage.setItem('smart.ippbx.disable_video', chkCallMode.checked ? "true" : "false");
+  //   loadCallOptions();
+  // }
+}
+
+function loadModeCall() {
+  // chkCallMode.checked = mode;
+  const mode = window.localStorage.getItem('smart.ippbx.disable_video');
+  bDisableVideo = (mode !== "true")?true:false;
+  window.localStorage.setItem('smart.ippbx.disable_video', bDisableVideo ? "true" : "false");
+  txtCallStatus.innerHTML = 'Video '.concat(bDisableVideo?'On':'Off');
+//   if(!mode) {
+//     divCallVideo.style.display = 'inline-flex';
+//     // divCallAudio.style.display = 'none';
+//     buttonCallVideo.disabled = false;
+//     // buttonCallAudio.disabled = true;
+//     txtCallStatus.innerHTML = 'Video Mode';
+//   } else {
+//     divCallVideo.style.display = 'none';
+//     // divCallAudio.style.display = 'inline-flex';
+//     buttonCallVideo.disabled = true;
+//     // buttonCallAudio.disabled = false;
+//     txtCallStatus.innerHTML = 'Audio Mode';
+//   }
+
+  setTimeout(function () { txtCallStatus.innerHTML = '';  }, 2500);
+}
 
 function loadCallOptions() {
     if (window.localStorage) {
         var s_value;
-        if ((s_value = window.localStorage.getItem('org.doubango.call.phone_number'))) txtPhoneNumber.value = s_value;
-        bDisableVideo = (window.localStorage.getItem('org.doubango.expert.disable_video') == "true");
+        if ((s_value = window.localStorage.getItem('smart.ippbx.phone_number'))) txtPhoneNumber.value = s_value;
+        bDisableVideo = (window.localStorage.getItem('smart.ippbx.disable_video') == "true");
+        loadModeCall(bDisableVideo);
 
-        txtCallStatus.innerHTML = '<i>Video ' + (bDisableVideo ? 'disabled' : 'enabled') + '</i>';
+        setVolumeMode(window.localStorage.getItem('smart.ippbx.volume_mode') == 'true');
+        // chkCallMode.checked = bDisableVideo;
+        // txtCallStatus.innerHTML = '<i>Video ' + (bDisableVideo ? 'disabled' : 'enabled') + '</i>';
     }
 }
 
+function setVolumeMode(volumeMode) {
+  vMode = volumeMode;
+  window.localStorage.setItem('smart.ippbx.volume_mode', volumeMode ? "true" : "false")
+  btnVolumeOff.disabled = !volumeMode;
+  divVolumeOff.style.display = !volumeMode?'none':'-webkit-inline-box';
+  btnVolumeUp.disabled = volumeMode;
+  divVolumeUp.style.display = volumeMode?'none':'-webkit-inline-box';
+  txtCallStatus.innerHTML = 'Sound '.concat(!volumeMode?'On':'Off');
+
+  setTimeout(function () { txtCallStatus.innerHTML = '';  }, 2500);
+}
+
+// function loadDivKeyPad() {
+//   var div = document.getElementById("divKeyPad");
+//   div.onmouseout = function() {
+//     div.style.display = 'none';
+//   };
+//   div.onmouseover = function() {
+//     div.style.display = 'block';
+//   };
+//
+//   var input = document.getElementById("txtPhoneNumber");
+//   // var hr = document.getElementById("hrPhoneNumber");
+//   input.onfocus = function() {
+//     div.style.display = 'block';
+//     // hr.style.borderBottom = '2px solid rgb(0, 188, 212)';
+//   };
+//   input.onmouseover = function() {
+//     div.style.display = 'block';
+//   };
+//   // input.onmouseout = function() {
+//   //   hr.style.borderBottom = 'none rgb(224, 224, 224);';
+//   // };
+// }
+
+// function loadCallOptions() {
+//     if (window.localStorage) {
+//         var s_value;
+//         if ((s_value = window.localStorage.getItem('smart.ippbx.call.phone_number'))) txtPhoneNumber.value = s_value;
+//         bDisableVideo = (window.localStorage.getItem('smart.ippbx.disable_video') == "true");
+//         // chkCallMode.value = !bDisableVideo;
+//         // chkCallMode.checked = !bDisableVideo;
+//         // chkCallModeText.innerHTML = (bDisableVideo ? 'Video' : 'Audio');
+//         txtCallStatus.innerHTML = '<i>Video ' + (bDisableVideo ? 'disabled' : 'enabled') + '</i>';
+//     }
+// }
+
 function saveCallOptions() {
     if (window.localStorage) {
-        window.localStorage.setItem('org.doubango.call.phone_number', txtPhoneNumber.value);
-        window.localStorage.setItem('org.doubango.expert.disable_video', bDisableVideo ? "true" : "false");
+        window.localStorage.setItem('smart.ippbx.phone_number', txtPhoneNumber.value);
+        window.localStorage.setItem('smart.ippbx.disable_video', bDisableVideo ? "true" : "false");
     }
 }
 
 function loadCredentials() {
-    if (window.localStorage) {
-        // IE retuns 'null' if not defined
-        var s_value;
-        if ((s_value = window.localStorage.getItem('org.doubango.identity.display_name'))) txtDisplayName.value = s_value;
-        if ((s_value = window.localStorage.getItem('org.doubango.identity.impi'))) txtPrivateIdentity.value = s_value;
-        if ((s_value = window.localStorage.getItem('org.doubango.identity.impu'))) txtPublicIdentity.value = s_value;
-        if ((s_value = window.localStorage.getItem('org.doubango.identity.password'))) txtPassword.value = s_value;
-        if ((s_value = window.localStorage.getItem('org.doubango.identity.realm'))) txtRealm.value = s_value;
-    }
-    else {
-        //txtDisplayName.value = "005";
-        //txtPrivateIdentity.value = "005";
-        //txtPublicIdentity.value = "sip:005@sip2sip.info";
-        //txtPassword.value = "005";
-        //txtRealm.value = "sip2sip.info";
-        //txtPhoneNumber.value = "701020";
-    }
+  if (window.localStorage) {
+    // IE retuns 'null' if not defined
+    var s_value;
+    // if ((s_value = window.localStorage.getItem('smart.ippbx.display_name'))) txtDisplayName.value = s_value;
+    if ((s_value = window.localStorage.getItem('smart.ippbx.impi'))) txtPrivateIdentity.value = s_value;
+    if ((s_value = window.localStorage.getItem('smart.ippbx.impu'))) txtPublicIdentity.value = s_value;
+    if ((s_value = window.localStorage.getItem('smart.ippbx.password'))) txtPassword.value = s_value;
+    if ((s_value = window.localStorage.getItem('smart.ippbx.realm'))) txtRealm.value = s_value;
+    if ((s_value = window.localStorage.getItem('smart.ippbx.websocket_server_url'))) txtWs.value = s_value;
+    if ((s_value = window.localStorage.getItem('smart.ippbx.sip_outboundproxy_url'))) txtUdpProxy.value = s_value;
+  } else {
+    txtCallStatus.innerHTML = 'Not Setting Info !!!';
+    setTimeout(function () { if (!oSipSessionCall) txtCallStatus.innerHTML = ''; }, 2500);
+      //txtDisplayName.value = "005";
+      //txtPrivateIdentity.value = "005";
+      //txtPublicIdentity.value = "sip:005@sip2sip.info";
+      //txtPassword.value = "005";
+      //txtRealm.value = "sip2sip.info";
+      //txtPhoneNumber.value = "701020";
+  }
 };
 
 function saveCredentials() {
-    if (window.localStorage) {
-        window.localStorage.setItem('org.doubango.identity.display_name', txtDisplayName.value);
-        window.localStorage.setItem('org.doubango.identity.impi', txtPrivateIdentity.value);
-        window.localStorage.setItem('org.doubango.identity.impu', txtPublicIdentity.value);
-        window.localStorage.setItem('org.doubango.identity.password', txtPassword.value);
-        window.localStorage.setItem('org.doubango.identity.realm', txtRealm.value);
-    }
+  if (window.localStorage) {
+    // window.localStorage.setItem('smart.ippbx.display_name', txtDisplayName.value);
+    window.localStorage.setItem('smart.ippbx.impi', txtPrivateIdentity.value);
+    window.localStorage.setItem('smart.ippbx.impu', txtPublicIdentity.value);
+    window.localStorage.setItem('smart.ippbx.password', txtPassword.value);
+    window.localStorage.setItem('smart.ippbx.realm', txtRealm.value);
+    window.localStorage.setItem('smart.ippbx.websocket_server_url', txtWs.value);
+    window.localStorage.setItem('smart.ippbx.sip_outboundproxy_url', txtUdpProxy.value);
+
+    txtCallStatus.innerHTML = 'Setting Info Saved';
+    setTimeout(function () { if (!oSipSessionCall) txtCallStatus.innerHTML = ''; }, 2500);
+  }
 };
+
+function closeDailerBox() {
+    const a = document.getElementById('a_dailer_box');
+    if(a !== undefined) a.click();
+}
+
+function sipSetting() {
+  divSettingInfo.style.display = 'block';
+  divDailerBox.style.display = 'none';
+  //   divVideo.style.display = (bDisableVideo)?'none':'block';
+}
+
+function sipCloseSetting() {
+  divSettingInfo.style.display = 'none';
+  divDailerBox.style.display = 'block';
+//   divVideo.style.display = (bDisableVideo)?'none':'block';
+}
+
+function sipSaveInfo() {
+  sipCloseSetting();
+  saveCredentials();
+}
 
 // sends SIP REGISTER request to login
 function sipRegister() {
@@ -211,14 +333,20 @@ function sipRegister() {
     try {
         btnRegister.disabled = true;
         if (!txtRealm.value || !txtPrivateIdentity.value || !txtPublicIdentity.value) {
-            txtRegStatus.innerHTML = '<b>Please fill madatory fields (*)</b>';
-            btnRegister.disabled = false;
+            // txtRegStatus.innerHTML = '<b>Please fill madatory fields (*)</b>';
+            txtCallStatus.innerHTML = '<b>Please fill madatory fields (*)</b>';
+            btnRegister.disabled = sRegistered = false;
+            btnRegister.style.display = 'block';
+            setTimeout(function () { if (!oSipSessionCall) txtCallStatus.innerHTML = ''; }, 3000);
             return;
         }
         var o_impu = tsip_uri.prototype.Parse(txtPublicIdentity.value);
         if (!o_impu || !o_impu.s_user_name || !o_impu.s_host) {
-            txtRegStatus.innerHTML = "<b>[" + txtPublicIdentity.value + "] is not a valid Public identity</b>";
-            btnRegister.disabled = false;
+            // txtRegStatus.innerHTML = "<b>[" + txtPublicIdentity.value + "] is not a valid Public identity</b>";
+            txtCallStatus.innerHTML = "<b>[" + txtPublicIdentity.value + "] is not a valid Public identity</b>";
+            btnRegister.disabled = sRegistered = false;
+            btnRegister.style.display = 'block';
+            setTimeout(function () { if (!oSipSessionCall) txtCallStatus.innerHTML = ''; }, 3000);
             return;
         }
 
@@ -231,7 +359,7 @@ function sipRegister() {
         saveCredentials();
 
         // update debug level to be sure new values will be used if the user haven't updated the page
-        SIPml.setDebugLevel((window.localStorage && window.localStorage.getItem('org.doubango.expert.disable_debug') == "true") ? "error" : "info");
+        SIPml.setDebugLevel((window.localStorage && window.localStorage.getItem('smart.ippbx.disable_debug') == "true") ? "error" : "info");
 
         // create SIP stack
         oSipStack = new SIPml.Stack({
@@ -239,38 +367,57 @@ function sipRegister() {
             impi: txtPrivateIdentity.value,
             impu: txtPublicIdentity.value,
             password: txtPassword.value,
-            display_name: txtDisplayName.value,
-            websocket_proxy_url: (window.localStorage ? window.localStorage.getItem('org.doubango.expert.websocket_server_url') : null),
-            outbound_proxy_url: (window.localStorage ? window.localStorage.getItem('org.doubango.expert.sip_outboundproxy_url') : null),
-            ice_servers: (window.localStorage ? window.localStorage.getItem('org.doubango.expert.ice_servers') : null),
-            enable_rtcweb_breaker: (window.localStorage ? window.localStorage.getItem('org.doubango.expert.enable_rtcweb_breaker') == "true" : false),
+            // display_name: txtDisplayName.value,
+            websocket_proxy_url: txtWs.value,
+            outbound_proxy_url: txtUdpProxy.value,
+            ice_servers: txtIce.value,
+            enable_rtcweb_breaker: (window.localStorage ? window.localStorage.getItem('smart.ippbx.enable_rtcweb_breaker') == "true" : false),
             events_listener: { events: '*', listener: onSipEventStack },
-            enable_early_ims: (window.localStorage ? window.localStorage.getItem('org.doubango.expert.disable_early_ims') != "true" : true), // Must be true unless you're using a real IMS network
-            enable_media_stream_cache: (window.localStorage ? window.localStorage.getItem('org.doubango.expert.enable_media_caching') == "true" : false),
-            bandwidth: (window.localStorage ? tsk_string_to_object(window.localStorage.getItem('org.doubango.expert.bandwidth')) : null), // could be redefined a session-level
-            video_size: (window.localStorage ? tsk_string_to_object(window.localStorage.getItem('org.doubango.expert.video_size')) : null), // could be redefined a session-level
+            enable_early_ims: (window.localStorage ? window.localStorage.getItem('smart.ippbx.disable_early_ims') != "true" : true), // Must be true unless you're using a real IMS network
+            enable_media_stream_cache: (window.localStorage ? window.localStorage.getItem('smart.ippbx.enable_media_caching') == "true" : false),
+            bandwidth: (window.localStorage ? tsk_string_to_object(window.localStorage.getItem('smart.ippbx.bandwidth')) : null), // could be redefined a session-level
+            video_size: (window.localStorage ? tsk_string_to_object(window.localStorage.getItem('smart.ippbx.video_size')) : null), // could be redefined a session-level
             sip_headers: [
                     { name: 'User-Agent', value: 'IM-client/OMA1.0 sipML5-v1.2016.03.04' },
                     { name: 'Organization', value: 'Doubango Telecom' }
             ]
-        }
-        );
+        });
+
         if (oSipStack.start() != 0) {
-            txtRegStatus.innerHTML = '<b>Failed to start the SIP stack</b>';
+          // txtRegStatus.innerHTML = '<b>Failed to start the SIP stack</b>';
+          sRegistered = false;
+          txtCallStatus.innerHTML = '<b>Failed to start the SIP stack</b>';
+        } else {
+          if(txtPhoneNumber.value != '') {
+            sRegistered = true;
+            var newClass = btnCall.className.replace(' button_disabled', '') + ' button_dailer_green';
+            btnCall.className = newClass;
+          }
+          return;
         }
-        else return;
+    } catch (e) {
+        // txtRegStatus.innerHTML = "<b>2:" + e + "</b>";
+        sRegistered = false;
+        txtCallStatus.innerHTML = "<b>2:" + e + "</b>";
     }
-    catch (e) {
-        txtRegStatus.innerHTML = "<b>2:" + e + "</b>";
-    }
-    btnRegister.disabled = false;
+    // btnRegister.disabled = false;
+    // btnRegister.style.display = 'block';
 }
 
 // sends SIP REGISTER (expires=0) to logout
 function sipUnRegister() {
     if (oSipStack) {
-        oSipStack.stop(); // shutdown all sessions
+      sRegistered = false;
+      oSipStack.stop(); // shutdown all sessions
+      allDisabled();
     }
+}
+
+function allDisabled() {
+  loadCallButtonMode();
+  loadDisableButtonMode();
+  // var newClass = btnCall.className.replace(' button_dailer_green', '').replace(' button_disabled', '') + ' button_disabled';
+  // btnCall.className = newClass;
 }
 
 // makes a call (SIP INVITE)
@@ -290,11 +437,15 @@ function sipCall(s_type) {
             }
         }
         btnCall.disabled = true;
+        // var newClass = btnCall.className.replace(' button_dailer_green', '').replace(' button_disabled', '') + ' button_disabled';
+        // btnCall.className = newClass;
         btnHangUp.disabled = false;
+        // newClass = btnHangUp.className.replace(' button_dailer_red', '').replace(' button_disabled', '') + ' button_dailer_red';
+        // btnHangUp.className = newClass;
 
         if (window.localStorage) {
-            oConfigCall.bandwidth = tsk_string_to_object(window.localStorage.getItem('org.doubango.expert.bandwidth')); // already defined at stack-level but redifined to use latest values
-            oConfigCall.video_size = tsk_string_to_object(window.localStorage.getItem('org.doubango.expert.video_size')); // already defined at stack-level but redifined to use latest values
+            oConfigCall.bandwidth = tsk_string_to_object(window.localStorage.getItem('smart.ippbx.bandwidth')); // already defined at stack-level but redifined to use latest values
+            oConfigCall.video_size = tsk_string_to_object(window.localStorage.getItem('smart.ippbx.video_size')); // already defined at stack-level but redifined to use latest values
         }
 
         // create call session
@@ -307,9 +458,11 @@ function sipCall(s_type) {
             btnHangUp.disabled = true;
             return;
         }
+
         saveCallOptions();
-    }
-    else if (oSipSessionCall) {
+        } else if (oSipSessionCall) {
+        // newClass = btnTransfer.className.replace(' button_dailer_green_ligth', '').replace(' button_disabled', '') + ' button_dailer_green_ligth';
+        // btnTransfer.className = newClass;
         txtCallStatus.innerHTML = '<i>Connecting...</i>';
         oSipSessionCall.accept(oConfigCall);
     }
@@ -326,17 +479,14 @@ function sipShareScreen() {
         if (oSipSessionCall.bfcpSharing) {
             if (oSipSessionCall.stopBfcpShare(oConfigCall) != 0) {
                 txtCallStatus.value = 'Failed to stop BFCP share';
-            }
-            else {
+            } else {
                 oSipSessionCall.bfcpSharing = false;
             }
-        }
-        else {
+        } else {
             oConfigCall.screencast_window_id = 0x00000000;
             if (oSipSessionCall.startBfcpShare(oConfigCall) != 0) {
                 txtCallStatus.value = 'Failed to start BFCP share';
-            }
-            else {
+            } else {
                 oSipSessionCall.bfcpSharing = true;
             }
         }
@@ -349,7 +499,12 @@ function sipShareScreen() {
 // transfers the call
 function sipTransfer() {
     if (oSipSessionCall) {
-        var s_destination = prompt('Enter destination number', '');
+        // var s_destination = prompt('Enter destination number', '');
+        var s_destination = txtPhoneNumber.value;
+        if(s_destination == undefined || s_destination == '') {
+          txtCallStatus.innerHTML = '<i>Please input extension</i>';
+          return;
+        }
         if (!tsk_string_is_null_or_empty(s_destination)) {
             btnTransfer.disabled = true;
             if (oSipSessionCall.transfer(s_destination) != 0) {
@@ -396,17 +551,66 @@ function sipToggleMute() {
 // terminates the call (SIP BYE or CANCEL)
 function sipHangUp() {
     if (oSipSessionCall) {
-        txtCallStatus.innerHTML = '<i>Terminating the call...</i>';
-        oSipSessionCall.hangup({ events_listener: { events: '*', listener: onSipEventSession } });
+      var newClass = btnCall.className.replace(' button_income', '');
+      btnCall.className = newClass;
+      allDisabled();
+      txtCallStatus.innerHTML = '<i>Terminating the call...</i>';
+      oSipSessionCall.hangup({ events_listener: { events: '*', listener: onSipEventSession } });
     }
 }
 
 function sipSendDTMF(c) {
-    if (oSipSessionCall && c) {
-        if (oSipSessionCall.dtmf(c) == 0) {
-            try { dtmfTone.play(); } catch (e) { }
+  if(c) {
+    try { if(!vMode) { dtmfTone.play(); } } catch (e) { }
+    if(c == 'AC') {
+      // txtPhoneNumber.value = '';
+      return;
+    } else if(c == 'CL') {
+      txtPhoneNumber.value = '';
+      return;
+    } else if(c != 'AC' && c != '#') {
+      var val = txtPhoneNumber.value;
+      if(c == '-1') {
+        if(val != '' && val.length > 0) {
+          val = val.substring(0, val.length-1);
         }
+        txtPhoneNumber.value = val;
+      } else {
+        txtPhoneNumber.value = val + c;
+      }
     }
+    loadCallButtonMode();
+
+    if (oSipSessionCall && c) {
+      if (oSipSessionCall.dtmf(c) == 0) {
+        // try { dtmfTone.play(); } catch (e) { }
+      }
+    }
+  }
+    // if (oSipSessionCall && c) {
+    //     if (oSipSessionCall.dtmf(c) == 0) {
+    //         try { dtmfTone.play(); } catch (e) { }
+    //     }
+    // }
+}
+
+function loadCallButtonMode() {
+  if(txtPhoneNumber.value != '' && oSipStack && sRegistered) {
+    var newClass = btnCall.className.replace(' button_dailer_green', '').replace(' button_disabled', '') + ' button_dailer_green';
+    btnCall.className = newClass;
+  } else if(txtPhoneNumber.value == '') {
+    var newClass = btnCall.className.replace(' button_dailer_green', '').replace(' button_disabled', '') + ' button_disabled';
+    btnCall.className = newClass;
+  }
+}
+
+function loadDisableButtonMode() {
+  btnHangUp.disabled = true;
+  newClass = btnHangUp.className.replace(' button_dailer_red', '').replace(' button_disabled', '') + ' button_disabled';
+  btnHangUp.className = newClass;
+  btnTransfer.disabled = true;
+  newClass = btnTransfer.className.replace(' button_dailer_green_ligth', '').replace(' button_disabled', '') + ' button_disabled';
+  btnTransfer.className = newClass;
 }
 
 function startRingTone() {
@@ -440,14 +644,14 @@ function toggleFullScreen() {
 
 function openKeyPad() {
     divKeyPad.style.visibility = 'visible';
-    divKeyPad.style.left = ((document.body.clientWidth - C.divKeyPadWidth) >> 1) + 'px';
-    divKeyPad.style.top = '70px';
+    // divKeyPad.style.left = ((document.body.clientWidth - C.divKeyPadWidth) >> 1) + 'px';
+    // divKeyPad.style.top = '70px';
     divGlassPanel.style.visibility = 'visible';
 }
 
 function closeKeyPad() {
-    divKeyPad.style.left = '0px';
-    divKeyPad.style.top = '0px';
+    // divKeyPad.style.left = '0px';
+    // divKeyPad.style.top = '0px';
     divKeyPad.style.visibility = 'hidden';
     divGlassPanel.style.visibility = 'hidden';
 }
@@ -465,10 +669,12 @@ function fullScreen(b_fs) {
     else {
         if (tsk_utils_have_webrtc4npapi()) {
             try { if (window.__o_display_remote) window.__o_display_remote.setFullScreen(b_fs); }
-            catch (e) { divVideo.setAttribute("class", b_fs ? "full-screen" : "normal-screen"); }
+            catch (e) {
+              //divVideo.setAttribute("class", b_fs ? "full-screen" : "normal-screen");
+            }
         }
         else {
-            divVideo.setAttribute("class", b_fs ? "full-screen" : "normal-screen");
+            //divVideo.setAttribute("class", b_fs ? "full-screen" : "normal-screen");
         }
     }
 }
@@ -479,135 +685,124 @@ function showNotifICall(s_number) {
         if (oNotifICall) {
             oNotifICall.cancel();
         }
-        oNotifICall = window.webkitNotifications.createNotification('images/sipml-34x39.png', 'Incaming call', 'Incoming call from ' + s_number);
+        oNotifICall = window.webkitNotifications.createNotification('images/png/sipml-34x39.png', 'Incaming call', 'Incoming call from ' + s_number);
         oNotifICall.onclose = function () { oNotifICall = null; };
         oNotifICall.show();
     }
 }
 
 function onKeyUp(evt) {
-    evt = (evt || window.event);
-    if (evt.keyCode == 27) {
-        fullScreen(false);
+  evt = (evt || window.event);
+  if (evt.keyCode == 27) {
+    fullScreen(false);
+  } else if (evt.ctrlKey && evt.shiftKey) { // CTRL + SHIFT
+    if (evt.keyCode == 65 || evt.keyCode == 86) { // A (65) or V (86)
+      bDisableVideo = (evt.keyCode == 65);
+      txtCallStatus.innerHTML = '<i>Video ' + (bDisableVideo ? 'disabled' : 'enabled') + '</i>';
+      window.localStorage.setItem('smart.ippbx.disable_video', bDisableVideo);
     }
-    else if (evt.ctrlKey && evt.shiftKey) { // CTRL + SHIFT
-        if (evt.keyCode == 65 || evt.keyCode == 86) { // A (65) or V (86)
-            bDisableVideo = (evt.keyCode == 65);
-            txtCallStatus.innerHTML = '<i>Video ' + (bDisableVideo ? 'disabled' : 'enabled') + '</i>';
-            window.localStorage.setItem('org.doubango.expert.disable_video', bDisableVideo);
-        }
-    }
+  }
 }
 
 function onDivCallCtrlMouseMove(evt) {
-    try { // IE: DOM not ready
-        if (tsk_utils_have_stream()) {
-            btnCall.disabled = (!tsk_utils_have_stream() || !oSipSessionRegister || !oSipSessionRegister.is_connected());
-            document.getElementById("divCallCtrl").onmousemove = null; // unsubscribe
-        }
+  try {
+    if (tsk_utils_have_stream()) {
+      btnCall.disabled = (!tsk_utils_have_stream() || !oSipSessionRegister || !oSipSessionRegister.is_connected());
+      document.getElementById("divCallCtrl").onmousemove = null; // unsubscribe
     }
-    catch (e) { }
+  }
+  catch (e) { }
 }
 
 function uiOnConnectionEvent(b_connected, b_connecting) { // should be enum: connecting, connected, terminating, terminated
-    btnRegister.disabled = b_connected || b_connecting;
-    btnUnRegister.disabled = !b_connected && !b_connecting;
-    btnCall.disabled = !(b_connected && tsk_utils_have_webrtc() && tsk_utils_have_stream());
-    btnHangUp.disabled = !oSipSessionCall;
+  btnRegister.disabled = b_connected || b_connecting;
+  divRegister.style.display = (b_connected || b_connecting)?'none':'inline-flex';
+  btnUnRegister.disabled = !b_connected && !b_connecting;
+  divUnRegister.style.display = (!b_connected && !b_connecting)?'none':'inline-flex';
+  btnCall.disabled = !(b_connected && tsk_utils_have_webrtc() && tsk_utils_have_stream());
+  btnHangUp.disabled = !oSipSessionCall;
+  sRegistered = (b_connected || b_connecting);
+  allDisabled();
 }
 
 function uiVideoDisplayEvent(b_local, b_added) {
-    var o_elt_video = b_local ? videoLocal : videoRemote;
-
-    if (b_added) {
-        o_elt_video.style.opacity = 1;
-        uiVideoDisplayShowHide(true);
-    }
-    else {
-        o_elt_video.style.opacity = 0;
-        fullScreen(false);
-    }
+  var o_elt_video = b_local ? videoLocal : videoRemote;
+  if (b_added) {
+    o_elt_video.style.opacity = 1;
+    uiVideoDisplayShowHide(true);
+  } else {
+    o_elt_video.style.opacity = 0;
+    fullScreen(false);
+  }
 }
 
 function uiVideoDisplayShowHide(b_show) {
-    if (b_show) {
-        tdVideo.style.height = '340px';
-        divVideo.style.height = navigator.appName == 'Microsoft Internet Explorer' ? '100%' : '340px';
-    }
-    else {
-        tdVideo.style.height = '0px';
-        divVideo.style.height = '0px';
-    }
-    btnFullScreen.disabled = !b_show;
+  if (b_show) {
+    divVideo.style.height = navigator.appName == 'Microsoft Internet Explorer' ? '100%' : '29.5em';
+    divVideo.style.width = navigator.appName == 'Microsoft Internet Explorer' ? '100%' : '21em';
+    divVideo.style.display = 'inline-block';
+  } else {
+    divVideo.style.height = divVideo.style.width = '0px';
+    divVideo.style.display = 'none';
+  }
+  btnFullScreen.disabled = !b_show;
 }
 
 function uiDisableCallOptions() {
-    if (window.localStorage) {
-        window.localStorage.setItem('org.doubango.expert.disable_callbtn_options', 'true');
-        uiBtnCallSetText('Call');
-        alert('Use expert view to enable the options again (/!\\requires re-loading the page)');
-    }
+  if (window.localStorage) {
+    window.localStorage.setItem('smart.ippbx.disable_callbtn_options', 'true');
+    uiBtnCallSetText('Call');
+    alert('Use expert view to enable the options again (/!\\requires re-loading the page)');
+  }
 }
 
 function uiBtnCallSetText(s_text) {
-    switch (s_text) {
-        case "Call":
-            {
-                var bDisableCallBtnOptions = (window.localStorage && window.localStorage.getItem('org.doubango.expert.disable_callbtn_options') == "true");
-                btnCall.value = btnCall.innerHTML = bDisableCallBtnOptions ? 'Call' : 'Call <span id="spanCaret" class="caret">';
-                btnCall.setAttribute("class", bDisableCallBtnOptions ? "btn btn-primary" : "btn btn-primary dropdown-toggle");
-                btnCall.onclick = bDisableCallBtnOptions ? function () { sipCall(bDisableVideo ? 'call-audio' : 'call-audiovideo'); } : null;
-                ulCallOptions.style.visibility = bDisableCallBtnOptions ? "hidden" : "visible";
-                if (!bDisableCallBtnOptions && ulCallOptions.parentNode != divBtnCallGroup) {
-                    divBtnCallGroup.appendChild(ulCallOptions);
-                }
-                else if (bDisableCallBtnOptions && ulCallOptions.parentNode == divBtnCallGroup) {
-                    document.body.appendChild(ulCallOptions);
-                }
-
-                break;
-            }
-        default:
-            {
-                btnCall.value = btnCall.innerHTML = s_text;
-                btnCall.setAttribute("class", "btn btn-primary");
-                btnCall.onclick = function () { sipCall(bDisableVideo ? 'call-audio' : 'call-audiovideo'); };
-                ulCallOptions.style.visibility = "hidden";
-                if (ulCallOptions.parentNode == divBtnCallGroup) {
-                    document.body.appendChild(ulCallOptions);
-                }
-                break;
-            }
+  switch (s_text) {
+    case "Call":
+    {
+      btnCall.onclick = function () { sipCall(bDisableVideo ? 'call-audio' : 'call-audiovideo'); };
+      break;
     }
+    default:
+    {
+      btnCall.onclick = function () { sipCall(bDisableVideo ? 'call-audio' : 'call-audiovideo'); };
+      break;
+    }
+  }
 }
 
 function uiCallTerminated(s_description) {
-    uiBtnCallSetText("Call");
-    btnHangUp.value = 'HangUp';
-    btnHoldResume.value = 'hold';
-    btnMute.value = "Mute";
-    btnCall.disabled = false;
-    btnHangUp.disabled = true;
-    if (window.btnBFCP) window.btnBFCP.disabled = true;
+  uiBtnCallSetText("Call");
+  btnHangUp.value = 'HangUp';
+  btnHoldResume.value = 'hold';
+  btnMute.value = "Mute";
+  btnCall.disabled = false;
+  btnHangUp.disabled = true;
+  if (window.btnBFCP) window.btnBFCP.disabled = true;
 
-    oSipSessionCall = null;
+  oSipSessionCall = null;
+  stopRingbackTone();
+  stopRingTone();
 
-    stopRingbackTone();
-    stopRingTone();
+  txtCallStatus.innerHTML = "<i>" + s_description + "</i>";
+  uiVideoDisplayShowHide(false);
+  divCallOptions.style.opacity = 0;
+  divCallOptions.style.position = 'absolute';
 
-    txtCallStatus.innerHTML = "<i>" + s_description + "</i>";
-    uiVideoDisplayShowHide(false);
-    divCallOptions.style.opacity = 0;
+  if (oNotifICall) {
+    oNotifICall.cancel();
+    oNotifICall = null;
+  }
 
-    if (oNotifICall) {
-        oNotifICall.cancel();
-        oNotifICall = null;
-    }
+  uiVideoDisplayEvent(false, false);
+  uiVideoDisplayEvent(true, false);
 
-    uiVideoDisplayEvent(false, false);
-    uiVideoDisplayEvent(true, false);
+  if (!oSipSessionCall) {
+    sRegistered = oSipSessionCall;
+    allDisabled();
+  }
 
-    setTimeout(function () { if (!oSipSessionCall) txtCallStatus.innerHTML = ''; }, 2500);
+  setTimeout(function () { if (!oSipSessionCall) txtCallStatus.innerHTML = ''; }, 2500);
 }
 
 // Callback function for SIP Stacks
@@ -632,7 +827,8 @@ function onSipEventStack(e /*SIPml.Stack.Event*/) {
                     oSipSessionRegister.register();
                 }
                 catch (e) {
-                    txtRegStatus.value = txtRegStatus.innerHTML = "<b>1:" + e + "</b>";
+                    // txtRegStatus.value = txtRegStatus.innerHTML = "<b>1:" + e + "</b>";
+                    txtCallStatus.innerHTML = "<b>1:" + e + "</b>";
                     btnRegister.disabled = false;
                 }
                 break;
@@ -651,9 +847,11 @@ function onSipEventStack(e /*SIPml.Stack.Event*/) {
 
                 uiVideoDisplayShowHide(false);
                 divCallOptions.style.opacity = 0;
+                divCallOptions.style.position = 'absolute';
 
-                txtCallStatus.innerHTML = '';
-                txtRegStatus.innerHTML = bFailure ? "<i>Disconnected: <b>" + e.description + "</b></i>" : "<i>Disconnected</i>";
+                // txtCallStatus.innerHTML = '';
+                // txtRegStatus.innerHTML = bFailure ? "<i>Disconnected: <b>" + e.description + "</b></i>" : "<i>Disconnected</i>";
+                // txtCallStatus.innerHTML = bFailure ? "<i>" + e.description + "</i>" : "<i>Disconnected</i>";
                 break;
             }
 
@@ -662,16 +860,20 @@ function onSipEventStack(e /*SIPml.Stack.Event*/) {
                 if (oSipSessionCall) {
                     // do not accept the incoming call if we're already 'in call'
                     e.newSession.hangup(); // comment this line for multi-line support
-                }
-                else {
+                } else {
                     oSipSessionCall = e.newSession;
                     // start listening for events
                     oSipSessionCall.setConfiguration(oConfigCall);
 
                     uiBtnCallSetText('Answer');
-                    btnHangUp.value = 'Reject';
+                    // btnHangUp.value = 'Reject';
                     btnCall.disabled = false;
+                    var newClass = btnCall.className + ' button_income';
+                    btnCall.className = newClass;
                     btnHangUp.disabled = false;
+                    newClass = btnHangUp.className.replace(' button_dailer_red', '').replace(' button_disabled', '') + ' button_dailer_red';
+                    btnHangUp.className = newClass;
+                    // SyncRecognizeGCS(videoLocal.src, 'LINEAR16', 16000);
 
                     startRingTone();
 
@@ -699,6 +901,8 @@ function onSipEventStack(e /*SIPml.Stack.Event*/) {
 
         case 'starting': default: break;
     }
+
+    setTimeout(function () { txtCallStatus.innerHTML = '';  }, 2500);
 };
 
 // Callback function for SIP sessions (INVITE, REGISTER, MESSAGE...)
@@ -711,15 +915,22 @@ function onSipEventSession(e /* SIPml.Session.Event */) {
                 var bConnected = (e.type == 'connected');
                 if (e.session == oSipSessionRegister) {
                     uiOnConnectionEvent(bConnected, !bConnected);
-                    txtRegStatus.innerHTML = "<i>" + e.description + "</i>";
-                }
-                else if (e.session == oSipSessionCall) {
+                    // txtRegStatus.innerHTML = "<i>" + e.description + "</i>";
+                    txtCallStatus.innerHTML = "<i>" + e.description + "</i>";
+                } else if (e.session == oSipSessionCall) {
                     btnHangUp.value = 'HangUp';
-                    btnCall.disabled = true;
-                    btnHangUp.disabled = false;
-                    btnTransfer.disabled = false;
-                    if (window.btnBFCP) window.btnBFCP.disabled = false;
 
+                    btnCall.disabled = true;
+                    var newClass = btnCall.className.replace(' button_income', '');
+                    btnCall.className = newClass;
+                    btnHangUp.disabled = false;
+                    newClass = btnHangUp.className.replace(' button_dailer_red', '').replace(' button_disabled', '') + ' button_dailer_red';
+                    btnHangUp.className = newClass;
+                    btnTransfer.disabled = false;
+                    newClass = btnTransfer.className.replace(' button_dailer_green_ligth', '').replace(' button_disabled', '') + ' button_dailer_green_ligth';
+                    btnTransfer.className = newClass;
+
+                    if (window.btnBFCP) window.btnBFCP.disabled = false;
                     if (bConnected) {
                         stopRingbackTone();
                         stopRingTone();
@@ -732,6 +943,7 @@ function onSipEventSession(e /* SIPml.Session.Event */) {
 
                     txtCallStatus.innerHTML = "<i>" + e.description + "</i>";
                     divCallOptions.style.opacity = bConnected ? 1 : 0;
+                    divCallOptions.style.position = bConnected ? 'inherit' : 'absolute';
 
                     if (SIPml.isWebRtc4AllSupported()) { // IE don't provide stream callback
                         uiVideoDisplayEvent(false, true);
@@ -748,7 +960,8 @@ function onSipEventSession(e /* SIPml.Session.Event */) {
                     oSipSessionCall = null;
                     oSipSessionRegister = null;
 
-                    txtRegStatus.innerHTML = "<i>" + e.description + "</i>";
+                    // txtRegStatus.innerHTML = "<i>" + e.description + "</i>";
+                    txtCallStatus.innerHTML = "<i>" + e.description + "</i>";
                 }
                 else if (e.session == oSipSessionCall) {
                     uiCallTerminated(e.description);
@@ -956,4 +1169,6 @@ function onSipEventSession(e /* SIPml.Session.Event */) {
                 break;
             }
     }
+
+    setTimeout(function () { txtCallStatus.innerHTML = '';  }, 2500);
 }

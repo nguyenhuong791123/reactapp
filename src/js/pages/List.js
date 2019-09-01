@@ -5,6 +5,7 @@ import { Form, Button } from 'react-bootstrap';
 import { FaPlus } from 'react-icons/fa';
 
 import Pagination from '../utils/body/Pagin';
+import Table from '../utils/body/Table';
 
 import { ACTION, HTML_TAG, PAGIN_PER, PAGIN_PER_LIST } from '../utils/Types';
 import Utils from '../utils/Utils';
@@ -86,8 +87,56 @@ class List extends C {
 
     _getDatas() {
         this.state.list = {
-            columns: [ { field: 'name', text: '', sort: true, filter: true, style: { minWidth: '100px', maxWidth: '100px' } } ]
-            ,datas:[ { id: 1, name: "Item name 1", price3: 1001, price4: 1001, price5: 1001, price6: 1001 } ]
+            columns: [
+                { field: 'id', text: '', sort: false, filter: false }
+                ,{ field: 'name', text: '', sort: true, filter: true, style: { width: 500 } }
+                ,{ field: 'price3', text: '', sort: true, filter: true, style: { width: 1500 } }
+                ,{ field: 'price4', text: '', sort: true, filter: true }
+                ,{ field: 'price5', text: '', sort: true }
+            ]
+            ,datas:[
+                { id: 1, name: "Item name 1", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 2, name: "Item name 2", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 3, name: "Item name 3", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 4, name: "Item name 4", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 5, name: "Item name 5", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 6, name: "Item name 6", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 7, name: "Item name 7", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 8, name: "Item name 8", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 9, name: "Item name 9", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 10, name: "Item name 10", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 11, name: "Item name 11", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 2, name: "Item name 2", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 3, name: "Item name 3", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 4, name: "Item name 4", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 5, name: "Item name 5", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 6, name: "Item name 6", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 7, name: "Item name 7", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 8, name: "Item name 8", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 9, name: "Item name 9", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 10, name: "Item name 10", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 11, name: "Item name 11", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 2, name: "Item name 2", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 3, name: "Item name 3", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 4, name: "Item name 4", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 5, name: "Item name 5", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 6, name: "Item name 6", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 7, name: "Item name 7", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 8, name: "Item name 8", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 9, name: "Item name 9", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 10, name: "Item name 10", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 11, name: "Item name 11", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 2, name: "Item name 2", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 3, name: "Item name 3", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 4, name: "Item name 4", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 5, name: "Item name 5", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 6, name: "Item name 6", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 7, name: "Item name 7", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 8, name: "Item name 8", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 9, name: "Item name 9", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 10, name: "Item name 10", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+                ,{ id: 11, name: "Item name 11", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }
+            ]
         };
     }
 
@@ -135,6 +184,12 @@ class List extends C {
                       }
                     })()}
                 </div>
+
+                {/* リスト内容 */}
+                <Table
+                    isUser={ this.state.isUser }
+                    columns={ this.state.list.columns }
+                    datas={ this.state.list.datas } />
             </div>
         )
     };

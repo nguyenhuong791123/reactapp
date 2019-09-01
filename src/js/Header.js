@@ -1,4 +1,5 @@
 import React, { Component as C } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown, Form, FormControl, Image } from 'react-bootstrap';
 import { FaUser, FaSearch, FaTty, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaKey, FaLink, FaRocketchat } from 'react-icons/fa';
@@ -242,7 +243,7 @@ class Header extends C {
       this._onDraggable(div, btn);
       document.body.prepend(div);
       const css_path = THEME.getTheme(this.state.isUser.theme);
-      window.localStorage.setItem('smart.crm.ipbbx.css_path', css_path);
+      window.localStorage.setItem('smart.ipbbx.css_path', css_path);
     }
   }
 
@@ -300,6 +301,8 @@ class Header extends C {
     //                                               onOpenBoxPhone={ this._onOpenBoxPhone.bind(this) }
     //                                               onUpdateDailer={ this._onUpdateDailer.bind(this) }/>):"";
 
+    console.log(this.props);
+    console.log(this.props.dispatch);
     return (
       <div className="Headder">
         <AlertMsg show={ this.state.showError } variant={ this.state.variantError } errors={ [ 'エラーメッセージ00', 'エラーメッセージ01' ] }/>
@@ -348,11 +351,11 @@ class Header extends C {
                 return(
                   <Nav.Link id="a_dailer_box" onClick={ this._onOpenBoxPhone.bind(this) } className={ isCallClass }>
                     {(() => {
-                        if(!this.state.dailer.register) { return ( <FaTty /> );
+                        if(!this.state.dailer.show) { return ( <FaTty /> );
                       }
                     })()}
                     {(() => {
-                        if(this.state.dailer.register) { return ( <FaPhone /> );
+                        if(this.state.dailer.show) { return ( <FaPhone /> );
                       }
                     })()}
                   </Nav.Link>
@@ -406,4 +409,4 @@ class Header extends C {
   };
 }
 
-export default Header;
+export default connect()(Header);

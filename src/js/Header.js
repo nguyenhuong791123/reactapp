@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown, Form, FormControl, Image } from 'react-bootstrap';
 import { FaUser, FaSearch, FaTty, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaKey, FaLink, FaRocketchat } from 'react-icons/fa';
 
-import { ACTION , LINK, NOT_LINK, PAGE, WINDOWN_WIDTH, DAILER, HTML_TAG, VARIANT_TYPES, THEME } from './utils/Types';
+import { ACTION , LINK, NOT_LINK, PAGE, WINDOWN_WIDTH, HTML_TAG, VARIANT_TYPES, THEME } from './utils/Types';
 import Utils from './utils/Utils';
 import LMenu from "./utils/header/LMenu";
 import RMenu from "./utils/header/RMenu";
@@ -275,6 +275,7 @@ class Header extends C {
     console.log('HEADER componentWillReceiveProps');
     this.state.isUser = props.isUser;
     this.state.options = props.options;
+    // this.forceUpdate();
   }
 
   // _loadButtonToggle() {

@@ -7,6 +7,8 @@ import Form from "react-jsonschema-form-bs4";
 import Actions from '../utils/Actions';
 import { ACTION } from '../utils/Types';
 
+import GetMsg from '../../msg/Msg';
+
 class Create extends C {
   constructor(props) {
     super(props);
@@ -22,13 +24,13 @@ class Create extends C {
     }
   };
 
-  componentWillMount(){
+  UNSAFE_componentWillMount(){
     this.state.schema = {
       type: "object",
       properties: {
         base_info: {
           type: "object"
-          ,title: "基本情報"
+          ,title:  GetMsg(null, this.props.isUser.language, 'base_info')
           // ,required: [ "file", "files" ]
           ,properties: {
             password: { "type": "string", "title": "Password", "minLength": 4 }
@@ -94,7 +96,10 @@ class Create extends C {
         validate={ this._onValidate.bind(this) }
         onError={ this._onError.bind(this) }>
 
-        { <Actions onClickReturn={ this._onClickReturn.bind(this) } onClickSubmit={ this._onClickSubmit.bind(this) } /> }
+        <Actions
+          isUser={ this.state.isUser }
+          onClickReturn={ this._onClickReturn.bind(this) }
+          onClickSubmit={ this._onClickSubmit.bind(this) } />
       </Form>
     )
   };

@@ -3,6 +3,7 @@ import { Button } from 'react-bootstrap';
 import { FaReply, FaCheck } from 'react-icons/fa';
 
 import { isEmpty } from './Utils';
+import GetMsg from '../../msg/Msg';
 
 export default class New extends C {
   constructor(props) {
@@ -11,7 +12,7 @@ export default class New extends C {
     this._onClickReturn = this._onClickReturn.bind(this);
     this._onClickSubmit = this._onClickSubmit.bind(this);
 
-    this.state = { }
+    this.state = { isUser: this.props.isUser }
   }
 
   _onClickReturn() {
@@ -44,9 +45,15 @@ export default class New extends C {
   render() {
     return (
         <div id="div_button_action" className="div-actions-box">
-            <Button onClick={ this._onClickReturn.bind(this) } variant="info"><FaReply />戻る</Button>
+            <Button onClick={ this._onClickReturn.bind(this) } variant="info">
+              <FaReply />
+              { GetMsg(null, this.state.isUser.language, 'bt_return') }
+            </Button>
             <br />
-            <Button type="submit" onClick={ this._onClickSubmit.bind(this) } variant="warning"><FaCheck />保存</Button>
+            <Button type="submit" onClick={ this._onClickSubmit.bind(this) } variant="warning">
+              <FaCheck />
+              { GetMsg(null, this.state.isUser.language, 'bt_insert') }
+            </Button>
         </div>
     )
   };

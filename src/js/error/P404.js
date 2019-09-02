@@ -18,7 +18,7 @@ export default class List extends C {
         this.props.onLogout();
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         this.props.viewHeader(false);
     }
 

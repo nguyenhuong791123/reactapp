@@ -3,9 +3,10 @@ import React, { Component as C } from 'react';
 import { Form } from 'react-bootstrap';
 import { FaRegEye } from 'react-icons/fa';
 
+import CMenu from '../CMenu';
 
 import Utils from '../Utils';
-import { HTML_TAG } from '../Types';
+import { ACTION, HTML_TAG } from '../Types';
 import GetMsg from '../../../msg/Msg';
 import "../../../css/Table.css";
 
@@ -13,9 +14,11 @@ export default class Table extends C {
     constructor(props) {
         super(props);
 
+        this.divContextMenuRef = React.createRef();
         this._onSort = this._onSort.bind(this);
         this._onThKeyDown = this._onThKeyDown.bind(this);
         this._onTrClick = this._onTrClick.bind(this);
+        this._onContextMenu = this._onContextMenu.bind(this);
         this._onCheckBoxClick = this._onCheckBoxClick.bind(this);
         this._onScroll = this._onScroll.bind(this);
 
@@ -24,6 +27,15 @@ export default class Table extends C {
             ,columns: this.props.columns
             ,datas: this.props.datas
             ,isCols: []
+            ,actions: {
+                show: false
+                ,ids: []
+                ,items: [
+                  { type: ACTION.EDIT, label: GetMsg(null, this.props.isUser.language, 'bt_edit') }
+                  ,{ type: ACTION.DELETE, label: GetMsg(null, this.props.isUser.language, 'bt_delete') }
+                  ,{ type: ACTION.DOWNLOAD, label: GetMsg(null, this.props.isUser.language, 'bt_download') }
+                ]
+              }
         };
     };
 
@@ -40,18 +52,26 @@ export default class Table extends C {
     }
 
     _onTrClick(e) {
-        var obj = e.target;
-        if(obj.tagName === HTML_TAG.PATH || obj.tagName === HTML_TAG.SVG) return;
-        if(obj.tagName === HTML_TAG.TD) {
-            const idx = obj.getAttribute('idx');
-            if(Utils.isEmpty(idx)) return;
-            obj = e.target.parentElement;
-        }
-        if(Utils.isEmpty(obj.className) || obj.className.indexOf('selected') === -1) {
+        var obj = this._getObjTr(e);
+        if(Utils.isEmpty(obj)) return;
+        if(Utils.isEmpty(obj.className)
+            || obj.className.indexOf('selected') === -1) {
             obj.setAttribute('class', 'selected');
         } else {
             obj.removeAttribute('class');
         }
+    }
+
+    _onContextMenu(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const ids = this._getTrSelected();
+        if(Utils.isEmpty(ids) || ids.length <= 0) return;
+        this.state.actions.show = true;
+        this.state.actions.ids = ids;
+        this.state.actions.top = e.pageY;
+        this.state.actions.left = e.pageX;
+        this.forceUpdate();
     }
 
     _onCheckBoxClick(e) {
@@ -59,13 +79,9 @@ export default class Table extends C {
         const isChecked = e.target.checked;
         var thead = e.target.parentElement.parentElement;
         if(thead.tagName !== HTML_TAG.TR) return;
-        var tblBody = document.getElementById('div_table_body').childNodes[0];
-        if(Utils.isEmpty(tblBody) || Utils.isEmpty(tblBody.childNodes[0])) return;
-        if(tblBody.childNodes[0].tagName === HTML_TAG.TBODY) tblBody = tblBody.childNodes[0];
-        console.log(tblBody);
-        console.log(tblBody.childNodes);
-        for(var i=0; i<tblBody.childNodes.length; i++) {
-            var obj = tblBody.childNodes[i];
+        const tBody = this._getTBody();
+        for(var i=0; i<tBody.childNodes.length; i++) {
+            var obj = tBody.childNodes[i];
             if(isChecked) {
                 obj.setAttribute('class', 'selected');
             } else {
@@ -129,7 +145,7 @@ export default class Table extends C {
     _getBody() {
         // [ { id: 1, name: "Item name 1", price3: 1001, price4: 1001, price5: 1001, price6: 1001 } ]
         if(Utils.isEmpty(this.state.datas)) return "";
-        console.log(this.state.isCols);
+        // console.log(this.state.isCols);
         var trs = this.state.datas.map((o, index) => {
             var keys = Object.keys(o);
             var tds = [];
@@ -148,7 +164,7 @@ export default class Table extends C {
                 }
             }
             return(
-                <tr key={ index } id={ o.id } onClick={ this._onTrClick.bind(this) }>
+                <tr key={ index } id={ o.id } onClick={ this._onTrClick.bind(this) } onContextMenu={ this._onContextMenu.bind(this) } >
                     <td><FaRegEye /></td>
                     { tds }
                 </tr>
@@ -162,6 +178,38 @@ export default class Table extends C {
         );
     }
 
+    _getObjTr(e) {
+        var obj = e.target;
+        if(obj.tagName === HTML_TAG.PATH || obj.tagName === HTML_TAG.SVG) return null;
+        if(obj.tagName === HTML_TAG.TD) {
+            const idx = obj.getAttribute('idx');
+            if(Utils.isEmpty(idx)) return null;
+            obj = e.target.parentElement;
+        }
+        return obj;
+    }
+
+    _getTBody() {
+        var tBody = document.getElementById('div_table_body').childNodes[0];
+        if(Utils.isEmpty(tBody) || Utils.isEmpty(tBody.childNodes[0])) return;
+        if(tBody.childNodes[0].tagName === HTML_TAG.TBODY) tBody = tBody.childNodes[0];
+        return tBody;
+    }
+
+    _getTrSelected() {
+        var ids = [];
+        const tBody = this._getTBody();
+        for(var i=0; i<tBody.childNodes.length; i++) {
+            var trId =  tBody.childNodes[i].getAttribute('id');
+            var className = tBody.childNodes[i].className;
+            if(className !== 'selected'
+                || Utils.isEmpty(trId)
+                || !Utils.isNumber(trId)) continue;
+                ids.push(trId);
+        }
+        return ids;
+    }
+
     componentDidMount() {
         const divHeader = document.getElementById('div_table_header');
         const divBody = document.getElementById('div_table_body');
@@ -171,6 +219,7 @@ export default class Table extends C {
     render() {
         return (
             <div className='div-table'>
+                { <CMenu ref={ this.divContextMenuRef } objs={ this.state.actions }/> }
                 { this._getHeader() }
                 { this._getBody() }
             </div>

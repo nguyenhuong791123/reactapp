@@ -12,7 +12,7 @@ class Footer extends C {
   UNSAFE_componentWillReceiveProps(props) {
     console.log('FOOTER componentWillReceiveProps');
     this.state.viewFooter = props.viewFooter;
-    this.forceUpdate();
+    // this.forceUpdate();
   }
 
   render() {

@@ -62,6 +62,7 @@ class RMenu extends C {
     console.log('HEADER componentWillReceiveProps');
     this.state.isUser = props.isUser;
     this.state.title = props.title;
+    // this.forceUpdate();
   }
 
   render() {

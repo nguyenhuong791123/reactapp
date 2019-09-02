@@ -158,6 +158,7 @@ class List extends C {
     UNSAFE_componentWillReceiveProps(props) {
         console.log('LIST componentWillReceiveProps');
         this.state.isUser = props.isUser;
+        // this.forceUpdate();
     }
 
     render() {

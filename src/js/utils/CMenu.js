@@ -5,7 +5,8 @@ import { Nav, Alert } from 'react-bootstrap';
 import { FaEdit, FaTrash, FaCloudDownloadAlt } from 'react-icons/fa';
 
 import { ACTION } from './Types';
-import '../../css/ContextMenu.css';
+import Utils from './Utils';
+import '../../css/CMenu.css';
 
 class ContextMenu extends C {
     constructor(props) {
@@ -16,9 +17,17 @@ class ContextMenu extends C {
     };
 
     _onClick(e) {
+        if(Utils.isEmpty(this.state.objs.ids) || this.state.objs.ids.length <= 0) return;
         const obj = e.target;
-        console.log(obj.getAttribute("action"));
-        console.log(this.state.objs);
+        const action = obj.getAttribute("action");
+        if(action === ACTION.EDIT) {
+            if(this.state.objs.ids.length > 1) return;
+            console.log(action);
+        }
+        if(action === ACTION.DELETE || action === ACTION.DOWNLOAD) {
+            console.log(action);
+            console.log(this.state.objs.ids);
+        }
         this._onCloseAlert();
     }
 

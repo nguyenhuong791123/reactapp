@@ -3,6 +3,7 @@ import React, { Component as C } from 'react';
 import { Form } from 'react-bootstrap';
 import { FaRegEye } from 'react-icons/fa';
 
+import View from '../../pages/View';
 import CMenu from '../CMenu';
 
 import Utils from '../Utils';
@@ -54,11 +55,24 @@ export default class Table extends C {
     _onTrClick(e) {
         var obj = this._getObjTr(e);
         if(Utils.isEmpty(obj)) return;
-        if(Utils.isEmpty(obj.className)
-            || obj.className.indexOf('selected') === -1) {
+        const checked = document.getElementById('input_checkbox_all');
+        if(!Utils.isEmpty(checked)) checked.checked = false;
+        if(this.state.view) {
+            console.log(obj);
+            const tBody = this._getTBody();
+            for(var i=0; i<tBody.childNodes.length; i++) {
+                var robj = tBody.childNodes[i];
+                robj.removeAttribute('class');
+            };
             obj.setAttribute('class', 'selected');
+            this.state.view = false;
         } else {
-            obj.removeAttribute('class');
+            if(Utils.isEmpty(obj.className)
+                || obj.className.indexOf('selected') === -1) {
+                obj.setAttribute('class', 'selected');
+            } else {
+                obj.removeAttribute('class');
+            }
         }
     }
 
@@ -79,6 +93,7 @@ export default class Table extends C {
         const isChecked = e.target.checked;
         var thead = e.target.parentElement.parentElement;
         if(thead.tagName !== HTML_TAG.TR) return;
+        this.state.view = false;
         const tBody = this._getTBody();
         for(var i=0; i<tBody.childNodes.length; i++) {
             var obj = tBody.childNodes[i];
@@ -132,7 +147,7 @@ export default class Table extends C {
                 <thead>
                     <tr>
                         <th>
-                            <input type={ HTML_TAG.CHECKBOX } onClick={ this._onCheckBoxClick.bind(this) } />
+                            <input id='input_checkbox_all' type={ HTML_TAG.CHECKBOX } onClick={ this._onCheckBoxClick.bind(this) } />
                         </th>
                         { ths }
                     </tr>
@@ -180,10 +195,15 @@ export default class Table extends C {
 
     _getObjTr(e) {
         var obj = e.target;
-        if(obj.tagName === HTML_TAG.PATH || obj.tagName === HTML_TAG.SVG) return null;
+        if(obj.tagName === HTML_TAG.PATH || obj.tagName === HTML_TAG.SVG) {
+            if(obj.tagName === HTML_TAG.PATH) obj = e.target.parentElement.parentElement.parentElement;
+            if(obj.tagName === HTML_TAG.SVG) obj = e.target.parentElement.parentElement;
+            this.state.view = true;
+            return obj;
+        }
         if(obj.tagName === HTML_TAG.TD) {
             const idx = obj.getAttribute('idx');
-            if(Utils.isEmpty(idx)) return null;
+            if(Utils.isEmpty(idx)) this.state.view = true;
             obj = e.target.parentElement;
         }
         return obj;

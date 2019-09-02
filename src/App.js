@@ -59,6 +59,7 @@ class App extends C {
     _doLogin = (isUser, options) => {
         const auth = { info: isUser, options: options };
         this._updateStateIsUser(auth);
+        // this.forceUpdate();
         AuthSession.doLogin(auth).then(response => {
             const { token } = response;
             sessionService.saveSession({ token }).then(() => {
@@ -110,7 +111,7 @@ class App extends C {
 
     _onUpdateIsUserCallBack(auth) {
         this._updateStateIsUser(auth);
-        this.forceUpdate();
+        // this.forceUpdate();
     }
 
     _onUpdatePromise(inIsUser, inOptions, callBack) {
@@ -160,6 +161,7 @@ class App extends C {
         css.setAttribute('href', css_path);
         const head = document.getElementsByTagName(HTML_TAG.HEAD)[0];
         head.appendChild(css);
+        // this.forceUpdate();
     }
 
     // UNSAFE_componentDidMount() {

@@ -224,29 +224,6 @@ class Header extends C {
     w.location = href;
   }
 
-  UNSAFE_componentWillMount() {
-    if(this.state.options.dailer) {
-      const btn = document.createElement(HTML_TAG.BUTTON);
-      btn.setAttribute('class', 'btn btn-warning');
-      btn.innerText = '移';
-      const div = document.createElement(HTML_TAG.DIV);
-      div.setAttribute('id', 'div_dailer_box');
-      div.setAttribute('class', 'drag-and-drop');
-      // var iframe = document.createElement(HTML_TAG.IFRAME);
-      // iframe.src = "dailer.html'";
-      // div.appendChild(iframe);
-      const webRtc = document.createElement(HTML_TAG.OBJECT);
-      webRtc.setAttribute('data', 'dailer.html');
-      webRtc.setAttribute('type', 'text/html');
-      div.appendChild(webRtc);
-      div.appendChild(btn);
-      this._onDraggable(div, btn);
-      document.body.prepend(div);
-      const css_path = THEME.getTheme(this.state.isUser.theme);
-      window.localStorage.setItem('smart.ipbbx.css_path', css_path);
-    }
-  }
-
   _onDraggable(div, obj) {
     var offset = [ 0, 0 ];
     var isDown = false;
@@ -271,23 +248,31 @@ class Header extends C {
     }, true);
   }
 
+  UNSAFE_componentWillMount() {
+    if(this.state.options.dailer) {
+      const btn = document.createElement(HTML_TAG.BUTTON);
+      btn.setAttribute('class', 'btn btn-warning');
+      btn.innerText = '移';
+      const div = document.createElement(HTML_TAG.DIV);
+      div.setAttribute('id', 'div_dailer_box');
+      div.setAttribute('class', 'drag-and-drop');
+      const webRtc = document.createElement(HTML_TAG.OBJECT);
+      webRtc.setAttribute('data', 'dailer.html');
+      webRtc.setAttribute('type', 'text/html');
+      div.appendChild(webRtc);
+      div.appendChild(btn);
+      this._onDraggable(div, btn);
+      document.body.prepend(div);
+      const css_path = THEME.getTheme(this.state.isUser.theme);
+      window.localStorage.setItem('smart.ipbbx.css_path', css_path);
+    }
+  }
+
   UNSAFE_componentWillReceiveProps(props) {
     console.log('HEADER componentWillReceiveProps');
     this.state.isUser = props.isUser;
     this.state.options = props.options;
-    // this.forceUpdate();
   }
-
-  // _loadButtonToggle() {
-  //   var btn = document.getElementById("basic-navbar-nav-toggle");
-  //   if(!Utils.isEmpty(btn) && !Utils.isEmpty(this.props.isUser)) {
-  //     if(this.state.isUser.menu === 1) {
-  //       btn.style.left = "1.5em";
-  //     } else {
-  //       btn.style.left = "0";  
-  //     }
-  //   }
-  // }
 
   render() {
     if(!this.state.isUser.viewHeader) return "";

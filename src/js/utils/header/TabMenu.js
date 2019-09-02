@@ -290,10 +290,6 @@ class TabMenu extends C {
         });
     }
 
-    // UNSAFE_componentWillReceiveProps(props) {
-    //     console.log('TABMENU componentWillReceiveProps');
-    // }
-
     handleClickOutside = (e) => {
         var obj = this.getLinkObj(e);
         if(!Utils.isEmpty(obj)) {
@@ -304,11 +300,6 @@ class TabMenu extends C {
         if(!Utils.isEmpty(obj)) level = obj.getAttribute("level");
         this._hideAllChildMenu(level);
     }
-
-    // UNSAFE_componentWillReceiveProps(props) {
-    //     this.state.isUser = props.isUser;
-    //     this.state.objs = props.objs;
-    // }
 
     componentDidMount() {
         console.log('TABMENU componentDidMount');
@@ -381,7 +372,7 @@ class TabMenu extends C {
         }
         this.forceUpdate();
     }
-  
+
     render() {
       return (
             <div>

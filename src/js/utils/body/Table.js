@@ -210,7 +210,7 @@ export default class Table extends C {
         return ids;
     }
 
-    componentDidMount() {
+    UNSAFE_componentDidMount() {
         const divHeader = document.getElementById('div_table_header');
         const divBody = document.getElementById('div_table_body');
         divBody.style.height = (window.innerHeight - (110 + divHeader.offsetHeight)) + 'px';

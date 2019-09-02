@@ -98,26 +98,6 @@ class Login extends C {
     }
   }
 
-  // _getMsg(page, key) {
-  //   const Msg = Messages[ this.state.isUser.language ];
-  //   const MsgError = Messages[ MSG_TYPE.ERROR + '/' + this.state.isUser.language ]
-  //   const MsgLogin = Messages[ MSG_TYPE.LOGIN + '/' + this.state.isUser.language ]    
-  //   if(isEmpty(page)) return getJsonValue(Msg, key);
-  //   if(!isEmpty(page) && page === MSG_TYPE.ERROR) return getJsonValue(MsgError, key);
-  //   if(!isEmpty(page) && page === MSG_TYPE.LOGIN) return getJsonValue(MsgLogin, key);
-  //   return page + '/' + key;
-  // }
-
-  // UNSAFE_componentWillReceiveProps(props) {
-  //   console.log('Login componentWillReceiveProps');
-  //   console.log(props);
-  //   this.setState.isUser = props.isUser;
-  //   console.log(this.setState.isUser);
-  //   this.forceUpdate();
-  //   // console.log(sessionService.loadUser('COOKIES'));
-  //   // console.log(props);
-  // }
-
   render() {
     console.log('Login Render!!!');
     console.log(this.state);

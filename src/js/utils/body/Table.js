@@ -1,13 +1,15 @@
 
 import React, { Component as C } from 'react';
+import ReactDOM from 'react-dom';
 import { Form } from 'react-bootstrap';
 import { FaRegEye } from 'react-icons/fa';
 
+import Calendar from '../Calendar';
 import View from '../../pages/View';
 import CMenu from '../CMenu';
 
 import Utils from '../Utils';
-import { ACTION, HTML_TAG } from '../Types';
+import { ACTION, HTML_TAG, INPUT_TYPE } from '../Types';
 import GetMsg from '../../../msg/Msg';
 import "../../../css/Table.css";
 
@@ -19,9 +21,11 @@ export default class Table extends C {
         this._onSort = this._onSort.bind(this);
         this._onThKeyDown = this._onThKeyDown.bind(this);
         this._onTrClick = this._onTrClick.bind(this);
+        this._onDblClick = this._onDblClick.bind(this);
         this._onContextMenu = this._onContextMenu.bind(this);
         this._onCheckBoxClick = this._onCheckBoxClick.bind(this);
         this._onScroll = this._onScroll.bind(this);
+        this._onFocus = this._onFocus.bind(this);
 
         this.state = {
             isUser: this.props.isUser
@@ -45,6 +49,12 @@ export default class Table extends C {
         console.log(e.target);
     }
 
+    _onFocus(e) {
+        console.log('_onFocus');
+        console.log(e.target);
+        this._getCalendar(e);
+    }
+
     _onThKeyDown(e) {
         console.log(e);
         console.log(e.target);
@@ -57,25 +67,26 @@ export default class Table extends C {
         if(Utils.isEmpty(obj)) return;
         const checked = document.getElementById('input_checkbox_all');
         if(!Utils.isEmpty(checked)) checked.checked = false;
+        var body =  this._getTBody();
+        this._removeTrView(body);
         if(this.state.view) {
-            console.log(obj);
-            const tBody = this._getTBody();
-            for(var i=0; i<tBody.childNodes.length; i++) {
-                var robj = tBody.childNodes[i];
-                robj.removeAttribute('class');
-            };
-            obj.setAttribute('class', 'selected');
             this.state.view = false;
+            this._removeTrClass(body);
+            obj.setAttribute('class', 'selected');
 
             const idx =  obj.getAttribute('idx');
             console.log(idx);
             if(Utils.isEmpty(idx) || !Utils.isNumber(idx)) return;
-            var body =  this._getTBody();
-            var row = body.insertRow((idx+1));
+            const rowId = ACTION.VIEW +'_'+ idx;
+            const isExists = document.getElementById(rowId);
+            if(!Utils.isEmpty(isExists)) isExists.remove();
+            var row = body.insertRow((parseInt(idx)+1));
+            row.id = rowId;
             const cell = document.createElement(HTML_TAG.TD);
-            cell.colSpan = this.state.columns.length;
-            cell.innerHTML = "NEW CELL1";
+            cell.colSpan = (this.state.columns.length+1);
+            cell.id = rowId + '_' + HTML_TAG.TD;
             row.appendChild(cell);
+            ReactDOM.render(<View id={ obj.id } isUser={ this.state.isUser } />, document.getElementById(rowId + '_' + HTML_TAG.TD));
         } else {
             if(Utils.isEmpty(obj.className)
                 || obj.className.indexOf('selected') === -1) {
@@ -84,6 +95,15 @@ export default class Table extends C {
                 obj.removeAttribute('class');
             }
         }
+    }
+
+    _onDblClick(e) {
+        console.log(e);
+        var obj = this._getObjTr(e);
+        if(Utils.isEmpty(obj)) return;
+        const body = this._getTBody();
+        this._removeTrClass(body);
+        obj.setAttribute('class', 'selected');
     }
 
     _onContextMenu(e) {
@@ -104,13 +124,14 @@ export default class Table extends C {
         var thead = e.target.parentElement.parentElement;
         if(thead.tagName !== HTML_TAG.TR) return;
         this.state.view = false;
-        const tBody = this._getTBody();
-        for(var i=0; i<tBody.childNodes.length; i++) {
-            var obj = tBody.childNodes[i];
+        const body = this._getTBody();
+        this._removeTrView(body);
+        var node = body.childNodes;
+        for(var i=0; i<node.length; i++) {
             if(isChecked) {
-                obj.setAttribute('class', 'selected');
+                node[i].setAttribute('class', 'selected');
             } else {
-                obj.removeAttribute('class');
+                node[i].removeAttribute('class');
             }
         };
     }
@@ -130,23 +151,24 @@ export default class Table extends C {
             this.state.isCols.push(o.field);
             const key = 'label_' + o.field;
             var style = (Utils.inJson(o, 'style') && Utils.isEmpty(o.style))?'':o.style;
+            var type = (Utils.inJson(o, 'type') && !Utils.isEmpty(o.type)?o.type:'');
             if(Utils.isEmpty(style)) style = { width: 100 };
             const label = GetMsg(this.state.isUser.action, this.state.isUser.language, key);
             var isLabel = <label>{ label }</label>;
             if(Utils.inJson(o, 'filter') && o.filter) {
-                isLabel = (<Form.Control type="text" placeholder={ label } onKeyDown={ this._onThKeyDown.bind(this) } />);
+                isLabel = (<Form.Control type="text" placeholder={ label } onFocus={ this._onFocus.bind(this) } onKeyDown={ this._onThKeyDown.bind(this) } />);
             }
             if(o.sort) {
                 if(!Utils.isEmpty(style)) {
-                    return(<th key={ index } style={ style } onClick={ this._onSort.bind(this) }>{ isLabel }</th>);
+                    return(<th key={ index } id={ o.field } type={ type } style={ style } onClick={ this._onSort.bind(this) }>{ isLabel }</th>);
                 } else {
-                    return(<th key={ index } style={ style } onClick={ this._onSort.bind(this) }>{ isLabel }</th>);
+                    return(<th key={ index } id={ o.field } type={ type } style={ style } onClick={ this._onSort.bind(this) }>{ isLabel }</th>);
                 }
             } else {
                 if(!Utils.isEmpty(style)) {
-                    return(<th key={ index } style={ style }>{ isLabel }</th>);
+                    return(<th key={ index } id={ o.field } type={ type } style={ style }>{ isLabel }</th>);
                 } else {
-                    return(<th key={ index } style={ style }>{ isLabel }</th>);
+                    return(<th key={ index } id={ o.field } type={ type } style={ style }>{ isLabel }</th>);
                 }
             }
         });
@@ -189,7 +211,13 @@ export default class Table extends C {
                 }
             }
             return(
-                <tr key={ index } idx={ index } id={ o.id } onClick={ this._onTrClick.bind(this) } onContextMenu={ this._onContextMenu.bind(this) } >
+                <tr
+                    key={ index }
+                    idx={ index }
+                    id={ o.id }
+                    onClick={ this._onTrClick.bind(this) }
+                    onDoubleClick={ this._onDblClick.bind(this) }
+                    onContextMenu={ this._onContextMenu.bind(this) } >
                     <td><FaRegEye /></td>
                     { tds }
                 </tr>
@@ -240,7 +268,56 @@ export default class Table extends C {
         return ids;
     }
 
-    UNSAFE_componentDidMount() {
+    _removeTrView(body) {
+        const nodes = body.childNodes;
+        for(var i=0; i<nodes.length; i++) {
+            if(nodes[i].id.indexOf(ACTION.VIEW +'_') === -1) continue;
+            nodes[i].remove();
+        }
+    }
+
+    _removeTrClass(body) {
+        const nodes = body.childNodes;
+        for(var i=0; i<nodes.length; i++) {
+            nodes[i].removeAttribute('class');
+        }
+    }
+
+    _getCalendar(e) {
+        this._removeCalendar();
+        const obj = e.target.parentElement;
+        console.log(obj);
+        console.log(obj.tagName);
+        const type = obj.getAttribute('type');
+        if(Utils.isEmpty(obj)
+            || obj.tagName !== HTML_TAG.TH
+            || (type !== INPUT_TYPE.DATETIME && type !== INPUT_TYPE.DATE)) return;
+        console.log(obj);
+        const datetime = (type === INPUT_TYPE.DATETIME)?true:false;
+        const cBox = document.createElement(HTML_TAG.DIV);
+        cBox.id = 'div_calendar_box';
+        obj.appendChild(cBox);
+        ReactDOM.render(<Calendar
+            show={ true }
+            range={ true }
+            datetime={ datetime }
+            onChangeCalendar={ this._onChangeCalendar.bind(this) } />
+            ,document.getElementById(cBox.id));
+    }
+
+    _onChangeCalendar(start, end) {
+        console.log(start);
+        console.log(end);
+        this._removeCalendar();
+    }
+
+    _removeCalendar() {
+        const cal = document.getElementById('div_calendar_box');
+        if(Utils.isEmpty(cal)) return;
+        cal.remove();
+    }
+
+    componentDidMount() {
         const divHeader = document.getElementById('div_table_header');
         const divBody = document.getElementById('div_table_body');
         divBody.style.height = (window.innerHeight - (110 + divHeader.offsetHeight)) + 'px';

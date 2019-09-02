@@ -20,6 +20,7 @@ class ContextMenu extends C {
         if(Utils.isEmpty(this.state.objs.ids) || this.state.objs.ids.length <= 0) return;
         const obj = e.target;
         const action = obj.getAttribute("action");
+        this.forceUpdate();
         if(action === ACTION.EDIT) {
             if(this.state.objs.ids.length > 1) return;
             console.log(action);
@@ -40,13 +41,14 @@ class ContextMenu extends C {
         if(this.state.objs === undefined || this.state.objs.items === undefined || this.state.objs.items.length === 0) return "";
         return this.state.objs.items.map( o => {
             var icon = '';
-            if(o.type === ACTION.EDIT) {
+            if(o.type === ACTION.EDIT && this.state.objs.ids.length < 2) {
                 icon = <FaEdit />;
             } else if(o.type === ACTION.DELETE) {
                 icon = <FaTrash />;
             } else if(o.type === ACTION.DOWNLOAD) {
                 icon = <FaCloudDownloadAlt />;
             }
+            if(Utils.isEmpty(icon)) return "";
             return (<Nav.Link key={ o.type } href="#" action={ o.type } onClick={ this._onClick.bind(this) }>{ icon }{ o.label }</Nav.Link>);
           });
     }

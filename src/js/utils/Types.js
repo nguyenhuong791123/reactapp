@@ -22,8 +22,14 @@ export const HTML_TAG = {
     ,SPAN: 'SPAN'
     ,TBODY: 'TBODY'
     ,TR: 'TR'
+    ,TH: 'TH'
     ,TD: 'TD'
     ,BUTTON: 'BUTTON'
+}
+
+export const INPUT_TYPE = {
+    DATE: 'date'
+    ,DATETIME: 'datetime'
 }
 
 export const VARIANT_TYPES = {

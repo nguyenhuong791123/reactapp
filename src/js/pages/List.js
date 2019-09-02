@@ -7,7 +7,7 @@ import { FaPlus } from 'react-icons/fa';
 import Pagination from '../utils/body/Pagin';
 import Table from '../utils/body/Table';
 
-import { ACTION, HTML_TAG, PAGIN_PER, PAGIN_PER_LIST } from '../utils/Types';
+import { ACTION, HTML_TAG, PAGIN_PER, PAGIN_PER_LIST, INPUT_TYPE } from '../utils/Types';
 import Utils from '../utils/Utils';
 import GetMsg from '../../msg/Msg';
 // import View from './View';
@@ -90,8 +90,8 @@ class List extends C {
             columns: [
                 { field: 'id', text: '', sort: false, filter: false }
                 ,{ field: 'name', text: '', sort: true, filter: true, style: { width: 500 } }
-                ,{ field: 'price3', text: '', sort: true, filter: true, style: { width: 1500 } }
-                ,{ field: 'price4', text: '', sort: true, filter: true }
+                ,{ field: 'price3', text: '', type: INPUT_TYPE.DATE, sort: true, filter: true, style: { width: 500 } }
+                ,{ field: 'price4', text: '', type: INPUT_TYPE.DATETIME, sort: true, filter: true }
                 ,{ field: 'price5', text: '', sort: true }
             ]
             ,datas:[

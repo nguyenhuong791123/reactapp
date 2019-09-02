@@ -16,6 +16,7 @@ export default class Table extends C {
         this._onSort = this._onSort.bind(this);
         this._onThKeyDown = this._onThKeyDown.bind(this);
         this._onTrClick = this._onTrClick.bind(this);
+        this._onCheckBoxClick = this._onCheckBoxClick.bind(this);
         this._onScroll = this._onScroll.bind(this);
 
         this.state = {
@@ -51,6 +52,26 @@ export default class Table extends C {
         } else {
             obj.removeAttribute('class');
         }
+    }
+
+    _onCheckBoxClick(e) {
+        if(Utils.isEmpty(e.target) || e.target.type !== HTML_TAG.CHECKBOX) return;
+        const isChecked = e.target.checked;
+        var thead = e.target.parentElement.parentElement;
+        if(thead.tagName !== HTML_TAG.TR) return;
+        var tblBody = document.getElementById('div_table_body').childNodes[0];
+        if(Utils.isEmpty(tblBody) || Utils.isEmpty(tblBody.childNodes[0])) return;
+        if(tblBody.childNodes[0].tagName === HTML_TAG.TBODY) tblBody = tblBody.childNodes[0];
+        console.log(tblBody);
+        console.log(tblBody.childNodes);
+        for(var i=0; i<tblBody.childNodes.length; i++) {
+            var obj = tblBody.childNodes[i];
+            if(isChecked) {
+                obj.setAttribute('class', 'selected');
+            } else {
+                obj.removeAttribute('class');
+            }
+        };
     }
 
     _onScroll(e) {
@@ -95,7 +116,7 @@ export default class Table extends C {
                 <thead>
                     <tr>
                         <th>
-                            <input type={ HTML_TAG.CHECKBOX } />
+                            <input type={ HTML_TAG.CHECKBOX } onClick={ this._onCheckBoxClick.bind(this) } />
                         </th>
                         { ths }
                     </tr>

@@ -5,6 +5,57 @@
     transition: all .5s;
 }
 
+/* 点滅 */
+a.blinking
+,button.blinking {
+	-webkit-animation:blink .7s ease-in-out infinite alternate;
+    -moz-animation:blink .7s ease-in-out infinite alternate;
+    animation:blink .7s ease-in-out infinite alternate;
+    color: red;
+}
+@-webkit-keyframes blink {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+@-moz-keyframes blink {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+@keyframes blink {
+    0% {opacity:0;}
+    100% {opacity:1;}
+}
+
+body {
+    overflow: hidden;
+}
+
+object {
+    /* width: 240px; */
+    height: 100%;
+    /* position: absolute;
+    z-index: 15;
+    display: none; */
+}
+
+.required {
+    color: red;
+}
+
+button svg {
+    margin-right: .3em;
+    /* vertical-align: text-top; */
+}
+
+a.nav-link {
+    display: block;
+    padding: 0.5rem 1rem;
+}
+
+form.rjsf > div.errors:first-child {
+    display: none;
+}
+
 div.drag-and-drop {
     position: absolute;
     z-index: 1000;
@@ -27,43 +78,12 @@ div.drag-and-drop button:hover {
     margin-left: -2em;
 }
 
-body {
-    overflow: hidden;
-}
-
-object {
-    /* width: 240px; */
-    height: 100%;
-    /* position: absolute;
-    z-index: 15;
-    display: none; */
-}
-
-.required {
-    color: red;
-}
-
-/* button svg {
-    margin-right: .3em;
-    vertical-align: text-top;
-} */
-
-a.nav-link {
-    display: block;
-    padding: 0.5rem 1rem;
-}
-
-form.rjsf > div.errors:first-child {
-    display: none;
-}
-
 div.form-group fieldset legend {
     padding-left: 0.5em;
     margin-bottom: 0;
     /* font-size: 1rem; */
     /* background-color: #cce5ff; */
 }
-
 
 div.form-group fieldset > div.div-top-box {
     float: left;

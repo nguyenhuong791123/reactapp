@@ -57,26 +57,6 @@ nav.navbar button.navbar-toggler {
 div.navbar-collapse a.nav-link:hover {
     background-color: #cce5ff;
 }
-/* 点滅 */
-a.blinking
-,button.blinking {
-	-webkit-animation:blink .7s ease-in-out infinite alternate;
-    -moz-animation:blink .7s ease-in-out infinite alternate;
-    animation:blink .7s ease-in-out infinite alternate;
-    color: red;
-}
-@-webkit-keyframes blink {
-    0% {opacity:0;}
-    100% {opacity:1;}
-}
-@-moz-keyframes blink {
-    0% {opacity:0;}
-    100% {opacity:1;}
-}
-@keyframes blink {
-    0% {opacity:0;}
-    100% {opacity:1;}
-}
 
 .a-homepage {
     margin-left: 1.5em;

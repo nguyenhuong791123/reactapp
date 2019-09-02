@@ -66,6 +66,16 @@ export default class Table extends C {
             };
             obj.setAttribute('class', 'selected');
             this.state.view = false;
+
+            const idx =  obj.getAttribute('idx');
+            console.log(idx);
+            if(Utils.isEmpty(idx) || !Utils.isNumber(idx)) return;
+            var body =  this._getTBody();
+            var row = body.insertRow((idx+1));
+            const cell = document.createElement(HTML_TAG.TD);
+            cell.colSpan = this.state.columns.length;
+            cell.innerHTML = "NEW CELL1";
+            row.appendChild(cell);
         } else {
             if(Utils.isEmpty(obj.className)
                 || obj.className.indexOf('selected') === -1) {
@@ -179,7 +189,7 @@ export default class Table extends C {
                 }
             }
             return(
-                <tr key={ index } id={ o.id } onClick={ this._onTrClick.bind(this) } onContextMenu={ this._onContextMenu.bind(this) } >
+                <tr key={ index } idx={ index } id={ o.id } onClick={ this._onTrClick.bind(this) } onContextMenu={ this._onContextMenu.bind(this) } >
                     <td><FaRegEye /></td>
                     { tds }
                 </tr>

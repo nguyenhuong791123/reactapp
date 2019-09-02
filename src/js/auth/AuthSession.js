@@ -32,7 +32,7 @@ const isUserInit = (isUser) => {
       ,viewHeader: getJsonValue(isUser, 'info', 'viewHeader', false)
       ,path: getJsonValue(isUser, 'info', 'path', '/')
       ,action: getJsonValue(isUser, 'info', 'action', 'customer')
-      ,theme: getJsonValue(isUser, 'info', 'theme', 'darkly')
+      ,theme: getJsonValue(isUser, 'info', 'theme', 'journal')
       ,logo: getJsonValue(isUser, 'info', 'logo', '')
     }
     ,options: {

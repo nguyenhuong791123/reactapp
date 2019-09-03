@@ -1,5 +1,5 @@
 import React, { Component as C } from 'react';
-
+// import onClickOutside from 'react-onclickoutside';
 import ReactLightCalendar from '@lls/react-light-calendar';
 import '@lls/react-light-calendar/dist/index.css';
 import '../../css/Calendar.css';
@@ -9,7 +9,7 @@ import { isEmpty } from './Utils';
 import DateTime from './Date';
 import GetMsg from '../../msg/Msg';
 
-export default class CalendarBox extends C {
+class CalendarBox extends C {
     constructor(props) {
         super(props)
 
@@ -86,12 +86,20 @@ export default class CalendarBox extends C {
         obj.value = val;
     }
 
+    // handleClickOutside = (e) => {
+    //     const obj = e.target;
+    //     const className = ('class' in obj)?obj.className:'';
+    //     console.log(className);
+    //     if(!isEmpty(className) && className.indexOf('rlc-') !== -1) return;
+    //     const cBox = document.getElementById('div_calendar_box_view');
+    //     if(!isEmpty(cBox)) cBox.remove();
+    // }
+
     componentWillMount() {
         this._getDayMonthLabel();
     }
 
     render = () => {
-        if(!this.state.show) return "";
         const style = { top: this.state.top, left: this.state.left }
         return (
             <div id='div_calendar_box' className='div-calendar-box' style={ style }>
@@ -145,3 +153,5 @@ export default class CalendarBox extends C {
         );
     }
 }
+export default CalendarBox;
+// export default onClickOutside(CalendarBox);

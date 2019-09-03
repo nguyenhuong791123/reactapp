@@ -1,5 +1,3 @@
-// import StringUtil from 'util';
-
 const object = {
     maxLength: (obj, max, error1, error2) => {
         const dError = obj.target.parentElement.childNodes[1];
@@ -24,12 +22,4 @@ const object = {
     }
 };
 
-// const object = {
-//   hasAttribute: (obj, attr) => {
-//     if(isEmpty(obj) || isEmpty(attr)) return false;
-//     return obj.hasAttribute(attr);
-//   }
-// }
-
 module.exports = object;
-// module.exports.object = object;

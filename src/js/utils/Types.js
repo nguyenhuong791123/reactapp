@@ -55,6 +55,9 @@ export const ACTION = {
     ,DELETE: 'delete'
     ,UPLOAD: 'upload'
     ,DOWNLOAD: 'download'
+    ,SUCCESS: 'success'
+    ,ERROR: 'error'
+    ,CLEAR: 'clear'
 };
 
 export const MSG_TYPE = {
@@ -107,11 +110,3 @@ export const NUMBER = {
     ,ASTERISK: '*'
     ,SHARP: '#'
 };
-
-export const THEME = {
-    PATH: './dist/'
-    ,FILE: '/bootstrap.min.css'
-    ,getTheme: (theme) => {
-        return THEME.PATH + theme + THEME.FILE;
-    }
-}

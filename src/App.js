@@ -6,7 +6,8 @@ import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import { sessionService, sessionReducer } from 'redux-react-session';
 import thunkMiddleware from 'redux-thunk';
 
-import { ACTION, HTML_TAG, THEME } from './js/utils/Types';
+import { ACTION, HTML_TAG } from './js/utils/Types';
+import { THEME } from './js/utils/Theme';
 import Utils from './js/utils/Utils';
 
 /* eslint-disable import/first */

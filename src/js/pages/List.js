@@ -37,32 +37,8 @@ class List extends C {
             }
             ,total: 230
             ,atPage: 1
-            ,per: 20
-            ,list: [
-                // { item1: "" }
-                // ,{ item1: "" }
-                // ,{ item1: "" }
-                // ,{ item1: "" }
-                // ,{ item1: "" }
-                // ,{ item1: "" }
-                // ,{ item1: "" }
-                // ,{ item1: "" }
-                // ,{ item1: "" }
-                // ,{ item1: "" }
-                // ,{ item1: "" }
-                // ,{ item1: "" }
-                // ,{ item1: "" }
-                // ,{ item1: "" }
-                // ,{ item1: "" }
-                // ,{ item1: "" }
-                // ,{ item1: "" }
-                // ,{ item1: "" }
-                // ,{ item1: "" }
-                // ,{ item1: "" }
-                // ,{ item1: "" }
-                // ,{ item1: "" }
-                // ,{ item1: "" }
-            ]
+            ,per: PAGIN_PER
+            ,list: [ ]
         }
     };
 
@@ -76,6 +52,7 @@ class List extends C {
     }
 
     _onPerChange(e) {
+        console.log(e);
         this.state.per = e.target.value;
     }
 
@@ -86,6 +63,7 @@ class List extends C {
     }
 
     _getDatas() {
+        console.log(this.props.isUser);
         this.state.list = {
             columns: [
                 { field: 'id', text: '', sort: false, filter: false }

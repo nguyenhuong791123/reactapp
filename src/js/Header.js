@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown, Form, FormControl, Image } from 'react-bootstrap';
 import { FaUser, FaSearch, FaTty, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaKey, FaLink, FaRocketchat } from 'react-icons/fa';
 
-import { ACTION , LINK, NOT_LINK, PAGE, WINDOWN_WIDTH, HTML_TAG, VARIANT_TYPES, THEME } from './utils/Types';
+import { ACTION , LINK, NOT_LINK, PAGE, WINDOWN_WIDTH, HTML_TAG, VARIANT_TYPES } from './utils/Types';
+import { THEME } from './utils/Theme';
 import Utils from './utils/Utils';
 import LMenu from "./utils/header/LMenu";
 import RMenu from "./utils/header/RMenu";
@@ -274,6 +275,23 @@ class Header extends C {
     this.state.options = props.options;
   }
 
+  _getTheme() {
+    const o = THEME.getThemes();
+    console.log(o);
+    var keys = Object.keys(o);
+    var options = [];
+    for(var i=0; i<keys.length; i++) {
+      options.push(<option key={ i } value={ o[keys[i]] } >{ keys[i] }</option>);
+    }
+    return(
+      <Form.Group>
+        <Form.Control as={ HTML_TAG.SELECT } value={ this.state.isUser.theme }>
+          { options }
+        </Form.Control>
+      </Form.Group>
+    );
+  }
+
   render() {
     if(!this.state.isUser.viewHeader) return "";
     // this._loadButtonToggle();
@@ -281,11 +299,7 @@ class Header extends C {
     var menuType = (this.state.isUser.menu===1)?"tab_menu_1":"tab_menu_0";
     var menuClass = (this.state.isUser.menu===0)?" mr-auto-parent":""
     const isCallClass = (this.state.dailer.isCall && this.state.dailer.register)?"blinking":"";
-    // const Dailer = (this.state.options.dailer)?(<DailerBox
-    //                                               dailer={ this.state.dailer }
-    //                                               isUser={ this.props.isUser }
-    //                                               onOpenBoxPhone={ this._onOpenBoxPhone.bind(this) }
-    //                                               onUpdateDailer={ this._onUpdateDailer.bind(this) }/>):"";
+    const theme = (this.state.isUser.uLid === 'admin')?(this._getTheme()):"";
 
     console.log(this.props);
     console.log(this.props.dispatch);
@@ -325,6 +339,8 @@ class Header extends C {
               }
             })()}
 
+            {/* ADMIN場合Themeリストを表示 */}
+            { theme }
             {/* グローバル検索 */}
             <Form inline>
               <FormControl type="text" id="input_global_search" placeholder="Search" className="mr-sm-2" />

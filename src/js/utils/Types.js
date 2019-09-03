@@ -19,6 +19,7 @@ export const HTML_TAG = {
     ,SVG: 'svg'
     ,PATH: 'path'
     ,PASSWORD: 'password'
+    ,INPUT: 'INPUT'
     ,SPAN: 'SPAN'
     ,TBODY: 'TBODY'
     ,TR: 'TR'

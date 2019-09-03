@@ -90,7 +90,7 @@ class Login extends C {
     if(!isEmpty(div)) {
       window.onresize = function(event) {
         div.style.left = ((window.innerWidth/2) - (div.offsetWidth/2)) + 'px';
-        div.style.marginTop = ((window.innerHeight/2) - div.offsetHeight) + 'px';
+        div.style.marginTop = ((window.innerHeight - div.offsetHeight)/2) + 'px';
       };
       window.onresize();  
     }

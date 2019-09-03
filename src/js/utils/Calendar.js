@@ -4,8 +4,9 @@ import ReactLightCalendar from '@lls/react-light-calendar';
 import '@lls/react-light-calendar/dist/index.css';
 import '../../css/Calendar.css';
 
-import { MSG_TYPE } from './Types';
+import { MSG_TYPE, HTML_TAG } from './Types';
 import { isEmpty } from './Utils';
+import DateTime from './Date';
 import GetMsg from '../../msg/Msg';
 
 export default class CalendarBox extends C {
@@ -18,6 +19,7 @@ export default class CalendarBox extends C {
         // const language = this.props.language;
         this.state = {
             show: this.props.show
+            ,objId: this.props.objId
             ,fromTo: this.props.fromTo
             ,datetime: this.props.datetime
             ,range: this.props.range
@@ -61,14 +63,27 @@ export default class CalendarBox extends C {
     }
 
     _onChange(startDate, endDate) {
-        console.log(startDate);
-        console.log(endDate);
+        if(isEmpty(startDate)) return;
+        const start = DateTime.dateTime(new Date(startDate), this.state.language, false, null);
         this.setState({ start: startDate, end: endDate });
         if(this.state.fromTo) {
-            if(!isEmpty(endDate)) return this.props.onChangeCalendar(startDate, endDate);
+            if(!isEmpty(endDate)) {
+                const end = DateTime.dateTime(new Date(endDate), this.state.language, false, null);
+                this._getValueToObj(start + '～' + end);
+                return this.props.onChangeCalendar(start, end);
+            }
         } else {
-            return this.props.onChangeCalendar(startDate, endDate);
+            this._getValueToObj();
+            return this.props.onChangeCalendar(start, '');
         }
+    }
+
+    _getValueToObj(val) {
+        if(isEmpty(val)) return;
+        const p = document.getElementById(this.state.objId);
+        const obj = p.childNodes[0];
+        if(isEmpty(obj) || obj.tagName !== HTML_TAG.INPUT) return;
+        obj.value = val;
     }
 
     componentWillMount() {

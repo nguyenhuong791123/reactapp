@@ -150,12 +150,12 @@ export default class Table extends C {
         var ths = this.state.columns.map((o, index) => {
             this.state.isCols.push(o.field);
             const key = 'label_' + o.field;
-            var style = (Utils.inJson(o, 'style') && Utils.isEmpty(o.style))?'':o.style;
-            var type = (Utils.inJson(o, 'type') && !Utils.isEmpty(o.type)?o.type:'');
+            var style = ('style' in o)?o.style:'';
+            var type = ('type' in o)?o.type:'';
             if(Utils.isEmpty(style)) style = { width: 100 };
             const label = GetMsg(this.state.isUser.action, this.state.isUser.language, key);
             var isLabel = <label>{ label }</label>;
-            if(Utils.inJson(o, 'filter') && o.filter) {
+            if(('filter' in o) && o.filter) {
                 isLabel = (<Form.Control type="text" placeholder={ label } onFocus={ this._onFocus.bind(this) } onKeyDown={ this._onThKeyDown.bind(this) } />);
             }
             if(o.sort) {
@@ -199,7 +199,7 @@ export default class Table extends C {
             for(var i=0; i<keys.length; i++) {
                 if(!Utils.inArray(this.state.isCols, keys[i])) continue;
                 if(index === 0) {
-                    var style = (Utils.inJson(this.state.columns[i], 'style') && !Utils.isEmpty(this.state.columns[i].style)?this.state.columns[i].style:'');
+                    var style = ('style' in this.state.columns[i])?this.state.columns[i].style:'';
                     if(Utils.isEmpty(style)) style = { width: 100 };
                     if(!Utils.isEmpty(style)) {
                         tds.push(<td key={ i } idx={ i } style={ style }>{ o[keys[i]] }</td>);
@@ -286,23 +286,29 @@ export default class Table extends C {
     _getCalendar(e) {
         this._removeCalendar();
         const obj = e.target.parentElement;
-        console.log(obj);
-        console.log(obj.tagName);
         const type = obj.getAttribute('type');
         if(Utils.isEmpty(obj)
             || obj.tagName !== HTML_TAG.TH
             || (type !== INPUT_TYPE.DATETIME && type !== INPUT_TYPE.DATE)) return;
-        console.log(obj);
         const datetime = (type === INPUT_TYPE.DATETIME)?true:false;
         const cBox = document.createElement(HTML_TAG.DIV);
-        cBox.id = 'div_calendar_box';
+        cBox.id = 'div_calendar_box_view';
         obj.appendChild(cBox);
+        console.log(this.state.isUser);
         ReactDOM.render(<Calendar
             show={ true }
+            objId={ obj.id }
+            fromTo={ true }
             range={ true }
             datetime={ datetime }
+            language={ this.state.isUser.language }
             onChangeCalendar={ this._onChangeCalendar.bind(this) } />
             ,document.getElementById(cBox.id));
+        const cal = document.getElementById('div_calendar_box');
+        const boxX = cal.offsetLeft + cal.offsetWidth;
+        if(boxX > window.innerWidth) {
+            cal.style.left = (window.innerWidth - (cal.offsetWidth + 5)) + 'px';
+        }
     }
 
     _onChangeCalendar(start, end) {
@@ -312,7 +318,7 @@ export default class Table extends C {
     }
 
     _removeCalendar() {
-        const cal = document.getElementById('div_calendar_box');
+        const cal = document.getElementById('div_calendar_box_view');
         if(Utils.isEmpty(cal)) return;
         cal.remove();
     }
@@ -322,6 +328,11 @@ export default class Table extends C {
         const divBody = document.getElementById('div_table_body');
         divBody.style.height = (window.innerHeight - (110 + divHeader.offsetHeight)) + 'px';
     }
+
+    // UNSAFE_componentWillReceiveProps(props) {
+    //     console.log('TabMenu componentWillReceiveProps');
+    //     this.state.isUser = props.isUser;
+    // }
 
     render() {
         return (

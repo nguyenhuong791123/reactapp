@@ -164,15 +164,6 @@ class App extends C {
         // this.forceUpdate();
     }
 
-    // UNSAFE_componentDidMount() {
-    //     const css = document.createElement(HTML_TAG.CSS_LINK);
-    //     css.setAttribute('rel', 'stylesheet');
-    //     css.setAttribute('href', './dist/' + this.state.isUser.theme + '/bootstrap.min.css');
-    //     const webRtc = document.getElementById('object_dailer_box');
-    //     console.log(webRtc);
-    //     console.log(webRtc.childNodes);
-    // }
-
     render() {
         // console.log('APP Render !!!');
         // console.log(this.state.isUser);
@@ -195,6 +186,7 @@ class App extends C {
                                     render={ ({ props }) => <Login
                                                                 isUser={ this.state.isUser }
                                                                 options={ this.state.options }
+                                                                onUpdateStateIsUser={ this._updateStateIsUser.bind(this) }
                                                                 onLogin={ this._doLogin.bind(this) }
                                                                 {...this.props} />} />
                                 <Route

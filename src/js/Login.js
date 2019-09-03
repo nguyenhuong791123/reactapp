@@ -61,10 +61,14 @@ class Login extends C {
     if(!isEmpty(dError)) {
       if(value.length <= 0) {
         dError.style.display = 'block';
-        dError.innerText = this._getMsg(MSG_TYPE.LOGIN, 'login_id') + this._getMsg(MSG_TYPE.ERROR, 'required');
+        dError.innerText =
+          GetMsg(MSG_TYPE.LOGIN, this.state.isUser.language, 'login_id')
+          + GetMsg(MSG_TYPE.ERROR, this.state.isUser.language, 'required');
+        // this._getMsg(MSG_TYPE.LOGIN, 'login_id') + this._getMsg(MSG_TYPE.ERROR, 'required');
       } else if(value.length > 8) {
         dError.style.display = 'block';
-        var msg = StringUtil.format(this._getMsg(MSG_TYPE.ERROR, 'max_length'), 8, value.length - 8);
+        // var msg = StringUtil.format(this._getMsg(MSG_TYPE.ERROR, 'max_length'), 8, value.length - 8);
+        var msg = StringUtil.format(GetMsg(MSG_TYPE.ERROR, this.state.isUser.language, 'max_length'), 8, value.length - 8);
         dError.innerText = msg;
       } else {
         dError.style.display = 'none';
@@ -75,11 +79,13 @@ class Login extends C {
 
   _onChangeSelect(e) {
     this.state.isUser.language = e.target.value;
-    this.forceUpdate();
+    const auth = { info: this.state.isUser, options: this.state.options };
+    this.props.onUpdateStateIsUser(auth);
+    // this.forceUpdate();
   }
 
   componentDidMount() {
-    // console.log('LOGIN componentDidMount !!!');
+    console.log('LOGIN componentDidMount !!!');
     var div = document.getElementById('div_alert_login');
     if(!isEmpty(div)) {
       window.onresize = function(event) {

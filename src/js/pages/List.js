@@ -92,7 +92,7 @@ class List extends C {
                 ,{ field: 'name', text: '', sort: true, filter: true, style: { width: 500 } }
                 ,{ field: 'price3', text: '', type: INPUT_TYPE.DATE, sort: true, filter: true, style: { width: 500 } }
                 ,{ field: 'price4', text: '', type: INPUT_TYPE.DATETIME, sort: true, filter: true }
-                ,{ field: 'price5', text: '', sort: true }
+                ,{ field: 'price5', text: '', sort: true, type: INPUT_TYPE.DATETIME, filter: true }
             ]
             ,datas:[
                 { id: 1, name: "Item name 1", price3: 1001, price4: 1001, price5: 1001, price6: 1001 }

@@ -58,6 +58,7 @@ export const ACTION = {
 
 export const MSG_TYPE = {
     ERROR: 'error'
+    ,CALENDAR: 'calendar'
     ,LOGIN: 'login'
 };
 

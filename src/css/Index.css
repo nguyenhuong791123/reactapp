@@ -63,8 +63,8 @@ div.drag-and-drop {
 }
 
 div.drag-and-drop object {
-    width: 255px;
-    height: 372px;
+    /* width: 255px;
+    height: 372px; */
     position: absolute;
 }
 

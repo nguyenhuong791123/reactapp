@@ -1,9 +1,17 @@
-export const IS_ADMIN = 'admin';
+// export const IS_ADMIN = 'admin';
+// export const IS_ACTIVE_WINDOWN = 'isActiveWindown';
 export const WINDOWN_WIDTH = 992;
 export const PAGIN_PER = 20;
 export const PAGIN_PER_LIST = 5;
 export const LINK = 0;
 export const NOT_LINK = 1;
+
+export const SYSTEM = {
+    IS_ADMIN: 'admin'
+    ,IS_ACTIVE_WINDOWN: 'isActiveWindown'
+    ,IS_DAILER_BOX: 'div_dailer_box'
+    ,IS_CSS_LINK_ID: 'link_bootstrap_id'
+}
 
 export const HTML_TAG = {
     CSS_LINK: 'link'

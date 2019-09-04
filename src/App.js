@@ -6,7 +6,7 @@ import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import { sessionService, sessionReducer } from 'redux-react-session';
 import thunkMiddleware from 'redux-thunk';
 
-import { ACTION, HTML_TAG } from './js/utils/Types';
+import { ACTION, HTML_TAG, SYSTEM } from './js/utils/Types';
 import { THEME } from './js/utils/Theme';
 import Utils from './js/utils/Utils';
 
@@ -65,6 +65,8 @@ class App extends C {
             const { token } = response;
             sessionService.saveSession({ token }).then(() => {
                 sessionService.saveUser(auth).then(() => {
+                    window.name = SYSTEM.IS_ACTIVE_WINDOWN;
+                    sessionStorage.setItem('session', window.name);
                     console.log('_doLogin complete !!!');
                     console.log(sessionService.loadUser('COOKIES'));
                 });
@@ -77,10 +79,13 @@ class App extends C {
         auth.info.language = this.state.isUser.language;
         this.state.isUser = auth.info;
         this.state.options = auth.options;
+        const div = document.getElementById(SYSTEM.IS_DAILER_BOX);
+        if(!Utils.isEmpty(div)) div.remove();
         this.forceUpdate();
         AuthSession.doLogout().then(() => {
             sessionService.deleteSession();
             sessionService.deleteUser();
+            sessionStorage.removeItem('session');
             console.log('_doLogout complete !!!');
         }).catch(err => { throw (err); });
     };
@@ -157,22 +162,33 @@ class App extends C {
         // console.log(isUser);
         this.state.isUser = isUser.info;
         this.state.options = isUser.options;
+        this._addCssLink();
         history.push(isUser.info.path);
         this.forceUpdate();
     }
 
     UNSAFE_componentWillMount() {
         this._loadAuthCookies(this.state.isUser, this._updateStateIsUser);
-        const css = document.createElement(HTML_TAG.CSS_LINK);
-        const css_path = THEME.getTheme(this.state.isUser.theme);
-        css.setAttribute('rel', 'stylesheet');
-        css.setAttribute('href', css_path);
-        const head = document.getElementsByTagName(HTML_TAG.HEAD)[0];
-        head.appendChild(css);
+        this._addCssLink();
         // this.forceUpdate();
-        console.log(this.props);
-        console.log(this.props.router);
-        console.log(document.title);
+        // console.log(this.props);
+        // console.log(this.props.router);
+        // console.log(document.title);
+    }
+
+    _addCssLink() {
+        const obj = document.getElementById(SYSTEM.IS_CSS_LINK_ID);
+        const css_path = THEME.getTheme(this.state.isUser.theme);
+        if(!Utils.isEmpty(obj)) {
+            obj.href = css_path;
+        } else {
+            const css = document.createElement(HTML_TAG.CSS_LINK);
+            css.id = SYSTEM.IS_CSS_LINK_ID;
+            css.setAttribute('rel', 'stylesheet');
+            css.setAttribute('href', css_path);
+            const head = document.getElementsByTagName(HTML_TAG.HEAD)[0];
+            head.appendChild(css);    
+        }
     }
 
     render() {
@@ -187,7 +203,6 @@ class App extends C {
                                 isUser={ this.state.isUser }
                                 options={ this.state.options }
                                 onUpdateUser={ this._onUpdatePromise.bind(this) }
-                                onLoadAuthCookies={ this._loadAuthCookies.bind(this) }
                                 onUpdateIsUserCallBack={ this._onUpdateIsUserCallBack.bind(this) }
                                 onLogout={ this._doLogout.bind(this) } />
                         </div>

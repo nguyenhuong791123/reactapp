@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown, Form, FormControl, Image } from 'react-bootstrap';
 import { FaUser, FaSearch, FaTty, FaPhone, FaMailBulk, FaUserCog, FaSitemap, FaKey, FaLink, FaRocketchat } from 'react-icons/fa';
 
-import { ACTION , LINK, NOT_LINK, PAGE, WINDOWN_WIDTH, HTML_TAG, VARIANT_TYPES } from './utils/Types';
+import { ACTION , LINK, NOT_LINK, PAGE, WINDOWN_WIDTH, HTML_TAG, VARIANT_TYPES, SYSTEM } from './utils/Types';
 import { THEME } from './utils/Theme';
 import Utils from './utils/Utils';
 import LMenu from "./utils/header/LMenu";
@@ -41,6 +41,7 @@ class Header extends C {
     this.state = {
       isUser: this.props.isUser
       ,options: this.props.options
+      ,isActiveWindown: (!Utils.isEmpty(window.name) && window.name===SYSTEM.IS_ACTIVE_WINDOWN)
       ,showError: true
       ,variantError: VARIANT_TYPES.WARNING
       ,right: ''
@@ -250,47 +251,67 @@ class Header extends C {
     }, true);
   }
 
-  UNSAFE_componentWillMount() {
-    this.props.onLoadAuthCookies(this.state.isUser, this.props.onUpdateIsUserCallBack);
-  }
+  // UNSAFE_componentWillMount() {
+  //   this.props.onLoadAuthCookies(this.state.isUser, this.props.onUpdateIsUserCallBack);
+  // }
 
-  UNSAFE_componentDidMount() {
-    const isScreenList = (this.state.isUser.path === ACTION.SLASH + ACTION.LIST);
-    if(this.state.options.dailer && isScreenList) {
-      const btn = document.createElement(HTML_TAG.BUTTON);
-      btn.setAttribute('class', 'btn btn-warning');
-      btn.innerText = '移';
-      const div = document.createElement(HTML_TAG.DIV);
-      div.setAttribute('id', 'div_dailer_box');
-      div.setAttribute('class', 'drag-and-drop');
-      const webRtc = document.createElement(HTML_TAG.OBJECT);
-      webRtc.setAttribute('data', 'dailer.html');
-      webRtc.setAttribute('type', 'text/html');
-      div.appendChild(webRtc);
-      div.appendChild(btn);
-      this._onDraggable(div, btn);
-      document.body.prepend(div);
-      const css_path = THEME.getTheme(this.state.isUser.theme);
-      window.localStorage.setItem('smart.ipbbx.css_path', css_path);
-      // window.onfocus = function(e){
-      //   console.log('focus');
-      //   console.log(e);
-      // };
-      // window.focus();
-    }
+  UNSAFE_componentWillMount() {
+    if(!this.state.options.dailer || !this.state.isActiveWindown) return;
+    this._addBoostrapTheme();
   }
 
   UNSAFE_componentWillReceiveProps(props) {
     console.log('HEADER componentWillReceiveProps');
     this.state.isUser = props.isUser;
     this.state.options = props.options;
+    if(!this.state.options.dailer || !this.state.isActiveWindown) return;
+    this._addBoostrapTheme();
+  }
+
+  _addBoostrapTheme() {
+    const isExists = document.getElementById(SYSTEM.IS_DAILER_BOX);
+    if(Utils.isEmpty(isExists)) {
+      const btn = document.createElement(HTML_TAG.BUTTON);
+      btn.setAttribute('class', 'btn btn-warning');
+      btn.innerText = '移';
+      const div = document.createElement(HTML_TAG.DIV);
+      div.setAttribute('id', SYSTEM.IS_DAILER_BOX);
+      div.setAttribute('class', 'drag-and-drop');
+      const webRtc = document.createElement(HTML_TAG.OBJECT);
+      webRtc.setAttribute('data', 'dailer.html');
+      webRtc.setAttribute('type', 'text/html');
+      div.appendChild(webRtc);
+      div.appendChild(webRtc);
+      div.appendChild(btn);
+      this._onDraggable(div, btn);
+      document.body.prepend(div);
+    }
+    this._setLocalStrageTheme();  
+  }
+
+  _setLocalStrageTheme() {
+    const css_path = THEME.getTheme(this.state.isUser.theme);
+    // window.localStorage.setItem('smart.ipbbx.css_path', css_path);
+    const div = document.getElementById(SYSTEM.IS_DAILER_BOX);
+    if(Utils.isEmpty(div)) return;
+    const obj = div.childNodes[0];
+    if(Utils.isEmpty(obj) || Utils.isEmpty(obj.contentWindow)) return;
+    const link = obj.contentWindow.document.querySelector('#link_bootstrap_ippbx_id');
+    link.href = css_path;
+    const objDiv = obj.contentWindow.document.querySelector('#object_div_dailer_box');
+    console.log(objDiv.offsetWidth);
+    console.log(objDiv.offsetHeight);
+    if(Utils.isEmpty(objDiv)) return;
+    div.style.width = objDiv.offsetWidth + 'px';
+    div.style.height = (objDiv.offsetHeight + 90) + 'px';
   }
 
   _onChangeTheme(e) {
     console.log(e);
     console.log(e.target.value);
     this.state.isUser.theme = e.target.value;
-    this.forceUpdate();
+    this._setLocalStrageTheme();
+    this.props.onUpdateUser(this.state.isUser, this.state.options, this.props.onUpdateIsUserCallBack);  
   }
 
   _getTheme() {
@@ -316,7 +337,6 @@ class Header extends C {
     if(!this.state.isUser.viewHeader) return "";
     // this._loadButtonToggle();
     // const Msg = Messages[ this.props.isUser.language ];
-    const isScreenList = (this.state.isUser.path === ACTION.SLASH + ACTION.LIST);
     var menuType = (this.state.isUser.menu===1)?"tab_menu_1":"tab_menu_0";
     var menuClass = (this.state.isUser.menu===0)?" mr-auto-parent":""
     const isCallClass = (this.state.dailer.isCall && this.state.dailer.register)?"blinking":"";
@@ -328,7 +348,7 @@ class Header extends C {
       <div className="Headder">
         <AlertMsg show={ this.state.showError } variant={ this.state.variantError } errors={ [ 'エラーメッセージ00', 'エラーメッセージ01' ] }/>
         {(() => {
-            if(isScreenList) {
+            if(this.state.isActiveWindown) {
               return (
                 <div id="div-header-is-menu">
                   {/* 縦左メニュー */}
@@ -352,7 +372,7 @@ class Header extends C {
           </a>
 
           {(() => {
-            if(isScreenList) {
+            if(this.state.isActiveWindown) {
               return(
                 <div id="div-header-is-navbar">
                   <Navbar.Toggle aria-controls="basic-navbar-nav" id="basic-navbar-nav-toggle"/>

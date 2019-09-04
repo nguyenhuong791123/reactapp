@@ -327,6 +327,7 @@ export default class Table extends C {
         window.onresize = function(event) {
             const divHeader = document.getElementById('div_table_header');
             const divBody = document.getElementById('div_table_body');
+            if(Utils.isEmpty(divHeader) || Utils.isEmpty(divBody)) return;
             divBody.style.height = (window.innerHeight - (110 + divHeader.offsetHeight)) + 'px';
         };
         window.onresize();  

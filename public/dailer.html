@@ -6,15 +6,24 @@
     <link rel="stylesheet" type="text/css" href="WebRTC.css">
   </head>
   <script>
-    const css = document.createElement('link');
-    const css_path = window.localStorage.getItem('smart.ipbbx.css_path');
-    css.setAttribute('rel', 'stylesheet');
-    css.setAttribute('href', css_path);
-    const head = document.getElementsByTagName('head')[0];
-    head.appendChild(css);
+    const divParent = parent.document.getElementById('div_dailer_box');
+    const cssParent = parent.document.getElementById('link_bootstrap_id');
+    if(divParent != undefined && cssParent != undefined) {
+        const obj = document.getElementById('link_bootstrap_ippbx_id');
+      if(obj != undefined) {
+        obj.href = cssParent.href;
+      } else {
+        const css = document.createElement('link');
+        css.id = 'link_bootstrap_ippbx_id';
+        css.setAttribute('rel', 'stylesheet');
+        css.setAttribute('href', cssParent.href);
+        const head = document.getElementsByTagName('head')[0];
+        head.appendChild(css);
+      }
+    }
   </script>
 <body>
-<div class="div-alert-dailer alert alert-success">
+<div id="object_div_dailer_box" class="div-alert-dailer alert">
   <div>
     <span class="span-dailer-title">
       <button id="btnRegister" onclick='sipRegister();' title="Register">
@@ -187,5 +196,15 @@
             pageTracker._trackPageview();
         } catch (err) { }
     </script> -->
-  </body>
+    <script>
+      const divDailer = document.getElementById('object_div_dailer_box');
+      if(divDailer != undefined) {
+        divParent.style.width = divDailer.offsetWidth + 'px';
+        divParent.style.height = (divDailer.offsetHeight + 90) + 'px';
+      }
+      console.log(divDailer);
+      console.log(divDailer.offsetHeight);
+    </script>
+  </div>
+</body>
 </html>

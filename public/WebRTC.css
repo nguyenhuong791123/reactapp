@@ -3,7 +3,7 @@ body {
 }
 
 div.div-alert-dailer {
-  width: 255px;
+  /* width: 255px; */
   /* position: absolute; */
   padding: .3em;
   /* z-index: 15; */
@@ -28,8 +28,8 @@ div.div-alert-dailer div.div-video
 
 div.div-alert-dailer div video {
   background: black;
-  width: 230px;
-  max-width: 230px;
+  /* width: 230px;
+  max-width: 230px; */
 }
 
 div.div-alert-dailer div:last-child div:first-child svg {

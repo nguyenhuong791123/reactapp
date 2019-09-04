@@ -87,18 +87,25 @@ class App extends C {
 
     _loadAuthCookies = (isUser, callBack) => {
         const objAuth = sessionService.loadUser('COOKIES');
-        console.log(objAuth);
         if(objAuth !== undefined) {
             objAuth.then(function(data) {
                 const isUrl = history.location.pathname;
-                console.log(history);
-                console.log(data.info['path']);
                 if(isUrl === ACTION.SLASH || data.info['path'] === ACTION.SLASH) {
                     data.info['path'] = ACTION.SLASH;
                     data.info['viewHeader'] = false;
                 }
+                const paths = isUrl.split('/');
+                var path = null;
+                // console.log(isUrl);
+                // console.log(paths);
+                if(!Utils.isEmpty(paths) && paths.length > 0) {
+                    path = paths[paths.length - 1];
+                }
+                // console.log(path);
+                if(!Utils.isEmpty(path)) {
+                    data.info['path'] = ACTION.SLASH + path;
+                }
                 console.log('_loadAuthCookies');
-                console.log(data);    
                 callBack(data);
             }).catch(function(error) {
                 console.log(error);
@@ -163,6 +170,9 @@ class App extends C {
         const head = document.getElementsByTagName(HTML_TAG.HEAD)[0];
         head.appendChild(css);
         // this.forceUpdate();
+        console.log(this.props);
+        console.log(this.props.router);
+        console.log(document.title);
     }
 
     render() {

@@ -1,3 +1,4 @@
+export const IS_ADMIN = 'admin';
 export const WINDOWN_WIDTH = 992;
 export const PAGIN_PER = 20;
 export const PAGIN_PER_LIST = 5;

@@ -29,6 +29,7 @@ class Header extends C {
     this._onOpenBoxPhone = this._onOpenBoxPhone.bind(this);
     // this._onUpdateDailer = this._onUpdateDailer.bind(this);
     this._newWindow = this._newWindow.bind(this);
+    this._onChangeTheme = this._onChangeTheme.bind(this);
     // console.log(props.ua.device);
     // console.log(props.ua.language);
     // socket.emit('join room', 'room', 1);
@@ -250,7 +251,8 @@ class Header extends C {
   }
 
   UNSAFE_componentWillMount() {
-    if(this.state.options.dailer) {
+    const isScreenList = (this.state.isUser.path === ACTION.SLASH + ACTION.LIST);
+    if(this.state.options.dailer && isScreenList) {
       const btn = document.createElement(HTML_TAG.BUTTON);
       btn.setAttribute('class', 'btn btn-warning');
       btn.innerText = '移';
@@ -266,6 +268,11 @@ class Header extends C {
       document.body.prepend(div);
       const css_path = THEME.getTheme(this.state.isUser.theme);
       window.localStorage.setItem('smart.ipbbx.css_path', css_path);
+      // window.onfocus = function(e){
+      //   console.log('focus');
+      //   console.log(e);
+      // };
+      // window.focus();
     }
   }
 
@@ -273,6 +280,13 @@ class Header extends C {
     console.log('HEADER componentWillReceiveProps');
     this.state.isUser = props.isUser;
     this.state.options = props.options;
+  }
+
+  _onChangeTheme(e) {
+    console.log(e);
+    console.log(e.target.value);
+    this.state.isUser.theme = e.target.value;
+    this.forceUpdate();
   }
 
   _getTheme() {
@@ -284,11 +298,13 @@ class Header extends C {
       options.push(<option key={ i } value={ o[keys[i]] } >{ keys[i] }</option>);
     }
     return(
-      <Form.Group>
-        <Form.Control as={ HTML_TAG.SELECT } value={ this.state.isUser.theme }>
-          { options }
-        </Form.Control>
-      </Form.Group>
+      <Form.Control
+        className="select-theme"
+        as={ HTML_TAG.SELECT }
+        value={ this.state.isUser.theme }
+        onChange={ this._onChangeTheme.bind(this) }>
+        { options }
+      </Form.Control>
     );
   }
 
@@ -296,26 +312,34 @@ class Header extends C {
     if(!this.state.isUser.viewHeader) return "";
     // this._loadButtonToggle();
     // const Msg = Messages[ this.props.isUser.language ];
+    const isScreenList = (this.state.isUser.path === ACTION.SLASH + ACTION.LIST);
     var menuType = (this.state.isUser.menu===1)?"tab_menu_1":"tab_menu_0";
     var menuClass = (this.state.isUser.menu===0)?" mr-auto-parent":""
     const isCallClass = (this.state.dailer.isCall && this.state.dailer.register)?"blinking":"";
     const theme = (this.state.isUser.uLid === 'admin')?(this._getTheme()):"";
 
-    console.log(this.props);
-    console.log(this.props.dispatch);
+    // console.log(this.props);
+    // console.log(this.props.dispatch);
     return (
       <div className="Headder">
         <AlertMsg show={ this.state.showError } variant={ this.state.variantError } errors={ [ 'エラーメッセージ00', 'エラーメッセージ01' ] }/>
-        {/* 縦左メニュー */}
         {(() => {
-          if(this.state.isUser.menu === 1) {
-            return ( <LMenu isUser={ this.props.isUser } objs={ this.state.menus } onClick={ this._onClick.bind(this) }/> );
-          }
+            if(isScreenList) {
+              return (
+                <div id="div-header-is-menu">
+                  {/* 縦左メニュー */}
+                  {(() => {
+                    if(this.state.isUser.menu === 1) {
+                      return ( <LMenu isUser={ this.props.isUser } objs={ this.state.menus } onClick={ this._onClick.bind(this) }/> );
+                    }
+                  })()}
+                  {/* 「チャット、頁設定」を使用するときボックス */}
+                  <RMenu isUser={ this.props.isUser } title={ this.state.title }/>
+                </div>      
+              );
+            }
         })()}
-        {/* 「チャット、頁設定」を使用するときボックス */}
-        <RMenu isUser={ this.props.isUser } title={ this.state.title }/>
-        {/* { Dailer } */}
-        {/* <Navbar bg="dark" expand="lg" variant="dark"> */}
+
         <Navbar expand="lg">
           {/* アイコン、会社名（ホームページリンク） */}
           <a href="#home-page" page={ 'https://vnext.co.jp/company-info.html' } onClick={ this._newWindow.bind(this) } className={ 'header-image-icon' }>
@@ -323,88 +347,96 @@ class Header extends C {
             <span>SmartCRM Ver0.1.0</span>
           </a>
 
-          <Navbar.Toggle aria-controls="basic-navbar-nav" id="basic-navbar-nav-toggle"/>
-          {/* TOP横メニュー */}
-          <Navbar.Collapse id={ menuType } className={ menuClass }>
-            {(() => {
-              if (this.state.isUser.menu === 0) {
-                return (
-                  <Nav className="mr-auto" id="div-nav-tab-menu">
-                    <TabMenu isUser={ this.state.isUser } objs={ this.state.menus } onClick={ this._onClick.bind(this) }/>
-                  </Nav>
-                );
-              }
-              if (this.state.isUser.menu !== 0) {
-                return (<div id="div-nav-tab-menu"></div>);
-              }
-            })()}
-
-            {/* ADMIN場合Themeリストを表示 */}
-            { theme }
-            {/* グローバル検索 */}
-            <Form inline>
-              <FormControl type="text" id="input_global_search" placeholder="Search" className="mr-sm-2" />
-              <Nav.Link href="#search" className="global-search"><FaSearch /></Nav.Link>
-            </Form>
-
-            {/* 電話オプション */}
-            {(() => {
-              if(this.state.options.dailer) {
-                return(
-                  <Nav.Link id="a_dailer_box" onClick={ this._onOpenBoxPhone.bind(this) } className={ isCallClass }>
+          {(() => {
+            if(isScreenList) {
+              return(
+                <div id="div-header-is-navbar">
+                  <Navbar.Toggle aria-controls="basic-navbar-nav" id="basic-navbar-nav-toggle"/>
+                  {/* TOP横メニュー */}
+                  <Navbar.Collapse id={ menuType } className={ menuClass }>
                     {(() => {
-                        if(!this.state.dailer.show) { return ( <FaTty /> );
+                      if (this.state.isUser.menu === 0) {
+                        return (
+                          <Nav className="mr-auto" id="div-nav-tab-menu">
+                            <TabMenu isUser={ this.state.isUser } objs={ this.state.menus } onClick={ this._onClick.bind(this) }/>
+                          </Nav>
+                        );
+                      }
+                      if (this.state.isUser.menu !== 0) {
+                        return (<div id="div-nav-tab-menu"></div>);
                       }
                     })()}
+      
+                    {/* ADMIN場合Themeリストを表示 */}
+                    { theme }
+                    {/* グローバル検索 */}
+                    <Form inline>
+                      <FormControl type="text" id="input_global_search" placeholder="Search" className="mr-sm-2" />
+                      <Nav.Link href="#search" className="global-search"><FaSearch /></Nav.Link>
+                    </Form>
+      
+                    {/* 電話オプション */}
                     {(() => {
-                        if(this.state.dailer.show) { return ( <FaPhone /> );
+                      if(this.state.options.dailer) {
+                        return(
+                          <Nav.Link id="a_dailer_box" onClick={ this._onOpenBoxPhone.bind(this) } className={ isCallClass }>
+                            {(() => {
+                                if(!this.state.dailer.show) { return ( <FaTty /> );
+                              }
+                            })()}
+                            {(() => {
+                                if(this.state.dailer.show) { return ( <FaPhone /> );
+                              }
+                            })()}
+                          </Nav.Link>
+                        );
                       }
                     })()}
-                  </Nav.Link>
-                );
-              }
-            })()}
-            {/* メールオプション */}
-            {(() => {
-              if(this.state.options.mail) {
-                return(
-                  <Nav.Link action={ PAGE.MAIL } onClick={ this._onClick.bind(this) }>{ <FaMailBulk /> }</Nav.Link>
-                  );
-              }
-            })()}
-            {/* チャットオプション */}
-            {(() => {
-              if(this.state.options.chat) {
-                return(
-                  <Nav.Link action={ PAGE.CHAT } onClick={ this._onClick.bind(this) } id="a-chat-icon">{ <FaRocketchat /> }</Nav.Link>
-                );
-              }
-            })()}
-            {/* ユーザーDropDown */}
-            <NavDropdown title={<FaUser />} id="basic-nav-dropdown-right" alignRight>
-              {/* ユーザー情報 */}
-              <NavDropdown.Item action={ PAGE.USER } onClick={ this._onClick.bind(this) }>
-                { <FaUserCog /> }
-                <span>{ GetMsg(null, this.state.isUser.language, 'bt_profile') }</span>
-              </NavDropdown.Item>
-              {/* 現頁設定 */}
-              <NavDropdown.Item action={ PAGE.SETTING } onClick={ this._onClick.bind(this) } id="a-page-setting">
-                { <FaSitemap /> }
-                <span>{ GetMsg(null, this.state.isUser.language, 'page_setting') }</span>
-              </NavDropdown.Item>
-              {/* システム設定（管理者のみ表示） */}
-              <NavDropdown.Item action={ PAGE.SYSTEM } onClick={ this._onClick.bind(this) }>
-                { <FaLink /> }
-                <span>{ GetMsg(null, this.state.isUser.language, 'system_setting') }</span>
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              {/* ログアウト */}
-              <Link to={ ACTION.SLASH } className="dropdown-item" onClick={ this._onLogout.bind(this) }>
-                { <FaKey /> }
-                <span>{ GetMsg(null, this.state.isUser.language, 'bt_logout') }</span>
-              </Link>
-            </NavDropdown>
-          </Navbar.Collapse>
+                    {/* メールオプション */}
+                    {(() => {
+                      if(this.state.options.mail) {
+                        return(
+                          <Nav.Link action={ PAGE.MAIL } onClick={ this._onClick.bind(this) }>{ <FaMailBulk /> }</Nav.Link>
+                          );
+                      }
+                    })()}
+                    {/* チャットオプション */}
+                    {(() => {
+                      if(this.state.options.chat) {
+                        return(
+                          <Nav.Link action={ PAGE.CHAT } onClick={ this._onClick.bind(this) } id="a-chat-icon">{ <FaRocketchat /> }</Nav.Link>
+                        );
+                      }
+                    })()}
+                    {/* ユーザーDropDown */}
+                    <NavDropdown title={<FaUser />} id="basic-nav-dropdown-right" alignRight>
+                      {/* ユーザー情報 */}
+                      <NavDropdown.Item action={ PAGE.USER } onClick={ this._onClick.bind(this) }>
+                        { <FaUserCog /> }
+                        <span>{ GetMsg(null, this.state.isUser.language, 'bt_profile') }</span>
+                      </NavDropdown.Item>
+                      {/* 現頁設定 */}
+                      <NavDropdown.Item action={ PAGE.SETTING } onClick={ this._onClick.bind(this) } id="a-page-setting">
+                        { <FaSitemap /> }
+                        <span>{ GetMsg(null, this.state.isUser.language, 'page_setting') }</span>
+                      </NavDropdown.Item>
+                      {/* システム設定（管理者のみ表示） */}
+                      <NavDropdown.Item action={ PAGE.SYSTEM } onClick={ this._onClick.bind(this) }>
+                        { <FaLink /> }
+                        <span>{ GetMsg(null, this.state.isUser.language, 'system_setting') }</span>
+                      </NavDropdown.Item>
+                      <NavDropdown.Divider />
+                      {/* ログアウト */}
+                      <Link to={ ACTION.SLASH } className="dropdown-item" onClick={ this._onLogout.bind(this) }>
+                        { <FaKey /> }
+                        <span>{ GetMsg(null, this.state.isUser.language, 'bt_logout') }</span>
+                      </Link>
+                    </NavDropdown>
+                  </Navbar.Collapse>
+                </div>
+              );
+            }
+          })()}
         </Navbar>
       </div>
     );

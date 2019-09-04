@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import onClickOutside from 'react-onclickoutside';
 import { Nav, Tabs, Tab } from 'react-bootstrap';
 
-import { LINK, NOT_LINK, WINDOWN_WIDTH } from '../Types';
+import { LINK, NOT_LINK, WINDOWN_WIDTH, IS_ADMIN } from '../Types';
 import Utils from '../Utils';
 import "../../../css/TabMenu.css";
 
@@ -304,6 +304,7 @@ class TabMenu extends C {
     componentDidMount() {
         console.log('TABMENU componentDidMount');
         var div = document.getElementById('div-nav-tab-menu');
+        const aWidth = (this.state.isUser.uLid === IS_ADMIN)?140:0;
         console.log(div);
         window.onresize = function(event) {
             console.log(div);
@@ -328,7 +329,7 @@ class TabMenu extends C {
                         divP.className = divP.className + ' mr-auto-parent';
                     }
                 } else {
-                    nav.style.width = (window.innerWidth - 750) + 'px';
+                    nav.style.width = (window.innerWidth - (750 + aWidth)) + 'px';
                     if(nav.className.indexOf(' nav-tabs-vertical') !== -1) {
                         nav.className = nav.className.replace(' nav-tabs-vertical', '');
                         navParent[0].style.display = 'block';

@@ -24,6 +24,7 @@ class ContextMenu extends C {
         if(action === ACTION.EDIT) {
             if(this.state.objs.ids.length > 1) return;
             console.log(action);
+            this._newWindow(action);
         }
         if(action === ACTION.DELETE || action === ACTION.DOWNLOAD) {
             console.log(action);
@@ -35,6 +36,13 @@ class ContextMenu extends C {
     _onCloseAlert() {
         this.state.objs.show = false;
         this.forceUpdate();
+    }
+
+    _newWindow(href) {
+        if(Utils.isEmpty(href)) return;
+        var w = window.open();
+        w.opener = null;
+        w.location = href;
     }
 
     getLinkByType() {

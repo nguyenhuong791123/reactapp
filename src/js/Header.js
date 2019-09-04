@@ -251,6 +251,10 @@ class Header extends C {
   }
 
   UNSAFE_componentWillMount() {
+    this.props.onLoadAuthCookies(this.state.isUser, this.props.onUpdateIsUserCallBack);
+  }
+
+  UNSAFE_componentDidMount() {
     const isScreenList = (this.state.isUser.path === ACTION.SLASH + ACTION.LIST);
     if(this.state.options.dailer && isScreenList) {
       const btn = document.createElement(HTML_TAG.BUTTON);

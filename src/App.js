@@ -10,7 +10,7 @@ import { ACTION, HTML_TAG } from './js/utils/Types';
 import { THEME } from './js/utils/Theme';
 import Utils from './js/utils/Utils';
 
-/* eslint-disable import/first */
+/* global chrome */
 import P404 from './js/error/P404';
 import Header from './js/Header';
 import Footer from './js/Footer';
@@ -176,8 +176,8 @@ class App extends C {
     }
 
     render() {
-        // console.log('APP Render !!!');
-        // console.log(this.state.isUser);
+        console.log('APP Render !!!');
+        console.log(chrome.app);
         return (
             <div>
                 <Provider store={ store }>
@@ -187,6 +187,7 @@ class App extends C {
                                 isUser={ this.state.isUser }
                                 options={ this.state.options }
                                 onUpdateUser={ this._onUpdatePromise.bind(this) }
+                                onLoadAuthCookies={ this._loadAuthCookies.bind(this) }
                                 onUpdateIsUserCallBack={ this._onUpdateIsUserCallBack.bind(this) }
                                 onLogout={ this._doLogout.bind(this) } />
                         </div>

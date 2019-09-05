@@ -27,7 +27,6 @@ class Header extends C {
     this._onSelect = this._onSelect.bind(this);
     this._onLogout = this._onLogout.bind(this);
     this._onOpenBoxPhone = this._onOpenBoxPhone.bind(this);
-    // this._onUpdateDailer = this._onUpdateDailer.bind(this);
     this._newWindow = this._newWindow.bind(this);
     this._onChangeTheme = this._onChangeTheme.bind(this);
     // console.log(props.ua.device);
@@ -41,7 +40,6 @@ class Header extends C {
     this.state = {
       isUser: this.props.isUser
       ,options: this.props.options
-      ,isActiveWindown: (!Utils.isEmpty(window.name) && window.name===SYSTEM.IS_ACTIVE_WINDOWN)
       ,showError: true
       ,variantError: VARIANT_TYPES.WARNING
       ,right: ''
@@ -165,7 +163,7 @@ class Header extends C {
 
   _onOpenBoxPhone(e) {
     const obj = this.getLinkObj(e);
-    if(!this.state.options.dailer || !this.state.isActiveWindown) return;
+    if(!this.state.options.dailer || !this.state.isUser[SYSTEM.IS_ACTIVE_WINDOWN]) return;
     this._addBoostrapTheme();
     const webRtc = document.getElementById(SYSTEM.IS_DAILER_BOX);
     this.state.dailer.show = (!this.state.dailer.show);
@@ -242,12 +240,8 @@ class Header extends C {
     }, true);
   }
 
-  // UNSAFE_componentWillMount() {
-  //   this.props.onLoadAuthCookies(this.state.isUser, this.props.onUpdateIsUserCallBack);
-  // }
-
   UNSAFE_componentWillMount() {
-    if(!this.state.options.dailer || !this.state.isActiveWindown) return;
+    if(!this.state.options.dailer || !this.state.isUser[SYSTEM.IS_ACTIVE_WINDOWN]) return;
     this._addBoostrapTheme();
   }
 
@@ -255,8 +249,6 @@ class Header extends C {
     console.log('HEADER componentWillReceiveProps');
     this.state.isUser = props.isUser;
     this.state.options = props.options;
-    // if(!this.state.options.dailer || !this.state.isActiveWindown) return;
-    // this._addBoostrapTheme();
   }
 
   _addBoostrapTheme() {
@@ -281,19 +273,11 @@ class Header extends C {
 
   _setLocalStrageTheme(isExists) {
     const css_path = THEME.getTheme(this.state.isUser.theme);
-    // window.localStorage.setItem('smart.ipbbx.css_path', css_path);
-    // const div = document.getElementById(SYSTEM.IS_DAILER_BOX);
     if(Utils.isEmpty(isExists)) return;
     const obj = isExists.childNodes[0];
     if(Utils.isEmpty(obj) || Utils.isEmpty(obj.contentWindow)) return;
     const link = obj.contentWindow.document.querySelector('#link_bootstrap_ippbx_id');
     link.href = css_path;
-    // const objDiv = obj.contentWindow.document.querySelector('#object_div_dailer_box');
-    // console.log(objDiv.offsetWidth);
-    // console.log(objDiv.offsetHeight);
-    // if(Utils.isEmpty(objDiv)) return;
-    // isExists.style.width = objDiv.offsetWidth + 'px';
-    // isExists.style.height = (objDiv.offsetHeight + 90) + 'px';
   }
 
   _onChangeTheme(e) {
@@ -333,13 +317,13 @@ class Header extends C {
     const isCallClass = (this.state.dailer.isCall && this.state.dailer.register)?"blinking":"";
     const theme = (this.state.isUser.uLid === 'admin')?(this._getTheme()):"";
 
-    console.log(this.state.isActiveWindown);
+    console.log(this.state.isUser[SYSTEM.IS_ACTIVE_WINDOWN]);
     // console.log(this.props.dispatch);
     return (
       <div className="Headder">
         <AlertMsg show={ this.state.showError } variant={ this.state.variantError } errors={ [ 'エラーメッセージ00', 'エラーメッセージ01' ] }/>
         {(() => {
-            if(this.state.isActiveWindown) {
+            if(this.state.isUser[SYSTEM.IS_ACTIVE_WINDOWN]) {
               return (
                 <div id="div-header-is-menu">
                   {/* 縦左メニュー */}
@@ -363,7 +347,7 @@ class Header extends C {
           </a>
 
           {(() => {
-            if(this.state.isActiveWindown) {
+            if(this.state.isUser[SYSTEM.IS_ACTIVE_WINDOWN]) {
               return(
                 <div id="div-header-is-navbar">
                   <Navbar.Toggle aria-controls="basic-navbar-nav" id="basic-navbar-nav-toggle"/>

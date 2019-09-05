@@ -163,7 +163,7 @@ class Header extends C {
 
   _onOpenBoxPhone(e) {
     const obj = this.getLinkObj(e);
-    if(!this.state.options.dailer || !this.state.isUser[SYSTEM.IS_ACTIVE_WINDOWN]) return;
+    if(!this.state.options.dailer || !this.state[SYSTEM.IS_ACTIVE_WINDOWN]) return;
     this._addBoostrapTheme();
     const webRtc = document.getElementById(SYSTEM.IS_DAILER_BOX);
     this.state.dailer.show = (!this.state.dailer.show);
@@ -241,7 +241,7 @@ class Header extends C {
   }
 
   UNSAFE_componentWillMount() {
-    if(!this.state.options.dailer || !this.state.isUser[SYSTEM.IS_ACTIVE_WINDOWN]) return;
+    if(!this.state.options.dailer || !this.state[SYSTEM.IS_ACTIVE_WINDOWN]) return;
     this._addBoostrapTheme();
   }
 
@@ -249,6 +249,7 @@ class Header extends C {
     console.log('HEADER componentWillReceiveProps');
     this.state.isUser = props.isUser;
     this.state.options = props.options;
+    this.state[SYSTEM.IS_ACTIVE_WINDOWN] = (!Utils.isEmpty(window.name) && window.name===SYSTEM.IS_ACTIVE_WINDOWN);
   }
 
   _addBoostrapTheme() {
@@ -317,13 +318,13 @@ class Header extends C {
     const isCallClass = (this.state.dailer.isCall && this.state.dailer.register)?"blinking":"";
     const theme = (this.state.isUser.uLid === 'admin')?(this._getTheme()):"";
 
-    console.log(this.state.isUser[SYSTEM.IS_ACTIVE_WINDOWN]);
+    console.log(this.state[SYSTEM.IS_ACTIVE_WINDOWN]);
     // console.log(this.props.dispatch);
     return (
       <div className="Headder">
         <AlertMsg show={ this.state.showError } variant={ this.state.variantError } errors={ [ 'エラーメッセージ00', 'エラーメッセージ01' ] }/>
         {(() => {
-            if(this.state.isUser[SYSTEM.IS_ACTIVE_WINDOWN]) {
+            if(this.state[SYSTEM.IS_ACTIVE_WINDOWN]) {
               return (
                 <div id="div-header-is-menu">
                   {/* 縦左メニュー */}
@@ -347,7 +348,7 @@ class Header extends C {
           </a>
 
           {(() => {
-            if(this.state.isUser[SYSTEM.IS_ACTIVE_WINDOWN]) {
+            if(this.state[SYSTEM.IS_ACTIVE_WINDOWN]) {
               return(
                 <div id="div-header-is-navbar">
                   <Navbar.Toggle aria-controls="basic-navbar-nav" id="basic-navbar-nav-toggle"/>

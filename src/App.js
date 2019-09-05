@@ -58,8 +58,7 @@ class App extends C {
     }
 
     _doLogin = (isUser, options) => {
-        window.name = SYSTEM.IS_ACTIVE_WINDOWN;
-        isUser[SYSTEM.IS_ACTIVE_WINDOWN] = (!Utils.isEmpty(window.name) && window.name===SYSTEM.IS_ACTIVE_WINDOWN);
+        // isUser[SYSTEM.IS_ACTIVE_WINDOWN] = (!Utils.isEmpty(window.name) && window.name===SYSTEM.IS_ACTIVE_WINDOWN);
         const auth = { info: isUser, options: options };
         // this._updateStateIsUser(auth);
         // console.log(auth);
@@ -70,6 +69,7 @@ class App extends C {
                 sessionService.saveUser(auth).then(() => {
                     sessionStorage.setItem('session', window.name);
                     console.log(this);
+                    window.name = SYSTEM.IS_ACTIVE_WINDOWN;
                     this._updateStateIsUser(auth);
                     // callback(auth);
                     console.log('_doLogin complete !!!');

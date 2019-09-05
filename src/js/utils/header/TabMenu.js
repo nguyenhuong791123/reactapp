@@ -233,7 +233,7 @@ class TabMenu extends C {
         const obj = this.state.objs[tabIdx];
         if(Utils.isEmpty(obj)) return;
         this.state.isActive = parseInt(tabIdx);
-        const div = document.getElementById('div-nav-tab-menu');
+        const div = document.getElementById(SYSTEM.IS_TAB_MENU);
         const nav = div.childNodes[0].childNodes[1];
         if(Utils.isEmpty(nav)) return;
         const navChilds = nav.childNodes;
@@ -255,7 +255,7 @@ class TabMenu extends C {
     }
 
     _nextPrevTab(action, nextObj) {
-        var div = document.getElementById('div-nav-tab-menu');
+        var div = document.getElementById(SYSTEM.IS_TAB_MENU);
         const nav = div.childNodes[0].childNodes[1];
         if(Utils.isEmpty(nav)) return;
         const navChilds = nav.childNodes;
@@ -303,11 +303,34 @@ class TabMenu extends C {
 
     componentDidMount() {
         console.log('TABMENU componentDidMount');
-        var div = document.getElementById('div-nav-tab-menu');
+        var div = document.getElementById(SYSTEM.IS_TAB_MENU);
+        this._onResizeWindown(div);
+        const nav = div.childNodes[0].childNodes[1];
+        if(!Utils.isEmpty(nav)) {
+            const a = nav.childNodes;
+            for(var i=0; i<a.length; i++) {
+                var item = this.state.objs[i];
+                if(Utils.isEmpty(a[i]) || Utils.isEmpty(item)) continue;
+                var nObj = a[i];
+                nObj.setAttribute('idx', i);
+                nObj.setAttribute('action', item.target);
+                nObj.setAttribute('href', '#');
+                nObj.setAttribute('level', item.level);
+                nObj.setAttribute('view', item.view);
+                if(item.view === LINK) nObj.onclick = this._onClick.bind(this);
+            }
+        }
+        this.forceUpdate();
+    }
+
+    componentWillReceiveProps() {
+        this._onResizeWindown(document.getElementById(SYSTEM.IS_TAB_MENU));
+    }
+
+    _onResizeWindown(div) {
+        if(Utils.isEmpty(div)) return;
         const aWidth = (this.state.isUser.uLid === SYSTEM.IS_ADMIN)?140:0;
-        console.log(div);
         window.onresize = function(event) {
-            console.log(div);
             if(Utils.isEmpty(div)) return;
             const divContent = div.childNodes[0].childNodes[2];
             if(!Utils.isEmpty(divContent)
@@ -329,7 +352,7 @@ class TabMenu extends C {
                         divP.className = divP.className + ' mr-auto-parent';
                     }
                 } else {
-                    nav.style.width = (window.innerWidth - (750 + aWidth)) + 'px';
+                    nav.style.width = (window.innerWidth - (740 + aWidth)) + 'px';
                     if(nav.className.indexOf(' nav-tabs-vertical') !== -1) {
                         nav.className = nav.className.replace(' nav-tabs-vertical', '');
                         navParent[0].style.display = 'block';
@@ -355,23 +378,6 @@ class TabMenu extends C {
             }
         };
         window.onresize();
-
-        const nav = div.childNodes[0].childNodes[1];
-        if(!Utils.isEmpty(nav)) {
-            const a = nav.childNodes;
-            for(var i=0; i<a.length; i++) {
-                var item = this.state.objs[i];
-                if(Utils.isEmpty(a[i]) || Utils.isEmpty(item)) continue;
-                var nObj = a[i];
-                nObj.setAttribute('idx', i);
-                nObj.setAttribute('action', item.target);
-                nObj.setAttribute('href', '#');
-                nObj.setAttribute('level', item.level);
-                nObj.setAttribute('view', item.view);
-                if(item.view === LINK) nObj.onclick = this._onClick.bind(this);
-            }
-        }
-        this.forceUpdate();
     }
 
     render() {

@@ -63,7 +63,7 @@ div.drag-and-drop {
 }
 
 div.drag-and-drop object {
-    height:40vh;
+    height:100vh;
     width: 50vh;
     position: absolute;
 }

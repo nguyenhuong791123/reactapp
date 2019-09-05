@@ -11,6 +11,8 @@ export const SYSTEM = {
     ,IS_ACTIVE_WINDOWN: 'isActiveWindown'
     ,IS_DAILER_BOX: 'div_dailer_box'
     ,IS_CSS_LINK_ID: 'link_bootstrap_id'
+    ,IS_TAB_MENU: 'div-nav-tab-menu'
+    ,IS_DIV_HEADER_FORM: 'div_header_form'
 }
 
 export const HTML_TAG = {

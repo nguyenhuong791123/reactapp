@@ -61,7 +61,7 @@ class App extends C {
         // isUser[SYSTEM.IS_ACTIVE_WINDOWN] = (!Utils.isEmpty(window.name) && window.name===SYSTEM.IS_ACTIVE_WINDOWN);
         const auth = { info: isUser, options: options };
         // this._updateStateIsUser(auth);
-        // console.log(auth);
+        console.log(auth);
         // this.forceUpdate();
         AuthSession.doLogin(auth).then(response => {
             const { token } = response;
@@ -167,7 +167,7 @@ class App extends C {
 
     _updateStateIsUser(isUser) {
         // console.log('_updateStateIsUser');
-        // console.log(isUser);
+        console.log(isUser);
         this.state.isUser = isUser.info;
         this.state.options = isUser.options;
         this._addCssLink();

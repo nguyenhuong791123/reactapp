@@ -26,9 +26,9 @@ window.onload = function () {
     SIPml.setDebugLevel((window.localStorage && window.localStorage.getItem('smart.ippbx.disable_debug') == "true") ? "error" : "info");
 
     loadCredentials();
-    loadCallMode();
+    // loadCallMode();
     // loadDivKeyPad();
-    // loadCallOptions();
+    loadCallOptions();
 
     // Initialize call button
     uiBtnCallSetText("Call");
@@ -154,11 +154,11 @@ function postInit() {
     };
 }
 
-function loadCallMode() {
-  if (window.localStorage) {
-    loadCallOptions();
+// function loadCallMode() {
+//   if (window.localStorage) {
+//     loadCallOptions();
     // window.localStorage.setItem('smart.ippbx.disable_video', chkCallMode.checked);
-  }
+//   }
   // chkCallMode.onclick = function() {
   //   if(chkCallMode.checked) {
   //     divCallVideo.style.display = 'none';
@@ -175,15 +175,15 @@ function loadCallMode() {
   //   window.localStorage.setItem('smart.ippbx.disable_video', chkCallMode.checked ? "true" : "false");
   //   loadCallOptions();
   // }
-}
+// }
 
 function loadModeCall() {
   // chkCallMode.checked = mode;
   const mode = window.localStorage.getItem('smart.ippbx.disable_video');
   bDisableVideo = (mode !== "true")?true:false;
-  window.localStorage.setItem('smart.ippbx.disable_video', bDisableVideo ? "true" : "false");
+  trDivVideo.style.display = (bDisableVideo)?'none':'grid';
   txtCallStatus.innerHTML = 'Video '.concat(bDisableVideo?'On':'Off');
-  trDivVideo.style.display = (bDisableVideo)?'none':'block';
+  window.localStorage.setItem('smart.ippbx.disable_video', bDisableVideo ? "true" : "false");
 //   if(!mode) {
 //     divCallVideo.style.display = 'inline-flex';
 //     // divCallAudio.style.display = 'none';
@@ -206,7 +206,8 @@ function loadCallOptions() {
         var s_value;
         if ((s_value = window.localStorage.getItem('smart.ippbx.phone_number'))) txtPhoneNumber.value = s_value;
         bDisableVideo = (window.localStorage.getItem('smart.ippbx.disable_video') == "true");
-        loadModeCall(bDisableVideo);
+        trDivVideo.style.display = (!bDisableVideo)?'none':'grid';
+        // loadModeCall(bDisableVideo);
 
         setVolumeMode(window.localStorage.getItem('smart.ippbx.volume_mode') == 'true');
         // chkCallMode.checked = bDisableVideo;
@@ -312,17 +313,16 @@ function closeDailerBox() {
 }
 
 function sipSetting() {
-  divSettingInfo.style.display = 'block';
+  divSettingInfo.style.display = 'grid';
   divDailerBox.style.display = 'none';
-  console.log(bDisableVideo);
-  trDivVideo.style.display = (bDisableVideo)?'none':'block';
+  trDivVideo.style.display = 'none';
 }
 
 function sipCloseSetting() {
   divSettingInfo.style.display = 'none';
-  divDailerBox.style.display = 'block';
+  divDailerBox.style.display = 'grid';
   console.log(bDisableVideo);
-  trDivVideo.style.display = (bDisableVideo)?'none':'block';
+  trDivVideo.style.display = (bDisableVideo)?'none':'grid';
 }
 
 function sipSaveInfo() {
@@ -743,7 +743,7 @@ function uiVideoDisplayShowHide(b_show) {
   if (b_show) {
     divVideo.style.height = navigator.appName == 'Microsoft Internet Explorer' ? '100%' : '29.5em';
     divVideo.style.width = navigator.appName == 'Microsoft Internet Explorer' ? '100%' : '21em';
-    divVideo.style.display = 'inline-block';
+    divVideo.style.display = 'grid';
   } else {
     divVideo.style.height = divVideo.style.width = '0px';
     divVideo.style.display = 'none';

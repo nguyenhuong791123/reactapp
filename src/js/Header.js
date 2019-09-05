@@ -288,12 +288,12 @@ class Header extends C {
     if(Utils.isEmpty(obj) || Utils.isEmpty(obj.contentWindow)) return;
     const link = obj.contentWindow.document.querySelector('#link_bootstrap_ippbx_id');
     link.href = css_path;
-    const objDiv = obj.contentWindow.document.querySelector('#object_div_dailer_box');
-    console.log(objDiv.offsetWidth);
-    console.log(objDiv.offsetHeight);
-    if(Utils.isEmpty(objDiv)) return;
-    isExists.style.width = objDiv.offsetWidth + 'px';
-    isExists.style.height = (objDiv.offsetHeight + 90) + 'px';
+    // const objDiv = obj.contentWindow.document.querySelector('#object_div_dailer_box');
+    // console.log(objDiv.offsetWidth);
+    // console.log(objDiv.offsetHeight);
+    // if(Utils.isEmpty(objDiv)) return;
+    // isExists.style.width = objDiv.offsetWidth + 'px';
+    // isExists.style.height = (objDiv.offsetHeight + 90) + 'px';
   }
 
   _onChangeTheme(e) {

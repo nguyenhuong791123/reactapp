@@ -30,13 +30,13 @@ body {
     overflow: hidden;
 }
 
-object {
+/* object { */
     /* width: 240px; */
-    height: 100%;
+    /* height: 100%; */
     /* position: absolute;
     z-index: 15;
     display: none; */
-}
+/* } */
 
 .required {
     color: red;
@@ -63,8 +63,8 @@ div.drag-and-drop {
 }
 
 div.drag-and-drop object {
-    /* width: 255px;
-    height: 372px; */
+    width: auto;
+    height: 372px;
     position: absolute;
 }
 

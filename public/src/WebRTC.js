@@ -183,6 +183,7 @@ function loadModeCall() {
   bDisableVideo = (mode !== "true")?true:false;
   window.localStorage.setItem('smart.ippbx.disable_video', bDisableVideo ? "true" : "false");
   txtCallStatus.innerHTML = 'Video '.concat(bDisableVideo?'On':'Off');
+  trDivVideo.style.display = (bDisableVideo)?'none':'block';
 //   if(!mode) {
 //     divCallVideo.style.display = 'inline-flex';
 //     // divCallAudio.style.display = 'none';
@@ -313,13 +314,15 @@ function closeDailerBox() {
 function sipSetting() {
   divSettingInfo.style.display = 'block';
   divDailerBox.style.display = 'none';
-  //   divVideo.style.display = (bDisableVideo)?'none':'block';
+  console.log(bDisableVideo);
+  trDivVideo.style.display = (bDisableVideo)?'none':'block';
 }
 
 function sipCloseSetting() {
   divSettingInfo.style.display = 'none';
   divDailerBox.style.display = 'block';
-//   divVideo.style.display = (bDisableVideo)?'none':'block';
+  console.log(bDisableVideo);
+  trDivVideo.style.display = (bDisableVideo)?'none':'block';
 }
 
 function sipSaveInfo() {

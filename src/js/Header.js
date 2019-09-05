@@ -165,21 +165,21 @@ class Header extends C {
 
   _onOpenBoxPhone(e) {
     const obj = this.getLinkObj(e);
-    const webRtc = document.getElementById('div_dailer_box');
-    // const webRtc = document.getElementById('object_dailer_box');
+    if(!this.state.options.dailer || !this.state.isActiveWindown) return;
+    this._addBoostrapTheme();
+    const webRtc = document.getElementById(SYSTEM.IS_DAILER_BOX);
     this.state.dailer.show = (!this.state.dailer.show);
     if(!Utils.isEmpty(obj) && !Utils.isEmpty(webRtc)) {
       webRtc.style.display = (this.state.dailer.show)?'block':'none';
       if(window.innerWidth < WINDOWN_WIDTH) {
         this._onClickButtonToggle();
-        webRtc.style.top = '3em';
+        webRtc.style.top = '2em';
         webRtc.style.left = (window.innerWidth - 250) + 'px';
       } else {
         webRtc.style.top = ((obj.offsetTop + obj.offsetHeight) + 5) + 'px';
         webRtc.style.left = ((obj.offsetLeft + obj.offsetWidth) - 245) + 'px';  
       }        
     }
-    // console.log(document.getElementById('div_alert_dailer'));
     this.forceUpdate();
   }
 
@@ -191,15 +191,6 @@ class Header extends C {
       if(!Utils.isEmpty(btn) && btn.tagName === "BUTTON") btn.click();
     }
   }
-
-  // _onUpdateDailer(target) {
-  //   if(Utils.isEmpty(target)) return;
-  //   if(target === DAILER.REGISTER) this.state.dailer.register = !this.state.dailer.register;
-  //   if(target === DAILER.CALL) this.state.dailer.isCall = !this.state.dailer.isCall;
-  //   if(target === DAILER.SOUND) this.state.dailer.sound = !this.state.dailer.sound;
-  //   if(target === DAILER.VIDEO) this.state.dailer.video = !this.state.dailer.video;
-  //   this.forceUpdate();
-  // }
 
   getLinkObj(e) {
     var obj = e.target;
@@ -264,8 +255,8 @@ class Header extends C {
     console.log('HEADER componentWillReceiveProps');
     this.state.isUser = props.isUser;
     this.state.options = props.options;
-    if(!this.state.options.dailer || !this.state.isActiveWindown) return;
-    this._addBoostrapTheme();
+    // if(!this.state.options.dailer || !this.state.isActiveWindown) return;
+    // this._addBoostrapTheme();
   }
 
   _addBoostrapTheme() {
@@ -281,7 +272,6 @@ class Header extends C {
       webRtc.setAttribute('data', 'dailer.html');
       webRtc.setAttribute('type', 'text/html');
       div.appendChild(webRtc);
-      div.appendChild(webRtc);
       div.appendChild(btn);
       this._onDraggable(div, btn);
       document.body.prepend(div);
@@ -289,12 +279,12 @@ class Header extends C {
     this._setLocalStrageTheme();  
   }
 
-  _setLocalStrageTheme() {
+  _setLocalStrageTheme(isExists) {
     const css_path = THEME.getTheme(this.state.isUser.theme);
     // window.localStorage.setItem('smart.ipbbx.css_path', css_path);
-    const div = document.getElementById(SYSTEM.IS_DAILER_BOX);
-    if(Utils.isEmpty(div)) return;
-    const obj = div.childNodes[0];
+    // const div = document.getElementById(SYSTEM.IS_DAILER_BOX);
+    if(Utils.isEmpty(isExists)) return;
+    const obj = isExists.childNodes[0];
     if(Utils.isEmpty(obj) || Utils.isEmpty(obj.contentWindow)) return;
     const link = obj.contentWindow.document.querySelector('#link_bootstrap_ippbx_id');
     link.href = css_path;
@@ -302,16 +292,17 @@ class Header extends C {
     console.log(objDiv.offsetWidth);
     console.log(objDiv.offsetHeight);
     if(Utils.isEmpty(objDiv)) return;
-    div.style.width = objDiv.offsetWidth + 'px';
-    div.style.height = (objDiv.offsetHeight + 90) + 'px';
+    isExists.style.width = objDiv.offsetWidth + 'px';
+    isExists.style.height = (objDiv.offsetHeight + 90) + 'px';
   }
 
   _onChangeTheme(e) {
     console.log(e);
     console.log(e.target.value);
     this.state.isUser.theme = e.target.value;
-    this._setLocalStrageTheme();
-    this.props.onUpdateUser(this.state.isUser, this.state.options, this.props.onUpdateIsUserCallBack);  
+    const div = document.getElementById(SYSTEM.IS_DAILER_BOX);
+    this._setLocalStrageTheme(div);
+    this.props.onUpdateUser(this.state.isUser, this.state.options, this.props.onUpdateIsUserCallBack);
   }
 
   _getTheme() {
@@ -342,7 +333,7 @@ class Header extends C {
     const isCallClass = (this.state.dailer.isCall && this.state.dailer.register)?"blinking":"";
     const theme = (this.state.isUser.uLid === 'admin')?(this._getTheme()):"";
 
-    // console.log(this.props);
+    console.log(this.state.isActiveWindown);
     // console.log(this.props.dispatch);
     return (
       <div className="Headder">

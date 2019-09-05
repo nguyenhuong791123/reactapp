@@ -60,7 +60,7 @@ class App extends C {
     _doLogin = (isUser, options) => {
         const auth = { info: isUser, options: options };
         this._updateStateIsUser(auth);
-        // this.forceUpdate();
+        this.forceUpdate();
         AuthSession.doLogin(auth).then(response => {
             const { token } = response;
             sessionService.saveSession({ token }).then(() => {
@@ -77,8 +77,10 @@ class App extends C {
     _doLogout = () => {
         const auth = { info:  AuthSession.isUserInit(null).info, options:  AuthSession.isUserInit(null).options };
         auth.info.language = this.state.isUser.language;
+        auth.info.theme = this.state.isUser.theme;
         this.state.isUser = auth.info;
         this.state.options = auth.options;
+        console.log(this.state);
         const div = document.getElementById(SYSTEM.IS_DAILER_BOX);
         if(!Utils.isEmpty(div)) div.remove();
         this.forceUpdate();
@@ -111,6 +113,7 @@ class App extends C {
                     data.info['path'] = ACTION.SLASH + path;
                 }
                 console.log('_loadAuthCookies');
+                console.log(data);
                 callBack(data);
             }).catch(function(error) {
                 console.log(error);
@@ -232,7 +235,7 @@ class App extends C {
                                     exact
                                     render={ ({ props }) => <P404 isUser={ this.state.isUser }
                                                                 viewHeader={ this._setViewHeader.bind(this) }
-                                                                onLogout={ this._onLogout.bind(this) }
+                                                                onLogout={ this._doLogout.bind(this) }
                                                                 {...this.props} />} />
                             </Switch>
                         </div>

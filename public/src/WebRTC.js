@@ -182,7 +182,7 @@ function loadModeCall() {
   const mode = window.localStorage.getItem('smart.ippbx.disable_video');
   bDisableVideo = (mode !== "true")?true:false;
   trDivVideo.style.display = (bDisableVideo)?'none':'grid';
-  txtCallStatus.innerHTML = 'Video '.concat(bDisableVideo?'On':'Off');
+  txtCallStatus.innerHTML = 'Video '.concat(bDisableVideo?'Off':'On');
   window.localStorage.setItem('smart.ippbx.disable_video', bDisableVideo ? "true" : "false");
 //   if(!mode) {
 //     divCallVideo.style.display = 'inline-flex';
@@ -206,7 +206,7 @@ function loadCallOptions() {
         var s_value;
         if ((s_value = window.localStorage.getItem('smart.ippbx.phone_number'))) txtPhoneNumber.value = s_value;
         bDisableVideo = (window.localStorage.getItem('smart.ippbx.disable_video') == "true");
-        trDivVideo.style.display = (!bDisableVideo)?'none':'grid';
+        trDivVideo.style.display = (bDisableVideo)?'none':'grid';
         // loadModeCall(bDisableVideo);
 
         setVolumeMode(window.localStorage.getItem('smart.ippbx.volume_mode') == 'true');

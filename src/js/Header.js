@@ -169,14 +169,21 @@ class Header extends C {
     this.state.dailer.show = (!this.state.dailer.show);
     if(!Utils.isEmpty(obj) && !Utils.isEmpty(webRtc)) {
       webRtc.style.display = (this.state.dailer.show)?'block':'none';
-      if(window.innerWidth < WINDOWN_WIDTH) {
-        this._onClickButtonToggle();
-        webRtc.style.top = '2em';
-        webRtc.style.left = (window.innerWidth - 250) + 'px';
-      } else {
-        webRtc.style.top = ((obj.offsetTop + obj.offsetHeight) + 5) + 'px';
-        webRtc.style.left = ((obj.offsetLeft + obj.offsetWidth) - 245) + 'px';  
-      }        
+      // console.log(webRtc);
+      // const oDiv = webRtc.childNodes[0];
+      // console.log(oDiv);
+      // if(Utils.isEmpty(oDiv)) return;
+      // const dBox = oDiv.contentWindow.document.querySelector('#object_div_dailer_box');
+      // console.log(dBox);
+      // if(window.innerWidth < WINDOWN_WIDTH) {
+      //   this._onClickButtonToggle();
+      //   webRtc.style.top = '2em';
+      //   webRtc.style.left = (window.innerWidth - dBox.offsetWidth) + 'px';
+      // } else {
+      //   console.log(webRtc.offsetWidth);
+      //   webRtc.style.top = ((obj.offsetTop + obj.offsetHeight) + 5) + 'px';
+      //   webRtc.style.left = (obj.offsetLeft - dBox.offsetWidth) + 'px';  
+      // }    
     }
     this.forceUpdate();
   }
@@ -311,15 +318,11 @@ class Header extends C {
 
   render() {
     if(!this.state.isUser.viewHeader) return "";
-    // this._loadButtonToggle();
-    // const Msg = Messages[ this.props.isUser.language ];
     var menuType = (this.state.isUser.menu===1)?"tab_menu_1":"tab_menu_0";
     var menuClass = (this.state.isUser.menu===0)?" mr-auto-parent":""
     const isCallClass = (this.state.dailer.isCall && this.state.dailer.register)?"blinking":"";
     const theme = (this.state.isUser.uLid === 'admin')?(this._getTheme()):"";
 
-    console.log(this.state[SYSTEM.IS_ACTIVE_WINDOWN]);
-    // console.log(this.props.dispatch);
     return (
       <div className="Headder">
         <AlertMsg show={ this.state.showError } variant={ this.state.variantError } errors={ [ 'エラーメッセージ00', 'エラーメッセージ01' ] }/>

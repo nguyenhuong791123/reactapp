@@ -2,21 +2,23 @@ body {
   line-height: unset !important;
   font-family: none !important;
   overflow: hidden;
+  background-color: transparent !important;
 }
 
 div.alert {
   margin: 0;
   padding: 0;
+  position: absolute;
   border: 5px solid #dee2e6;
 }
 
-table.table-dailer tr#trDivVideo {
+/* table.table-dailer tr#trDivVideo {
   display: none;
-}
+} */
 
-table.table-dailer tr#divDailerBox {
+/* table.table-dailer tr#divDailerBox {
   display: none;
-}
+} */
 
 /* table.table-dailer {
   border: 1px solid;
@@ -66,15 +68,17 @@ table.table-btn-dailer td input {
   text-align: center;
 }
 
-table.was-validated  td input {
+table.was-validated td input {
   padding-right: 0;
 }
 
 table.table-dailer td label {
   width: 100%;
   margin-bottom: 0;
-  /* cursor: all-scroll; */
-  display: inline-block;
+  display: flex;
+  color: red;
+  padding-left: .5em;
+  font-size: 80%;
 }
 
 table.table-btn-dailer td button {

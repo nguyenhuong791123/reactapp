@@ -39,14 +39,16 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app"
-    ,"env": {
+    "extends": "react-app",
+    "env": {
       "browser": true,
       "chrome": true,
       "es6": true
     }
   },
-  "globals": { "chrome": true },
+  "globals": {
+    "chrome": true
+  },
   "browserslist": {
     "production": [
       ">0.2%",

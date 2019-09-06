@@ -49,7 +49,20 @@
               <label id="txtCallStatus">アカウント情報</label>
             </td>
           </tr>
-          
+
+          <tr id="trDivVideo" style="display: none">
+            <td colspan=4>
+              <div id="divVideo" class="div-video">
+                <div id="divVideoLocal">
+                  <video class="video_local" id="video_local" autoplay="autoplay" muted="true"></video>
+                </div>
+                <div id="divVideoRemote" class="div_video_remote">
+                  <video class="video_remote" id="video_remote" autoplay="autoplay"></video>
+                </div>
+              </div>
+            </td>          
+          </tr>
+
           <tr id="divSettingInfo">
             <td>
               <table class="was-validated">
@@ -202,7 +215,7 @@
         </table>
       </td>
 
-      <td id="trDivVideo" style="display: none">
+      <!-- <td id="trDivVideo" style="display: none">
         <div id="divVideo" class="div-video">
           <div id="divVideoLocal">
             <video class="video_local" id="video_local" autoplay="autoplay" muted="true"></video>
@@ -211,7 +224,7 @@
             <video class="video_remote" id="video_remote" autoplay="autoplay"></video>
           </div>
         </div>
-      </td>
+      </td> -->
     </tr>
   </table>
 
@@ -237,8 +250,12 @@
     const divDailer = document.getElementById('object_div_dailer_box');
     const aParentLink = parent.document.getElementById('a_dailer_box');
     if(divDailer != undefined) {
-      divParent.style.top ='3em';
-      divParent.style.left = (parent.window.innerWidth - (divDailer.offsetWidth + 100)) + 'px';
+      divParent.style.top = '3em';
+      divParent.style.left = (parent.window.innerWidth - (divDailer.offsetWidth + 150)) + 'px';
+      // if(divParent.childNodes[0] != undefined) {
+      //   divParent.childNodes[0].style.width = (divDailer.offsetWidth + 6) + 'px';
+      //   divParent.childNodes[0].style.height = (divDailer.offsetHeight + 6) + 'px';
+      // }
     }
 
     var offset = [ 0, 0 ];

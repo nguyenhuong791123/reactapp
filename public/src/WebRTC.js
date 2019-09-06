@@ -29,6 +29,7 @@ window.onload = function () {
     // loadCallMode();
     // loadDivKeyPad();
     loadCallOptions();
+    setDailerBoxWidthHeight();
 
     // Initialize call button
     uiBtnCallSetText("Call");
@@ -184,6 +185,7 @@ function loadModeCall() {
   trDivVideo.style.display = (bDisableVideo)?'none':'grid';
   txtCallStatus.innerHTML = 'Video '.concat(bDisableVideo?'Off':'On');
   window.localStorage.setItem('smart.ippbx.disable_video', bDisableVideo ? "true" : "false");
+  setDailerBoxWidthHeight();
 //   if(!mode) {
 //     divCallVideo.style.display = 'inline-flex';
 //     // divCallAudio.style.display = 'none';
@@ -206,12 +208,12 @@ function loadCallOptions() {
         var s_value;
         if ((s_value = window.localStorage.getItem('smart.ippbx.phone_number'))) txtPhoneNumber.value = s_value;
         bDisableVideo = (window.localStorage.getItem('smart.ippbx.disable_video') == "true");
-        trDivVideo.style.display = (bDisableVideo)?'none':'grid';
         // loadModeCall(bDisableVideo);
 
         setVolumeMode(window.localStorage.getItem('smart.ippbx.volume_mode') == 'true');
         // chkCallMode.checked = bDisableVideo;
         // txtCallStatus.innerHTML = '<i>Video ' + (bDisableVideo ? 'disabled' : 'enabled') + '</i>';
+        if(sRegistered) trDivVideo.style.display = (bDisableVideo)?'none':'grid';
     }
 }
 
@@ -307,27 +309,38 @@ function saveCredentials() {
   }
 };
 
-function closeDailerBox() {
-    const a = document.getElementById('a_dailer_box');
-    if(a !== undefined) a.click();
-}
+// function closeDailerBox() {
+//     const a = document.getElementById('a_dailer_box');
+//     if(a !== undefined) a.click();
+// }
 
 function sipSetting() {
-  divSettingInfo.style.display = 'grid';
-  divDailerBox.style.display = 'none';
-  trDivVideo.style.display = 'none';
+    divSettingInfo.style.display = 'grid';
+    divDailerBox.style.display = 'none';
+    trDivVideo.style.display = 'none';
+    setDailerBoxWidthHeight();
 }
 
 function sipCloseSetting() {
-  divSettingInfo.style.display = 'none';
-  divDailerBox.style.display = 'grid';
-  console.log(bDisableVideo);
-  trDivVideo.style.display = (bDisableVideo)?'none':'grid';
+    divSettingInfo.style.display = 'none';
+    divDailerBox.style.display = 'grid';
+    trDivVideo.style.display = (bDisableVideo)?'none':'grid';
+    setDailerBoxWidthHeight();
 }
 
 function sipSaveInfo() {
-  sipCloseSetting();
-  saveCredentials();
+    sipCloseSetting();
+    saveCredentials();
+    setDailerBoxWidthHeight();
+}
+
+function setDailerBoxWidthHeight() {
+    const divDailer = document.getElementById('object_div_dailer_box');
+    if(divDailer == undefined) return;
+    const divParent = parent.document.getElementById('div_dailer_box');
+    if(divParent == undefined || divParent.childNodes[0] == undefined) return;
+    divParent.childNodes[0].style.width = (divDailer.offsetWidth + 6) + 'px';
+    divParent.childNodes[0].style.height = (divDailer.offsetHeight + 6) + 'px';
 }
 
 // sends SIP REGISTER request to login

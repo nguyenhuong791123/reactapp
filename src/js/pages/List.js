@@ -26,7 +26,8 @@ class List extends C {
         // console.log(this.Auth.getProfile());
 
         this.state = {
-            isUser: this.props.isUser
+            loading: true
+            ,isUser: this.props.isUser
             ,objs: {
                 show: false
                 ,items: [

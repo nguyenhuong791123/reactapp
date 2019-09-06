@@ -82,7 +82,12 @@ class Create extends C {
     // }
     return errors;
   }
-  
+
+  UNSAFE_componentWillReceiveProps(props) {
+    console.log('CREATE componentWillReceiveProps');
+    this.state.isUser = props.isUser;
+    console.log(this.state.isUser);
+  }
 
   render() {
     return (

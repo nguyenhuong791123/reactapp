@@ -23,6 +23,10 @@ table.table-dailer td {
   /* border: 1px solid; */
 }
 
+table.table-dailer td.td-header-hover:hover {
+  background: aquamarine;
+}
+
 table.table-dailer td video {
   background: black;
   width: 200px;

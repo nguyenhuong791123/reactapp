@@ -1,5 +1,6 @@
 import React, { Component as C } from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
+import LoadingOverlay from 'react-loading-overlay';
 import { createBrowserHistory } from 'history';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
@@ -41,7 +42,8 @@ class App extends C {
         this._updateStateIsUser = this._updateStateIsUser.bind(this);
 
         this.state = {
-            copyright: 'Copyright ©2018 VNEXT All Rights Reserved.'
+            loading: true
+            ,copyright: 'Copyright ©2018 VNEXT All Rights Reserved.'
             ,isUser: AuthSession.isUserInit(null).info
             // ,isUser: { device: this.props.ua.device, language: this.props.ua.language, viewHeader: false }
             ,options: AuthSession.isUserInit(null).options
@@ -175,15 +177,6 @@ class App extends C {
         this.forceUpdate();
     }
 
-    UNSAFE_componentWillMount() {
-        this._loadAuthCookies(this.state.isUser, this._updateStateIsUser);
-        this._addCssLink();
-        // this.forceUpdate();
-        // console.log(this.props);
-        // console.log(this.props.router);
-        // console.log(document.title);
-    }
-
     _addCssLink() {
         const obj = document.getElementById(SYSTEM.IS_CSS_LINK_ID);
         const css_path = THEME.getTheme(this.state.isUser.theme);
@@ -199,11 +192,26 @@ class App extends C {
         }
     }
 
+    UNSAFE_componentWillMount() {
+        this._loadAuthCookies(this.state.isUser, this._updateStateIsUser);
+        this._addCssLink();
+    }
+
+    componentDidMount() {
+        this._stopLoading();
+    }
+
+    _stopLoading() {
+        this.state.loading = false;
+    }
+
     render() {
         console.log('APP Render !!!');
         console.log(chrome.app);
         return (
             <div>
+                <LoadingOverlay active={ this.state.loading } spinner text='Loading your content...' />
+
                 <Provider store={ store }>
                     <Router history={ history }>
                         <div id='div_header'>

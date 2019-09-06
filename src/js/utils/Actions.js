@@ -44,6 +44,12 @@ export default class New extends C {
     this._setLayoutActions();
   }
 
+  componentWillReceiveProps(props) {
+    console.log('ACTION componentWillReceiveProps');
+    this.state.isUser = props.isUser;
+    console.log(this.state.isUser);
+  }
+
   render() {
     const className = (!isEmpty(window.name) && window.name===SYSTEM.IS_ACTIVE_WINDOWN)?'div-actions-box':'div-not-windown-actions-box';
     return (

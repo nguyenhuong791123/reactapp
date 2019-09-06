@@ -39,6 +39,11 @@ export const HTML_TAG = {
     ,BUTTON: 'BUTTON'
 }
 
+export const DISPLAY_TYPE = {
+    NONE: 'none'
+    ,BLOCK: 'block'
+}
+
 export const TAB_MENU_TYPE = {
     MINUS: '-'
     ,PLUS: '+'

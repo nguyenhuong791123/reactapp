@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import onClickOutside from 'react-onclickoutside';
 import { Nav, Tabs, Tab } from 'react-bootstrap';
 
-import { LINK, NOT_LINK, WINDOWN_WIDTH, SYSTEM, TAB_MENU_TYPE } from '../Types';
+import { LINK, NOT_LINK, WINDOWN_WIDTH, SYSTEM, TAB_MENU_TYPE, DISPLAY_TYPE } from '../Types';
 import Utils from '../Utils';
 import "../../../css/TabMenu.css";
 
@@ -348,8 +348,8 @@ class TabMenu extends C {
                     nav.childNodes[0].style.marginLeft = 0;
                     if(nav.className.indexOf(' nav-tabs-vertical') === -1) {
                         nav.className = nav.className + ' nav-tabs-vertical';
-                        prev.style.display = 'none';
-                        next.style.display = 'none';
+                        prev.style.display = DISPLAY_TYPE.NONE;
+                        next.style.display = DISPLAY_TYPE.NONE;
                     }
                     if(divP.className.indexOf(' mr-auto-parent') === -1) {
                         divP.className = divP.className + ' mr-auto-parent';
@@ -358,17 +358,24 @@ class TabMenu extends C {
                     nav.style.width = (window.innerWidth - (750 + aWidth)) + 'px';
                     if(nav.className.indexOf(' nav-tabs-vertical') !== -1) {
                         nav.className = nav.className.replace(' nav-tabs-vertical', '');
-                        prev.style.display = 'block';
-                        next.style.display = 'block';
+                        prev.style.display = DISPLAY_TYPE.BLOCK;
+                        next.style.display = DISPLAY_TYPE.BLOCK;
                     }
                     if(divP.className.indexOf(' mr-auto-parent') !== -1) {
                         divP.className = divP.className.replace(' mr-auto-parent', '');
                     }
-                    const last = nav.childNodes[nav.childNodes.length-1];
-                    if(!Utils.isEmpty(last) && (last.offsetLeft + last.offsetWidth) <= next.offsetLeft) {
-                        prev.style.display = 'none';
-                        next.style.display = 'none';
-                    }
+                }
+
+                var cWidth = 0;
+                for(var i=0; i<nav.childNodes.length; i++) {
+                    cWidth += nav.childNodes[i].offsetWidth;
+                }
+                if(cWidth > nav.offsetWidth) {
+                    prev.style.display = DISPLAY_TYPE.BLOCK;
+                    next.style.display = DISPLAY_TYPE.BLOCK;
+                } else {
+                    prev.style.display = DISPLAY_TYPE.NONE;
+                    next.style.display = DISPLAY_TYPE.NONE;
                 }
             } else {
                 console.log(div);

@@ -69,9 +69,10 @@ div.drag-and-drop object {
 }
 
 div.drag-and-drop button {
-    cursor: move;
-    /* position: absolute; */
+    cursor: pointer;
     margin-left: -.5em;
+    margin-top: .5em;
+    padding-left: .5em;
 }
 
 div.drag-and-drop button:hover {

@@ -12,17 +12,9 @@ div.alert {
   border: 5px solid #dee2e6;
 }
 
-/* table.table-dailer tr#trDivVideo {
-  display: none;
-} */
-
-/* table.table-dailer tr#divDailerBox {
-  display: none;
-} */
-
-/* table.table-dailer {
-  border: 1px solid;
-} */
+div.alert font {
+  cursor: move;
+}
 
 table.table-dailer td {
   padding: .2em;

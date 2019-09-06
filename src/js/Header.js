@@ -222,36 +222,40 @@ class Header extends C {
     w.location = href;
   }
 
-  _onDraggable(div, obj) {
-    var offset = [ 0, 0 ];
-    var isDown = false;
-    obj.addEventListener('mousedown', function(e) {
-      if(e.target.tagName !== HTML_TAG.BUTTON) {
-        isDown = false;
-        return;
-      }
-      isDown = true;
-      offset = [ div.offsetLeft - e.clientX, div.offsetTop - e.clientY ];
-    }, true);
+  // _onDraggable(div, obj) {
+  //   var offset = [ 0, 0 ];
+  //   var isDown = false;
+  //   obj.addEventListener('mousedown', function(e) {
+  //     if(e.target.tagName !== HTML_TAG.BUTTON) {
+  //       isDown = false;
+  //       return;
+  //     }
+  //     isDown = true;
+  //     offset = [ div.offsetLeft - e.clientX, div.offsetTop - e.clientY ];
+  //   }, true);
 
-    document.addEventListener('mouseup', function(e) {
-      isDown = false;
-    }, true);
+  //   document.addEventListener('mouseup', function(e) {
+  //     isDown = false;
+  //   }, true);
 
-    document.addEventListener('mousemove', function(e) {
-      e.preventDefault();
-      if (!isDown) return;
-      div.style.left = (e.clientX + offset[0]) + 'px';
-      div.style.top  = (e.clientY + offset[1]) + 'px';
-    }, true);
-  }
+  //   document.addEventListener('mousemove', function(e) {
+  //     e.preventDefault();
+  //     if (!isDown) return;
+  //     div.style.left = (e.clientX + offset[0]) + 'px';
+  //     div.style.top  = (e.clientY + offset[1]) + 'px';
+  //   }, true);
+  // }
 
   _addBoostrapTheme() {
     const isExists = document.getElementById(SYSTEM.IS_DAILER_BOX);
     if(Utils.isEmpty(isExists)) {
       const btn = document.createElement(HTML_TAG.BUTTON);
       btn.setAttribute('class', 'btn btn-warning');
-      btn.innerText = '移';
+      btn.innerText = '✖';
+      btn.onclick = function() {
+        var close = document.getElementById('a_dailer_box');
+        if(!Utils.isEmpty(close)) close.click();
+      }
       const div = document.createElement(HTML_TAG.DIV);
       div.setAttribute('id', SYSTEM.IS_DAILER_BOX);
       div.setAttribute('class', 'drag-and-drop');
@@ -260,7 +264,7 @@ class Header extends C {
       webRtc.setAttribute('type', 'text/html');
       div.appendChild(webRtc);
       div.appendChild(btn);
-      this._onDraggable(div, btn);
+      // this._onDraggable(div, btn);
       document.body.prepend(div);
     }
     this._setLocalStrageTheme();  

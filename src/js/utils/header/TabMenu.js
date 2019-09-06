@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import onClickOutside from 'react-onclickoutside';
 import { Nav, Tabs, Tab } from 'react-bootstrap';
 
-import { LINK, NOT_LINK, WINDOWN_WIDTH, SYSTEM } from '../Types';
+import { LINK, NOT_LINK, WINDOWN_WIDTH, SYSTEM, TAB_MENU_TYPE } from '../Types';
 import Utils from '../Utils';
 import "../../../css/TabMenu.css";
 
@@ -340,26 +340,34 @@ class TabMenu extends C {
             if(!Utils.isEmpty(nav)) {
                 const divP = div.parentElement;
                 const navParent = nav.parentElement.childNodes;
+                const prev = navParent[0];
+                const next = navParent[navParent.length-1];
+                if(Utils.isEmpty(prev) || Utils.isEmpty(next)) return;
                 if(window.innerWidth < WINDOWN_WIDTH) {
                     nav.style.width = '100%';
                     nav.childNodes[0].style.marginLeft = 0;
                     if(nav.className.indexOf(' nav-tabs-vertical') === -1) {
                         nav.className = nav.className + ' nav-tabs-vertical';
-                        navParent[0].style.display = 'none';
-                        navParent[navParent.length-1].style.display = 'none';
+                        prev.style.display = 'none';
+                        next.style.display = 'none';
                     }
                     if(divP.className.indexOf(' mr-auto-parent') === -1) {
                         divP.className = divP.className + ' mr-auto-parent';
                     }
                 } else {
-                    nav.style.width = (window.innerWidth - (740 + aWidth)) + 'px';
+                    nav.style.width = (window.innerWidth - (750 + aWidth)) + 'px';
                     if(nav.className.indexOf(' nav-tabs-vertical') !== -1) {
                         nav.className = nav.className.replace(' nav-tabs-vertical', '');
-                        navParent[0].style.display = 'block';
-                        navParent[navParent.length-1].style.display = 'block';
+                        prev.style.display = 'block';
+                        next.style.display = 'block';
                     }
                     if(divP.className.indexOf(' mr-auto-parent') !== -1) {
                         divP.className = divP.className.replace(' mr-auto-parent', '');
+                    }
+                    const last = nav.childNodes[nav.childNodes.length-1];
+                    if(!Utils.isEmpty(last) && (last.offsetLeft + last.offsetWidth) <= next.offsetLeft) {
+                        prev.style.display = 'none';
+                        next.style.display = 'none';
                     }
                 }
             } else {
@@ -383,11 +391,15 @@ class TabMenu extends C {
     render() {
       return (
             <div>
-                <Nav.Link action={ '+' } onClick={ this._onClickNextPrev.bind(this) }>{ '◀︎' }</Nav.Link>
+                <Nav.Link action={ TAB_MENU_TYPE.PLUS } onClick={ this._onClickNextPrev.bind(this) }>
+                    { TAB_MENU_TYPE.PRIVIOUS }
+                </Nav.Link>
                 <Tabs defaultActiveKey={ this.state.isActive } onSelect={ this._onSelect.bind(this) }>
                     { this._getTabs(this.state.objs) }
                 </Tabs>
-                <Nav.Link action={ '-' } onClick={ this._onClickNextPrev.bind(this) }>{ '▶︎' }</Nav.Link>
+                <Nav.Link action={ TAB_MENU_TYPE.MINUS } onClick={ this._onClickNextPrev.bind(this) }>
+                    { TAB_MENU_TYPE.NEXT }
+                </Nav.Link>
             </div>
         );
     }

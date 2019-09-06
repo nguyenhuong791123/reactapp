@@ -39,6 +39,13 @@ export const HTML_TAG = {
     ,BUTTON: 'BUTTON'
 }
 
+export const TAB_MENU_TYPE = {
+    MINUS: '-'
+    ,PLUS: '+'
+    ,NEXT: '▶︎'
+    ,PRIVIOUS: '◀︎'
+}
+
 export const INPUT_TYPE = {
     DATE: 'date'
     ,DATETIME: 'datetime'

@@ -2,6 +2,7 @@ import React, { Component as C } from 'react';
 import { Button } from 'react-bootstrap';
 import { FaReply, FaCheck } from 'react-icons/fa';
 
+import { SYSTEM } from './Types';
 import { isEmpty } from './Utils';
 import GetMsg from '../../msg/Msg';
 
@@ -24,6 +25,7 @@ export default class New extends C {
   }
 
   _setLayoutActions(){
+    this.state[SYSTEM.IS_ACTIVE_WINDOWN] = (!isEmpty(window.name) && window.name===SYSTEM.IS_ACTIVE_WINDOWN);
     var body = document.getElementById('div_body');
     // console.log(body);
     var bts = document.getElementById('div_button_action');
@@ -43,8 +45,9 @@ export default class New extends C {
   }
 
   render() {
+    const className = (!isEmpty(window.name) && window.name===SYSTEM.IS_ACTIVE_WINDOWN)?'div-actions-box':'div-not-windown-actions-box';
     return (
-        <div id="div_button_action" className="div-actions-box">
+        <div id="div_button_action" className={ className }>
             <Button onClick={ this._onClickReturn.bind(this) } variant="info">
               <FaReply />
               { GetMsg(null, this.state.isUser.language, 'bt_return') }

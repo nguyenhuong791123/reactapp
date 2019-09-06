@@ -71,7 +71,7 @@ class RMenu extends C {
         <Menu
           styles={ styles }
           width={ '22%' }
-          className="div-menu-right"
+          className="div-menu-right alert-light"
           { ...this.props }
           customBurgerIcon={ <FaRocketchat id="div-right-chat-icon" className="div-right-chat-icon" /> }
           // customCrossIcon={ false }

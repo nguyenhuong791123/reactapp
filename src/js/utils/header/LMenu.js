@@ -97,7 +97,7 @@ class LMenu extends C {
       <div>
         <Menu
           styles={ styles }
-          className="div-left-menu"
+          className="div-left-menu alert-light"
           width={ '20%' }
           { ...this.props }
           customBurgerIcon={ <FaBars id='btn_menu_left' /> }

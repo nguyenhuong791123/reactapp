@@ -5,6 +5,10 @@
     transition: all .5s;
 }
 
+*[draggable=true] {
+    cursor: move;
+}
+
 div._loading_overlay_wrapper {
     position: unset;
 }

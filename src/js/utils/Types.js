@@ -37,6 +37,8 @@ export const HTML_TAG = {
     ,TH: 'TH'
     ,TD: 'TD'
     ,BUTTON: 'BUTTON'
+    ,LEGEND: 'LEGEND'
+    ,LABEL: 'LABEL'
 }
 
 export const DISPLAY_TYPE = {

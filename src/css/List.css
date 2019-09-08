@@ -11,17 +11,13 @@ div.div-react-bootstrap-table {
     overflow-y: auto;
 }
 
-/* table.table-list thead, tbody {
-    display: block;
-}
-table.table-list tbody {
-    overflow-y: scroll;
-    height: 150px;
-} */
-
 table.table-list thead {
     background-color: #343a40;
     color: white;
+}
+
+table.table-list th, td {
+    word-break: break-all;
 }
 
 table.table-list thead th {

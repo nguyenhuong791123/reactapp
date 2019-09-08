@@ -6,6 +6,7 @@ import Form from "react-jsonschema-form-bs4";
 
 import Actions from '../utils/Actions';
 import { ACTION, HTML_TAG } from '../utils/Types';
+import { DRAG } from '../utils/HtmlTypes';
 import Utils from '../utils/Utils';
 
 import GetMsg from '../../msg/Msg';
@@ -93,6 +94,15 @@ class Create extends C {
               cust_name_hira: { type: "string" }
               ,cust_name_kana: { type: "string" }
             }
+          },
+          project_info: {
+            type: "object"
+            ,title: "顧客情報2"
+            ,required: [ "cust_name_hira", "cust_name_kana" ]
+            ,properties: {
+              cust_name_hira: { type: "string" }
+              ,cust_name_kana: { type: "string" }
+            }
           }
         },
     }
@@ -103,6 +113,11 @@ class Create extends C {
           ,uri: { "ui:placeholder": "URL", classNames: "div-box div-box-50" }
         }
         ,cust_info: {
+          classNames: "draggable-top-box div-top-box div-top-box-50"
+          ,cust_name_hira: { "ui:placeholder": "顧客名", classNames: "div-box div-box-50" }
+          ,cust_name_kana: { "ui:placeholder": "顧客カナ", classNames: "div-box div-box-50" }
+        }
+        ,project_info: {
           classNames: "draggable-top-box div-top-box div-top-box-50"
           ,cust_name_hira: { "ui:placeholder": "顧客名", classNames: "div-box div-box-50" }
           ,cust_name_kana: { "ui:placeholder": "顧客カナ", classNames: "div-box div-box-50" }
@@ -123,17 +138,7 @@ class Create extends C {
     if(Utils.isEmpty(div.childNodes[0])) return;
     if(Utils.isEmpty(div.childNodes[0].childNodes[0])) return;
     const divDrags = div.childNodes[0].childNodes[0].childNodes;
-    // var dragObj = 0;
     div.childNodes[0].childNodes[0].addEventListener('mousedown', this._onMouseDown.bind(this), true);
-    // div.childNodes[0].childNodes[0].addEventListener('mousedown', function(e) {
-    //   console.log(e.target.tagName);
-    //   if(e.target.tagName === HTML_TAG.LEGEND) {
-    //     dragObj = 1;
-    //   }
-    //   if(e.target.tagName === HTML_TAG.LABEL) {
-    //     dragObj = 2;
-    //   }
-    // }, true);
     div.childNodes[0].childNodes[0].addEventListener('dragover', this._onDragOver.bind(this), false);
     div.childNodes[0].childNodes[0].addEventListener('drop', this._onDragDrop.bind(this), false);
 
@@ -142,8 +147,9 @@ class Create extends C {
       const drags = divDrags[i];
       const dragChilds = drags.childNodes[0].childNodes;
       if(Utils.isEmpty(dragChilds)) continue;
-      drags.setAttribute('draggable', 'true');
-      drags.addEventListener('dragstart', this._onDragStart.bind(this), false);
+      drags.id = DRAG.ABLE + '_' + i;
+      drags.setAttribute(DRAG.ABLE, 'true');
+      drags.addEventListener(DRAG.START, this._onDragStart.bind(this), false);
       // drags.addEventListener('dragenter', this._onDragEnter.bind(this), false);
       // drags.addEventListener('dragover', this._onDragOver.bind(this), false);
       // drags.addEventListener('dragleave', this._onDragLeave.bind(this), false);
@@ -151,18 +157,17 @@ class Create extends C {
       // drags.addEventListener('dragend', this._onDragEnd.bind(this), false);
       // drags.ondragstart = this._onDragStart.bind(this);
       // drags.ondragend = this._onDragEnd.bind(this);
-      console.log(dragChilds);
-      // for(var c=0; c<dragChilds.length; c++) {
-      //   const dDrag = dragChilds[c];
-      //   if(c === 0 && dDrag.tagName === 'LEGEND') continue;
-      //   dDrag.setAttribute('draggable', 'true');
-      //   dDrag.ondragstart = this._onDragStart.bind(this);
-      //   const divs = dDrag.childNodes;
-      //   for(var d=0; d<divs.length; d++) {
-      //     if(divs[d].tagName !== 'LABEL') continue;
-      //     divs[d].style.cursor = 'move';
-      //   }
-      // }
+      for(var c=0; c<dragChilds.length; c++) {
+        const dDrag = dragChilds[c];
+        if(c === 0 && dDrag.tagName === HTML_TAG.LEGEND) continue;
+        dDrag.setAttribute(DRAG.ABLE, 'true');
+        dDrag.ondragstart = this._onDragStart.bind(this);
+        const divs = dDrag.childNodes;
+        for(var d=0; d<divs.length; d++) {
+          if(divs[d].tagName !== HTML_TAG.LABEL) continue;
+          divs[d].style.cursor = 'move';
+        }
+      }
     }
   }
 
@@ -211,22 +216,24 @@ class Create extends C {
       return;
     }
     console.log('_onDragDrop');
-    console.log(e);
-    console.log(this.state.draggable);
-    console.log(this.state.dragobject);
     if(this.state.draggable === 1 && e.target.tagName === HTML_TAG.LEGEND) {
       const div = e.target.parentElement.parentElement;
-      const legend = div.parentElement;
-      console.log(legend);
-      console.log(div);
-      const nDiv = this.state.dragobject.cloneNode(true);
-      this.state.dragobject.remove();
-      console.log(this.state.dragobject);
-      legend.prepend(nDiv);
+      if(Utils.isEmpty(div.id)) return;
+      const dragId = this.state.dragobject.id.replace(DRAG.ABLE +'_', '');
+      const dropId = div.id.replace(DRAG.ABLE + '_', '');
+      if(parseInt(dragId) > parseInt(dropId)) {
+        div.before(this.state.dragobject);
+      } else {
+        div.after(this.state.dragobject);
+      }
+      const fieldset = div.parentElement.childNodes;
+      for(var i=0; i<fieldset.length; i++) {
+        fieldset[i].id = DRAG.ABLE + '_' + i;
+      }
     }
-    if(this.state.draggable === 1 && e.target.tagName === HTML_TAG.LEGEND) {
+    if(this.state.draggable === 2 && e.target.tagName === HTML_TAG.LEGEND) {
       const div = e.target.parentElement;
-      div.before(this.state.dragobject);
+      // div.before(this.state.dragobject);
     }
  }
 

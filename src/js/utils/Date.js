@@ -7,8 +7,8 @@ function dateTime(date, language, datetime, pattern) {
     if(d < 10) d = '0' + d;
     var time = '';
     if(datetime) {
-        var h = d.getHours();
-        var mm = d.getMinutes();
+        var h = date.getHours();
+        var mm = date.getMinutes();
         if(h < 10) h = '0' + h;
         if(mm < 10) mm = '0' + mm;
         time = ' ' + h + ':' + mm;  

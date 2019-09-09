@@ -64,11 +64,11 @@ class CalendarBox extends C {
 
     _onChange(startDate, endDate) {
         if(isEmpty(startDate)) return;
-        const start = DateTime.dateTime(new Date(startDate), this.state.language, false, null);
+        const start = DateTime.dateTime(new Date(startDate), this.state.language, this.state.datetime, null);
         this.setState({ start: startDate, end: endDate });
         if(this.state.fromTo) {
             if(!isEmpty(endDate)) {
-                const end = DateTime.dateTime(new Date(endDate), this.state.language, false, null);
+                const end = DateTime.dateTime(new Date(endDate), this.state.language, this.state.datetime, null);
                 this._getValueToObj(start + '～' + end);
                 return this.props.onChangeCalendar(start, end);
             }

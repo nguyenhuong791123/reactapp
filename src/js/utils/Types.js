@@ -84,6 +84,7 @@ export const ACTION = {
     ,SUCCESS: 'success'
     ,ERROR: 'error'
     ,CLEAR: 'clear'
+    ,CUSTOMIZE: 'customize'
 };
 
 export const MSG_TYPE = {

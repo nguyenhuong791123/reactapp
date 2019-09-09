@@ -31,14 +31,14 @@ export const ATTR = {
 }
 
 export const MOUSE = {
-    CLICK: 'onclick'
-    ,DBCLICK: 'ondblclick'
-    ,MOUSEDOWN: 'onmousedown'
-    ,MOUSEMOVE: 'onmousemove'
-    ,MOUSEOUT: 'onmouseout'
-    ,MOUSEOVER: 'onmouseover'
-    ,MOUSEUP: 'onmouseup'
-    ,WHEEL: 'onwheel'
+    CLICK: 'click'
+    ,DBCLICK: 'dblclick'
+    ,MOUSEDOWN: 'mousedown'
+    ,MOUSEMOVE: 'mousemove'
+    ,MOUSEOUT: 'mouseout'
+    ,MOUSEOVER: 'mouseover'
+    ,MOUSEUP: 'mouseup'
+    ,WHEEL: 'wheel'
 }
 
 export const KEYBOARD = {

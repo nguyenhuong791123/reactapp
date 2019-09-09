@@ -3,10 +3,12 @@ import React, { Component as C } from 'react';
 import { withRouter } from "react-router-dom";
 import { connect } from 'react-redux';
 import Form from "react-jsonschema-form-bs4";
+import { Alert, Button } from 'react-bootstrap';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
 import Actions from '../utils/Actions';
-import { ACTION, HTML_TAG } from '../utils/Types';
-import { DRAG } from '../utils/HtmlTypes';
+import { ACTION, HTML_TAG, VARIANT_TYPES } from '../utils/Types';
+import { DRAG, MOUSE } from '../utils/HtmlTypes';
 import Utils from '../utils/Utils';
 
 import GetMsg from '../../msg/Msg';
@@ -31,6 +33,7 @@ class Create extends C {
   
     this.state = {
       isUser: this.props.isUser
+      ,show: false
       ,draggable: 0
       ,dragobject: null
     }
@@ -119,8 +122,8 @@ class Create extends C {
         }
         ,project_info: {
           classNames: "draggable-top-box div-top-box div-top-box-50"
-          ,cust_name_hira: { "ui:placeholder": "顧客名", classNames: "div-box div-box-50" }
-          ,cust_name_kana: { "ui:placeholder": "顧客カナ", classNames: "div-box div-box-50" }
+          ,cust_name_hira: { "ui:placeholder": "案件名", classNames: "div-box div-box-50" }
+          ,cust_name_kana: { "ui:placeholder": "カナ", classNames: "div-box div-box-50" }
         }
     }
     this.state.formData = {}
@@ -138,9 +141,10 @@ class Create extends C {
     if(Utils.isEmpty(div.childNodes[0])) return;
     if(Utils.isEmpty(div.childNodes[0].childNodes[0])) return;
     const divDrags = div.childNodes[0].childNodes[0].childNodes;
-    div.childNodes[0].childNodes[0].addEventListener('mousedown', this._onMouseDown.bind(this), true);
-    div.childNodes[0].childNodes[0].addEventListener('dragover', this._onDragOver.bind(this), false);
-    div.childNodes[0].childNodes[0].addEventListener('drop', this._onDragDrop.bind(this), false);
+    div.childNodes[0].childNodes[0].addEventListener(MOUSE.MOUSEDOWN, this._onMouseDown.bind(this), true);
+    div.childNodes[0].childNodes[0].addEventListener(DRAG.OVER, this._onDragOver.bind(this), false);
+    div.childNodes[0].childNodes[0].addEventListener(DRAG.DROP, this._onDragDrop.bind(this), false);
+    div.childNodes[0].childNodes[0].addEventListener(MOUSE.MOUSEOVER, this._onMouseOver.bind(this), false);
 
     console.log(div.childNodes[0]);
     for(var i=0; i<divDrags.length; i++) {
@@ -248,6 +252,29 @@ class Create extends C {
   //   console.log(this.state.draggable);
   // }
 
+  _onMouseOver(e) {
+    const obj = e.target;
+    if(obj.tagName !== HTML_TAG.LEGEND && obj.tagName !== HTML_TAG.LABEL) return;
+    console.log(obj);
+    this.state.show = true;
+    this.forceUpdate();
+  }
+
+  _onActions(top, left) {
+    if(Utils.isEmpty(top) || Utils.isEmpty(left)) return "";
+    const style = { top: top, left: left };
+    return(
+      <Alert show={ this.state.show } variant={ VARIANT_TYPES.LIGHT } style={ style }>
+        <Button type={ HTML_TAG.BUTTON } onClick={ this._onClickSubmit.bind(this) } variant={ VARIANT_TYPES.SECONDARY }>
+          <FaEdit />
+        </Button>
+        <Button type={ HTML_TAG.BUTTON } onClick={ this._onClickSubmit.bind(this) } variant={ VARIANT_TYPES.DANGER }>
+          <FaTrash />
+        </Button>
+      </Alert>
+    );
+  }
+
   render() {
     return (
       <Form
@@ -265,6 +292,7 @@ class Create extends C {
           isUser={ this.state.isUser }
           onClickReturn={ this._onClickReturn.bind(this) }
           onClickSubmit={ this._onClickSubmit.bind(this) } />
+        { this._onActions(10, 10) }
       </Form>
     )
   };

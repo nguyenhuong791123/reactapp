@@ -42,7 +42,7 @@ class Create extends C {
   }
 
   _onClickSubmit() {
-    console.log("Data submitted: ", this.state.formData);
+    console.log("Data submitted: ", document.forms[0]);
   }
 
   _onChange(type) {
@@ -218,22 +218,27 @@ class Create extends C {
     console.log('_onDragDrop');
     if(this.state.draggable === 1 && e.target.tagName === HTML_TAG.LEGEND) {
       const div = e.target.parentElement.parentElement;
-      if(Utils.isEmpty(div.id)) return;
-      const dragId = this.state.dragobject.id.replace(DRAG.ABLE +'_', '');
-      const dropId = div.id.replace(DRAG.ABLE + '_', '');
-      if(parseInt(dragId) > parseInt(dropId)) {
+      if(Utils.isEmpty(div.id) || Utils.isEmpty(div.parentElement.childNodes) || div.parentElement.childNodes.length <= 0) return;
+      const dragId = Array.from(div.parentElement.childNodes).indexOf(div);
+      const dropId = Array.from(div.parentElement.childNodes).indexOf(this.state.dragobject);
+      if(dragId < dropId) {
         div.before(this.state.dragobject);
       } else {
         div.after(this.state.dragobject);
       }
-      const fieldset = div.parentElement.childNodes;
-      for(var i=0; i<fieldset.length; i++) {
-        fieldset[i].id = DRAG.ABLE + '_' + i;
-      }
     }
-    if(this.state.draggable === 2 && e.target.tagName === HTML_TAG.LEGEND) {
+    if(this.state.draggable === 2) {
       const div = e.target.parentElement;
-      // div.before(this.state.dragobject);
+      const tPDiv = div.parentElement;
+      const dPObj = this.state.dragobject.parentElement;
+      if(tPDiv.id !== dPObj.id) return;
+      const dragId = Array.from(tPDiv.childNodes).indexOf(div);
+      const dropId = Array.from(tPDiv.childNodes).indexOf(this.state.dragobject);
+      if(dragId < dropId) {
+        div.before(this.state.dragobject);
+      } else {
+        div.after(this.state.dragobject);
+      }
     }
  }
 

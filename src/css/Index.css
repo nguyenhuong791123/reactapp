@@ -5,7 +5,7 @@
     transition: all .5s;
 }
 
-*[draggable=true] {
+*[draggable=true] legend, label{
     cursor: move;
 }
 

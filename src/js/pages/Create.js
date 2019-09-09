@@ -162,11 +162,11 @@ class Create extends C {
         if(c === 0 && dDrag.tagName === HTML_TAG.LEGEND) continue;
         dDrag.setAttribute(DRAG.ABLE, 'true');
         dDrag.ondragstart = this._onDragStart.bind(this);
-        const divs = dDrag.childNodes;
-        for(var d=0; d<divs.length; d++) {
-          if(divs[d].tagName !== HTML_TAG.LABEL) continue;
-          divs[d].style.cursor = 'move';
-        }
+        // const divs = dDrag.childNodes;
+        // for(var d=0; d<divs.length; d++) {
+        //   if(divs[d].tagName !== HTML_TAG.LABEL) continue;
+        //   divs[d].style.cursor = 'move';
+        // }
       }
     }
   }

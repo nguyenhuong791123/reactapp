@@ -63,13 +63,12 @@ export const FORM = {
 export const DRAG = {
     ABLE: 'draggable'
     ,START: 'dragstart'
-    ,DRAG: 'ondrag'
-    ,END: 'ondragend'
-    ,ENTER: 'ondragenter'
-    ,LEAVE: 'ondragleave'
-    ,OVER: 'ondragover'
-    ,START: 'ondragstart'
-    ,DROP: 'ondrop'
-    ,SRCOLL: 'onscroll'
+    ,DRAG: 'drag'
+    ,END: 'dragend'
+    ,ENTER: 'dragenter'
+    ,LEAVE: 'dragleave'
+    ,OVER: 'dragover'
+    ,DROP: 'drop'
+    ,SRCOLL: 'scroll'
 }
 

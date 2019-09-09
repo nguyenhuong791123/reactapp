@@ -9,6 +9,10 @@
     cursor: move;
 }
 
+*[draggable=true] legend:hover, label:hover {
+    background-color: #cce5ff !important;
+}
+
 div._loading_overlay_wrapper {
     position: unset;
 }

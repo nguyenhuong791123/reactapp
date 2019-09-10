@@ -240,6 +240,9 @@ class App extends C {
                                     path={ ACTION.SLASH + ACTION.CREATE }
                                     render={ ({ props }) => <Create isUser={ this.state.isUser } {...this.props} />} />
                                 <Route
+                                    path={ ACTION.SLASH + ACTION.EDIT }
+                                    render={ ({ props }) => <Create isUser={ this.state.isUser } {...this.props} />} />
+                                <Route
                                     path={ ACTION.SLASH + ACTION.CUSTOMIZE }
                                     render={ ({ props }) => <Customize isUser={ this.state.isUser } {...this.props} />} />
                                 <Route

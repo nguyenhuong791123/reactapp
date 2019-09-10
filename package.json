@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@lls/react-light-calendar": "^2.0.7",
-    "@version/react-router-v3": "^1.0.0",
     "bootstrap": "^4.3.1",
     "connected-react-router": "^6.5.2",
     "history": "^4.9.0",
@@ -31,7 +30,8 @@
     "redux-react-session": "^2.6.0",
     "redux-thunk": "^2.3.0",
     "socket.io-client": "^2.2.0",
-    "util": "^0.12.1"
+    "util": "^0.12.1",
+    "webpack": "^4.29.6"
   },
   "scripts": {
     "start": "PORT=8080 react-scripts start",
@@ -40,15 +40,7 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app",
-    "env": {
-      "browser": true,
-      "chrome": true,
-      "es6": true
-    }
-  },
-  "globals": {
-    "chrome": true
+    "extends": "react-app"
   },
   "browserslist": {
     "production": [
@@ -69,7 +61,6 @@
     "eslint-plugin-flowtype": "^4.2.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
-    "eslint-plugin-react": "^7.14.3",
-    "react-draggable": "^3.3.2"
+    "eslint-plugin-react": "^7.14.3"
   }
 }

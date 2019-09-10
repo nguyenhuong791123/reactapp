@@ -12,7 +12,7 @@ import { DRAG, MOUSE } from '../utils/HtmlTypes';
 import Html from '../utils/HtmlUtils'
 import Utils from '../utils/Utils';
 
-import GetMsg from '../../msg/Msg';
+// import GetMsg from '../../msg/Msg';
 
 class Customize extends C {
   constructor(props) {
@@ -307,11 +307,11 @@ class Customize extends C {
     if(obj.tagName === HTML_TAG.LABEL) {
       if(!Html.hasAttribute(obj.parentElement.parentElement, 'id')
         || !Html.hasAttribute(obj, 'for')) return;
-      var id = obj.parentElement.parentElement.id.replace('root_', '');
-      var oId = obj.getAttribute('for').replace('root_' + id + '_', '');
-      console.log(id);
+      var cId = obj.parentElement.parentElement.id.replace('root_', '');
+      var oId = obj.getAttribute('for').replace('root_' + cId + '_', '');
+      console.log(cId);
       console.log(oId);
-      delete this.state.schema.properties[id].properties[oId];
+      delete this.state.schema.properties[cId].properties[oId];
       delete this.state.uiSchema[id][oId];
       console.log(this.state.schema.properties);
       console.log(this.state.uiSchema);

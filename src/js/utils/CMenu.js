@@ -1,6 +1,5 @@
 import React, { Component as C } from 'react';
 import onClickOutside from 'react-onclickoutside';
-// import { browserHistory } from '@version/react-router-v3';
 import { Nav, Alert } from 'react-bootstrap';
 import { FaEdit, FaTrash, FaCloudDownloadAlt } from 'react-icons/fa';
 

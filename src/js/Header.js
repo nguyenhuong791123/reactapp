@@ -207,33 +207,9 @@ class Header extends C {
     w.location = href;
   }
 
-  // _onDraggable(div, obj) {
-  //   var offset = [ 0, 0 ];
-  //   var isDown = false;
-  //   obj.addEventListener('mousedown', function(e) {
-  //     if(e.target.tagName !== HTML_TAG.BUTTON) {
-  //       isDown = false;
-  //       return;
-  //     }
-  //     isDown = true;
-  //     offset = [ div.offsetLeft - e.clientX, div.offsetTop - e.clientY ];
-  //   }, true);
-
-  //   document.addEventListener('mouseup', function(e) {
-  //     isDown = false;
-  //   }, true);
-
-  //   document.addEventListener('mousemove', function(e) {
-  //     e.preventDefault();
-  //     if (!isDown) return;
-  //     div.style.left = (e.clientX + offset[0]) + 'px';
-  //     div.style.top  = (e.clientY + offset[1]) + 'px';
-  //   }, true);
-  // }
-
   _addBoostrapTheme() {
-    const isExists = document.getElementById(SYSTEM.IS_DAILER_BOX);
-    if(Utils.isEmpty(isExists)) {
+    var div = document.getElementById(SYSTEM.IS_DAILER_BOX);
+    if(Utils.isEmpty(div)) {
       const btn = document.createElement(HTML_TAG.BUTTON);
       btn.setAttribute('class', 'btn btn-warning');
       btn.innerText = '✖';
@@ -241,18 +217,17 @@ class Header extends C {
         var close = document.getElementById('a_dailer_box');
         if(!Utils.isEmpty(close)) close.click();
       }
-      const div = document.createElement(HTML_TAG.DIV);
+      div = document.createElement(HTML_TAG.DIV);
       div.setAttribute('id', SYSTEM.IS_DAILER_BOX);
       div.setAttribute('class', 'drag-and-drop');
-      const webRtc = document.createElement(HTML_TAG.OBJECT);
-      webRtc.setAttribute('data', 'dailer.html');
-      webRtc.setAttribute('type', 'text/html');
-      div.appendChild(webRtc);
+      const rtc = document.createElement(HTML_TAG.OBJECT);
+      rtc.setAttribute('data', 'dailer.html');
+      rtc.setAttribute('type', 'text/html');
+      div.appendChild(rtc);
       div.appendChild(btn);
-      // this._onDraggable(div, btn);
       document.body.prepend(div);
     }
-    this._setLocalStrageTheme();  
+    this._setLocalStrageTheme(div);
   }
 
   _setLocalStrageTheme(isExists) {
@@ -261,6 +236,7 @@ class Header extends C {
     const obj = isExists.childNodes[0];
     if(Utils.isEmpty(obj) || Utils.isEmpty(obj.contentWindow)) return;
     const link = obj.contentWindow.document.querySelector('#link_bootstrap_ippbx_id');
+    if(Utils.isEmpty(link)) return;
     link.href = css_path;
   }
 

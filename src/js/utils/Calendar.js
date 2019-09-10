@@ -99,7 +99,7 @@ class CalendarBox extends C {
         this._getDayMonthLabel();
     }
 
-    render = () => {
+    render() {
         const style = { top: this.state.top, left: this.state.left }
         return (
             <div id='div_calendar_box' className='div-calendar-box' style={ style }>

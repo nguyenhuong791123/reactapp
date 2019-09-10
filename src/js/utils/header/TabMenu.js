@@ -290,7 +290,7 @@ class TabMenu extends C {
         });
     }
 
-    handleClickOutside = (e) => {
+    handleClickOutside(e) {
         var obj = this.getLinkObj(e);
         if(!Utils.isEmpty(obj)) {
             const view = obj.getAttribute("view");

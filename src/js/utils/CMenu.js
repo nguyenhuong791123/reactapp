@@ -60,7 +60,7 @@ class ContextMenu extends C {
           });
     }
 
-    handleClickOutside = () => {
+    handleClickOutside() {
         this._onCloseAlert();
     }
 

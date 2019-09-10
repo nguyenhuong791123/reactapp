@@ -60,7 +60,7 @@ class App extends C {
         this.forceUpdate();
     }
 
-    _doLogin = (isUser, options) => {
+    _doLogin(isUser, options) {
         // isUser[SYSTEM.IS_ACTIVE_WINDOWN] = (!Utils.isEmpty(window.name) && window.name===SYSTEM.IS_ACTIVE_WINDOWN);
         const auth = { info: isUser, options: options };
         // this._updateStateIsUser(auth);
@@ -82,7 +82,7 @@ class App extends C {
         });
     };
 
-    _doLogout = () => {
+    _doLogout() {
         const auth = { info:  AuthSession.isUserInit(null).info, options:  AuthSession.isUserInit(null).options };
         auth.info.language = this.state.isUser.language;
         auth.info.theme = this.state.isUser.theme;
@@ -100,7 +100,7 @@ class App extends C {
         }).catch(err => { throw (err); });
     };
 
-    _loadAuthCookies = (isUser, callBack) => {
+    _loadAuthCookies(isUser, callBack) {
         const objAuth = sessionService.loadUser('COOKIES');
         if(objAuth !== undefined) {
             objAuth.then(function(data) {

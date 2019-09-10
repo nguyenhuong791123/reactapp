@@ -23,7 +23,6 @@ export const HTML_TAG = {
     ,RADIO: 'radio'
     ,SELECT: 'select'
     ,TEXT: 'text'
-    ,BUTTON: 'button'
     ,OBJECT: 'object'
     ,IFRAME: 'iframe'
     ,BODY: 'body'

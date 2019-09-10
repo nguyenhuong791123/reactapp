@@ -239,7 +239,7 @@ class Customize extends C {
     this.state.alertActions.show = true;
     this.state.alertActions.style = { top: obj.offsetTop, left: (obj.offsetLeft + obj.offsetWidth) - 70 };
     var className = 'div-customize-actions';
-    if(obj.tagName == HTML_TAG.LABEL) {
+    if(obj.tagName === HTML_TAG.LABEL) {
       className += ' div-customize-actions-child';
       this.state.alertActions.style.left = (this.state.alertActions.style.left + 25);
     }

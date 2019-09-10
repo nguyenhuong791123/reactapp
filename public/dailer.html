@@ -239,7 +239,6 @@
         var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
         document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
     </script>
-
     <script type="text/javascript">
         try {
             var pageTracker = _gat._getTracker("UA-6868621-19");
@@ -257,7 +256,6 @@
       //   divParent.childNodes[0].style.height = (divDailer.offsetHeight + 6) + 'px';
       // }
     }
-
     var offset = [ 0, 0 ];
     var isDown = false;
     var obj = document.getElementById('ippbx_move_box');
@@ -274,11 +272,9 @@
           offset = [ div.offsetLeft - e.clientX, div.offsetTop - e.clientY ];
           console.log(offset);
         }, true);
-
         document.addEventListener('mouseup', function(e) {
           isDown = false;
         }, true);
-
         document.addEventListener('mousemove', function(e) {
           e.preventDefault();
           if (!isDown) return;

@@ -47,6 +47,11 @@ class Customize extends C {
   }
 
   _onClickSubmit() {
+    console.log(this.state.schema.properties);
+    var oks = Object.keys(this.state.schema.properties);
+    for(var i=0; i<oks.length; i++) {
+      console.log(this.state.schema.properties[oks[i]]);
+    }
     console.log("Data submitted: ", document.forms[0]);
   }
 
@@ -82,15 +87,6 @@ class Customize extends C {
         // title: "Widgets",
         type: "object",
         properties: {
-          base_info: {
-            type: "object"
-            ,title: "基本情報"
-            // ,required: [ "email", "uri" ]
-            ,properties: {
-              email: { type: "string", title: "メール", format: "email", }
-              ,uri: { type: "string", format: "uri", }
-            },
-          },
           cust_info: {
             type: "object"
             ,title: "顧客情報"
@@ -99,6 +95,15 @@ class Customize extends C {
               cust_name_hira: { type: "string" }
               ,cust_name_kana: { type: "string" }
             }
+          },
+          base_info: {
+            type: "object"
+            ,title: "基本情報"
+            // ,required: [ "email", "uri" ]
+            ,properties: {
+              email: { type: "string", title: "メール", format: "email", }
+              ,uri: { type: "string", format: "uri", }
+            },
           },
           project_info: {
             type: "object"
@@ -132,9 +137,9 @@ class Customize extends C {
   }
 
   UNSAFE_componentWillReceiveProps(props) {
-    console.log('CREATE componentWillReceiveProps');
+    // console.log('CREATE componentWillReceiveProps');
     this.state.isUser = props.isUser;
-    console.log(this.state.isUser);
+    // console.log(this.state.isUser);
   }
 
   componentDidMount() {
@@ -166,7 +171,7 @@ class Customize extends C {
   }
 
   _onMouseDown(e) {
-    console.log(e.target.tagName);
+    // console.log(e.target.tagName);
     if(e.target.tagName === HTML_TAG.LEGEND) {
       this.state.draggable = 1;
       this.state.dragobject = e.target.parentElement.parentElement;
@@ -189,8 +194,8 @@ class Customize extends C {
 
   _onDragOver(e) {
     e.preventDefault();
-    console.log('_onDragOver');
-    console.log(e);
+    // console.log('_onDragOver');
+    // console.log(e);
   }
 
   _onDragDrop(e) {
@@ -202,13 +207,67 @@ class Customize extends C {
     console.log('_onDragDrop');
     if(this.state.draggable === 1 && e.target.tagName === HTML_TAG.LEGEND) {
       const div = e.target.parentElement.parentElement;
+      var nps = [];
+      var keys = Object.keys(this.state.schema.properties);
+      var json = {};
       if(Utils.isEmpty(div.id) || Utils.isEmpty(div.parentElement.childNodes) || div.parentElement.childNodes.length <= 0) return;
       const dragId = Array.from(div.parentElement.childNodes).indexOf(div);
       const dropId = Array.from(div.parentElement.childNodes).indexOf(this.state.dragobject);
+      // var id = div.parentElement.id.replace('root_', '');
       if(dragId < dropId) {
         div.before(this.state.dragobject);
+        for(var drag=0; drag<keys.length; drag++) {
+          if(drag === dropId) continue;
+          if(drag === dragId) {
+            json[keys[dropId]] = this.state.schema.properties[keys[dropId]];
+            nps.push(json);
+            json = {};
+            json[keys[dragId]] = this.state.schema.properties[keys[dragId]];
+            nps.push(json);
+          } else {
+            json = {};
+            json[keys[drag]] = this.state.schema.properties[keys[drag]];
+            nps.push(json);
+          }
+        }
+        json = {};
+        console.log(nps);
+        for(var i=0; i<nps.length; i++) {
+          console.log(nps[i]);
+          var oks = Object.keys(nps[i]);
+          for(var l=0; l<oks.length; l++) {
+            json[oks[l]] = nps[i][oks[l]];
+          }
+        }
+        console.log(json);
+        this.state.schema.properties = json;
+        console.log(this.state.schema.properties);
       } else {
         div.after(this.state.dragobject);
+        for(var drop=0; drop<keys.length; drop++) {
+          if(drop === dropId) continue;
+          if(drop === dragId) {
+            json[keys[dragId]] = this.state.schema.properties[keys[dragId]];
+            nps.push(json);
+            json = {};
+            json[keys[dropId]] = this.state.schema.properties[keys[dropId]];
+            nps.push(json);
+          } else {
+            json = {};
+            json[keys[drop]] = this.state.schema.properties[keys[drop]];
+            nps.push(json);
+          }
+        }
+        json = {};
+        for(var o=0; o<nps.length; o++) {
+          var oks = Object.keys(nps[o]);
+          for(var u=0; u<oks.length; u++) {
+            json[oks[u]] = nps[o][oks[u]];
+          }
+        }
+        console.log(json);
+        this.state.schema.properties = json;
+        console.log(this.state.schema.properties);
       }
     }
     if(this.state.draggable === 2) {
@@ -223,8 +282,11 @@ class Customize extends C {
       } else {
         div.after(this.state.dragobject);
       }
+      // console.log(dragId);
+      // console.log(dropId);
+      // console.log(this.state.schema.properties);
     }
- }
+  }
 
   // _onDragEnd(e) {
   //   console.log('_onDragEnd');
@@ -250,7 +312,7 @@ class Customize extends C {
 
   _onMouseOut(e) {
     const obj = this._getButton(e);
-    console.log(obj.tagName);
+    // console.log(obj.tagName);
     if(obj.tagName === HTML_TAG.BUTTON) {
       this.state.alertActions.show = true;
     } else {
@@ -282,7 +344,7 @@ class Customize extends C {
   _onOpenDelete() {
     const obj = this.state.dragobject;
     if(Utils.isEmpty(obj) || (obj.tagName !== HTML_TAG.LEGEND && obj.tagName !== HTML_TAG.LABEL)) return;
-    this.state.alertDelete.msg = obj.innerText + 'を削除してよろしくですか？';
+    this.state.alertDelete.msg = '「' + obj.innerText + '」' + 'を削除してよろしくですか？';
     this.state.alertDelete.show = true;
     this.forceUpdate();
   }
@@ -298,23 +360,23 @@ class Customize extends C {
     if(obj.tagName === HTML_TAG.LEGEND) {
       if(!Html.hasAttribute(obj.parentElement, 'id')) return;
       var id = obj.parentElement.id.replace('root_', '');
-      console.log(id);
+      // console.log(id);
       delete this.state.schema.properties[id];
       delete this.state.uiSchema[id];
-      console.log(this.state.schema.properties);
-      console.log(this.state.uiSchema);
+      // console.log(this.state.schema.properties);
+      // console.log(this.state.uiSchema);
     }
     if(obj.tagName === HTML_TAG.LABEL) {
       if(!Html.hasAttribute(obj.parentElement.parentElement, 'id')
         || !Html.hasAttribute(obj, 'for')) return;
       var cId = obj.parentElement.parentElement.id.replace('root_', '');
       var oId = obj.getAttribute('for').replace('root_' + cId + '_', '');
-      console.log(cId);
-      console.log(oId);
+      // console.log(cId);
+      // console.log(oId);
       delete this.state.schema.properties[cId].properties[oId];
       delete this.state.uiSchema[id][oId];
-      console.log(this.state.schema.properties);
-      console.log(this.state.uiSchema);
+      // console.log(this.state.schema.properties);
+      // console.log(this.state.uiSchema);
     }
 
     this.state.alertActions.show = false;

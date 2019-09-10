@@ -6,7 +6,7 @@ import { SYSTEM } from './Types';
 import { isEmpty } from './Utils';
 import GetMsg from '../../msg/Msg';
 
-export default class New extends C {
+export default class AlertAction extends C {
   constructor(props) {
     super(props);
 
@@ -45,9 +45,9 @@ export default class New extends C {
   }
 
   componentWillReceiveProps(props) {
-    console.log('ACTION componentWillReceiveProps');
+    // console.log('ACTION componentWillReceiveProps');
     this.state.isUser = props.isUser;
-    console.log(this.state.isUser);
+    // console.log(this.state.isUser);
   }
 
   render() {
